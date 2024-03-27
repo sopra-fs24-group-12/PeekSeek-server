@@ -32,8 +32,8 @@ public class WebsocketController {
     @GetMapping("/timer")
     @ResponseStatus(HttpStatus.OK)
     public void startTimer() {
-        this.timer = new Timer();
         if (!timeRunning) {
+            this.timer = new Timer();
             timeRunning = true;
             remainingTimeInSeconds = 10;
             timer.scheduleAtFixedRate(new TimerTask() {
