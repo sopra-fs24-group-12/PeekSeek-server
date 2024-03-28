@@ -8,6 +8,9 @@ import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class LobbyController {
     private final LobbyService lobbyService;
@@ -25,4 +28,15 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(createdLobby);
     }
 
+    @GetMapping("/lobbies")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LobbyGetDTO> getLobbies() {
+        List<LobbyGetDTO> lobbyGetDTOs = new ArrayList<>();
+        List<Lobby> lobbies = lobbyService.getAllLobbies();
+        for (Lobby lobby : lobbies) {
+            lobbyGetDTOs.add(DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby));
+        }
+        return lobbyGetDTOs;
+    }
 }
