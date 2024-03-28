@@ -4,10 +4,12 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyJoinPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +54,14 @@ public class LobbyController {
         lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
         websocketService.sendMessage("/topic/lobby/" + id,
                 new ParticipantJoinedDTO(joinPutDTO.getUsername()));
+    }
+
+    @PutMapping("/lobbies/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void updateLobbySettings(@PathVariable Long id, @RequestBody LobbyPutDTO lobbyPutDTO) {
+        Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO);
+        websocketService.sendMessage("/topic/lobby/" + id,
+                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getQuests()));
     }
 }

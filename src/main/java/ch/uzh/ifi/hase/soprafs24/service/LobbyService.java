@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.ParticipantRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,23 @@ public class LobbyService {
 
         lobby = lobbyRepository.save(lobby);
         lobbyRepository.flush();
+    }
+
+    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO) {
+        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (lobbyPutDTO.getGameLocation() != null) {
+            lobby.setGameLocation(lobbyPutDTO.getGameLocation());
+        }
+        if (lobbyPutDTO.getQuest() != null) {
+            lobby.addQuest(lobbyPutDTO.getQuest());
+        }
+        if (lobbyPutDTO.getRoundDurationSeconds() != null) {
+            lobby.setRoundDurationSeconds(lobbyPutDTO.getRoundDurationSeconds());
+        }
+
+        lobby = lobbyRepository.save(lobby);
+
+        return lobby;
     }
 
     private void checkIfLobbyNameExists(String name) {

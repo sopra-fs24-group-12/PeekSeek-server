@@ -17,7 +17,7 @@ public class Lobby {
     private Integer joinedParticipants = 0;
 
     @ElementCollection
-    private List<String> quests;
+    private List<String> quests = new ArrayList<>();
     private Boolean reUsed = false;
     private Long adminId;
     @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
@@ -27,6 +27,10 @@ public class Lobby {
         joinedParticipants += 1;
         participant.setLobby(this.getId());
         this.participants.add(participant);
+    }
+
+    public void addQuest(String quest) {
+        quests.add(quest);
     }
 
     public Long getId() {

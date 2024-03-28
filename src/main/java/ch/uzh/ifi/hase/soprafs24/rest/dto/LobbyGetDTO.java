@@ -10,6 +10,33 @@ public class LobbyGetDTO {
     private String name;
     private Integer maxParticipants;
     private Integer joinedParticipants;
+    private Integer RoundDurationSeconds;
+    private String gameLocation;
+    private List<String> quests;
+
+    public List<String> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(List<String> quests) {
+        this.quests = quests;
+    }
+
+    public Integer getRoundDurationSeconds() {
+        return RoundDurationSeconds;
+    }
+
+    public void setRoundDurationSeconds(Integer roundDurationSeconds) {
+        RoundDurationSeconds = roundDurationSeconds;
+    }
+
+    public String getGameLocation() {
+        return gameLocation;
+    }
+
+    public void setGameLocation(String gameLocation) {
+        this.gameLocation = gameLocation;
+    }
 
     public Long getId() {
         return id;
