@@ -17,6 +17,7 @@ public class Lobby {
     @ElementCollection
     private List<String> quests;
     private Boolean reUsed;
+    private Long adminId;
     @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
 
@@ -95,5 +96,13 @@ public class Lobby {
 
     public void setParticipants(List<Participant> participants) {
         this.participants = participants;
+    }
+
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 }

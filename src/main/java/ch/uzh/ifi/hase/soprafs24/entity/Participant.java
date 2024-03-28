@@ -23,6 +23,8 @@ public class Participant {
     private Long id;
     @JoinColumn(name = "lobby_id")
     private Long lobby;
+    @JoinColumn(name = "game_id")
+    private Long game;
 
     public String getUsername() {
         return username;

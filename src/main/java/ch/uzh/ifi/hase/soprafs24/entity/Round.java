@@ -12,11 +12,14 @@ public class Round {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String quest;
+    private int roundTime;
+    private RoundStatus roundStatus;
     @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
     private List<Submission> submissions;
     @OneToOne
     @JoinColumn(name = "winning_submission_id")
     private Submission winningSubmission;
-    private RoundStatus roundStatus;
-    private int roundTime;
+    @JoinColumn(name = "game_id")
+    private Long game;
+
 }
