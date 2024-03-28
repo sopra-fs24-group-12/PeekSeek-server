@@ -26,7 +26,8 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "participants", target = "participants")
+    @Mapping(source = "maxParticipants", target = "maxParticipants")
+    @Mapping(source = "joinedParticipants", target = "joinedParticipants")
     LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
 
 

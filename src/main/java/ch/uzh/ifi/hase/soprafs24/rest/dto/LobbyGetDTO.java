@@ -8,16 +8,8 @@ import java.util.List;
 public class LobbyGetDTO {
     private Long id;
     private String name;
-
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
-    private List<Participant> participants;
-
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
-    }
+    private Integer maxParticipants;
+    private Integer joinedParticipants;
 
     public Long getId() {
         return id;
@@ -35,4 +27,19 @@ public class LobbyGetDTO {
         this.name = name;
     }
 
+    public Integer getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public void setMaxParticipants(Integer maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
+
+    public Integer getJoinedParticipants() {
+        return joinedParticipants;
+    }
+
+    public void setJoinedParticipants(Integer joinedParticipants) {
+        this.joinedParticipants = joinedParticipants;
+    }
 }
