@@ -2,34 +2,42 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Participant {
-    private final String username;
-    private final long id;
-    private final String token;
+    private String username;
+    @Column(nullable = false, unique = true)
+    private String token;
     private int score;
     private int winningSubmissions;
-    private List<Submission> submissions;
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
+    private List<Submission> submissions = new ArrayList<>();
     private int streak;
-    private final Boolean isAdmin;
+    private Boolean isAdmin;
     private Boolean leftGame;
-
-    public Participant(String username, long id, String token, Boolean isAdmin) {
-        this.username = username;
-        this.id = id;
-        this.token = token;
-        this.isAdmin = isAdmin;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @JoinColumn(name = "lobby_id")
+    private Long lobby;
 
     public String getUsername() {
         return username;
     }
 
-    public long getId() {
-        return id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public int getScore() {
@@ -68,11 +76,31 @@ public class Participant {
         return isAdmin;
     }
 
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
     public Boolean getLeftGame() {
         return leftGame;
     }
 
     public void setLeftGame(Boolean leftGame) {
         this.leftGame = leftGame;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Long lobby) {
+        this.lobby = lobby;
     }
 }
