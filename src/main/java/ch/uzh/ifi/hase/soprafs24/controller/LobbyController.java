@@ -6,6 +6,8 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyJoinPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +16,12 @@ import java.util.List;
 
 @RestController
 public class LobbyController {
+    private final WebsocketService websocketService;
     private final LobbyService lobbyService;
 
-    LobbyController(LobbyService lobbyService) {
+    LobbyController(LobbyService lobbyService, WebsocketService websocketService) {
         this.lobbyService = lobbyService;
+        this.websocketService = websocketService;
     }
 
     @PostMapping("/lobbies")
@@ -46,5 +50,7 @@ public class LobbyController {
     @ResponseBody
     public void joinLobby(@PathVariable Long id, @RequestBody LobbyJoinPutDTO joinPutDTO) {
         lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
+        websocketService.sendMessage("/topic/lobby/" + id,
+                new ParticipantJoinedDTO(joinPutDTO.getUsername()));
     }
 }
