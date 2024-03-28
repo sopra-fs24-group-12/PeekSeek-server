@@ -55,10 +55,36 @@ public class LobbyService {
         return this.lobbyRepository.findAll();
     }
 
+    public void joinLobby(Long id, String username, String password) {
+        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        checkIfUsernameInLobby(username, id);
+        if (lobby.getJoinedParticipants() >= lobby.getMaxParticipants()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The lobby is full");
+        }
+        if (!lobby.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
+        }
+        Participant participant = new Participant();
+        participant.setUsername(username);
+        participant.setToken(UUID.randomUUID().toString());
+
+        lobby.addParticipant(participant);
+
+        lobby = lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+    }
+
     private void checkIfLobbyNameExists(String name) {
         Lobby lobby = lobbyRepository.findLobbyByName(name);
         if (lobby != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "A lobby with this name already exists");
+        }
+    }
+
+    public void checkIfUsernameInLobby(String username, Long lobbyId) {
+        Participant participant = participantRepository.findByUsernameAndLobby(username, lobbyId);
+        if (participant != null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username already in lobby");
         }
     }
 }

@@ -24,6 +24,7 @@ public class Lobby {
     private List<Participant> participants = new ArrayList<>();
 
     public void addParticipant(Participant participant) {
+        joinedParticipants += 1;
         participant.setLobby(this.getId());
         this.participants.add(participant);
     }

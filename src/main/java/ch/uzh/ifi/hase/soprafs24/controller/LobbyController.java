@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyJoinPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
@@ -38,5 +39,12 @@ public class LobbyController {
             lobbyGetDTOs.add(DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby));
         }
         return lobbyGetDTOs;
+    }
+
+    @PutMapping("/lobbies/{id}/join")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void joinLobby(@PathVariable Long id, @RequestBody LobbyJoinPutDTO joinPutDTO) {
+        lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
     }
 }
