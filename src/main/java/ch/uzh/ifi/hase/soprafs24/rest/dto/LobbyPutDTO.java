@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import java.util.List;
+
 public class LobbyPutDTO {
     private Integer roundDurationSeconds;
-    private String quest;
+    private List<String> quests;
     private String gameLocation;
 
     public Integer getRoundDurationSeconds() {
@@ -13,12 +15,12 @@ public class LobbyPutDTO {
         this.roundDurationSeconds = roundDurationSeconds;
     }
 
-    public String getQuest() {
-        return quest;
+    public List<String> getQuests() {
+        return quests;
     }
 
-    public void setQuest(String quest) {
-        this.quest = quest;
+    public void setQuests(List<String> quests) {
+        this.quests = quests;
     }
 
     public String getGameLocation() {

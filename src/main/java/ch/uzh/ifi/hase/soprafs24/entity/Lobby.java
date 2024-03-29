@@ -17,7 +17,7 @@ public class Lobby {
     private Integer joinedParticipants = 0;
 
     @ElementCollection
-    private List<String> quests = new ArrayList<>();
+    private List<String> quests;
     private Boolean reUsed = false;
     private Long adminId;
     @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)

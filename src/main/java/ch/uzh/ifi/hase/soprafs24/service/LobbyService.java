@@ -85,14 +85,15 @@ public class LobbyService {
         if (lobbyPutDTO.getGameLocation() != null) {
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
-        if (lobbyPutDTO.getQuest() != null) {
-            lobby.addQuest(lobbyPutDTO.getQuest());
+        if (lobbyPutDTO.getQuests() != null) {
+            lobby.setQuests(lobbyPutDTO.getQuests());
         }
         if (lobbyPutDTO.getRoundDurationSeconds() != null) {
             lobby.setRoundDurationSeconds(lobbyPutDTO.getRoundDurationSeconds());
         }
 
         lobby = lobbyRepository.save(lobby);
+        lobbyRepository.flush();
 
         return lobby;
     }
