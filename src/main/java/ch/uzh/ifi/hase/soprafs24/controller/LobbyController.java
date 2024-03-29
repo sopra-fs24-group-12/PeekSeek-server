@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyJoinPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
@@ -11,8 +12,10 @@ import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +32,14 @@ public class LobbyController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO) {
+    public ResponseEntity<LobbyGetDTO> createLobby(@RequestBody LobbyPostDTO lobbyPostDTO, HttpServletResponse response) {
         Lobby createdLobby = lobbyService
                 .createLobby(lobbyPostDTO.getUsername(), lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
-        return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(createdLobby);
+        Participant admin = lobbyService.getParticipantById(createdLobby.getAdminId());
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        response.setHeader("Authorization", admin.getToken());
+        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(createdLobby);
+        return ResponseEntity.ok().body(lobbyGetDTO);
     }
 
     @GetMapping("/lobbies")
@@ -50,17 +57,21 @@ public class LobbyController {
     @PutMapping("/lobbies/{id}/join")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void joinLobby(@PathVariable Long id, @RequestBody LobbyJoinPutDTO joinPutDTO) {
-        lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
+    public void joinLobby(@PathVariable Long id, @RequestBody LobbyJoinPutDTO joinPutDTO,
+                                      HttpServletResponse response) {
+        String token = lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
         websocketService.sendMessage("/topic/lobby/" + id,
                 new ParticipantJoinedDTO(joinPutDTO.getUsername()));
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        response.setHeader("Authorization", token);
     }
 
     @PutMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void updateLobbySettings(@PathVariable Long id, @RequestBody LobbyPutDTO lobbyPutDTO) {
-        Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO);
+    public void updateLobbySettings(@PathVariable Long id, @RequestBody LobbyPutDTO lobbyPutDTO,
+                                    @RequestHeader(value = "Authorization", required = false) String token) {
+        Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
         websocketService.sendMessage("/topic/lobby/" + id,
                 new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getQuests()));
     }

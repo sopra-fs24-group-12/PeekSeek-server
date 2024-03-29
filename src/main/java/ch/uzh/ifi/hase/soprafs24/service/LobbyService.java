@@ -56,8 +56,9 @@ public class LobbyService {
         return this.lobbyRepository.findAll();
     }
 
-    public void joinLobby(Long id, String username, String password) {
-        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public String joinLobby(Long id, String username, String password) {
+        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException
+                (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));
         checkIfUsernameInLobby(username, id);
         if (lobby.getJoinedParticipants() >= lobby.getMaxParticipants()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The lobby is full");
@@ -73,10 +74,14 @@ public class LobbyService {
 
         lobby = lobbyRepository.save(lobby);
         lobbyRepository.flush();
+
+        return participant.getToken();
     }
 
-    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO) {
-        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) {
+        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException
+                (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));
+        authorizeLobbyAdmin(lobby.getAdminId(), token);
         if (lobbyPutDTO.getGameLocation() != null) {
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
@@ -104,5 +109,18 @@ public class LobbyService {
         if (participant != null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username already in lobby");
         }
+    }
+
+    public void authorizeLobbyAdmin(Long adminId, String token) {
+        Participant admin = participantRepository.findByToken(token);
+        if (admin == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
+        } else if (!admin.getId().equals(adminId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
+        }
+    }
+
+    public Participant getParticipantById(Long id) {
+        return participantRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
