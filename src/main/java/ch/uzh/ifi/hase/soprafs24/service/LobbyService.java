@@ -56,6 +56,11 @@ public class LobbyService {
         return this.lobbyRepository.findAll();
     }
 
+    public Lobby getSpecificLobby(Long id) {
+        return lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException
+                (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));
+    }
+
     public String joinLobby(Long id, String username, String password) {
         Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException
                 (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));

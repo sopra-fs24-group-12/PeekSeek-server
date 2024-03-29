@@ -32,7 +32,8 @@ public class LobbyController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseEntity<LobbyGetDTO> createLobby(@RequestBody LobbyPostDTO lobbyPostDTO, HttpServletResponse response) {
+    public ResponseEntity<LobbyGetDTO> createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
+                                                   HttpServletResponse response) {
         Lobby createdLobby = lobbyService
                 .createLobby(lobbyPostDTO.getUsername(), lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
         Participant admin = lobbyService.getParticipantById(createdLobby.getAdminId());
@@ -52,6 +53,14 @@ public class LobbyController {
             lobbyGetDTOs.add(DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby));
         }
         return lobbyGetDTOs;
+    }
+
+    @GetMapping("/lobbies/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO getLobby(@PathVariable Long id) {
+        Lobby lobby = lobbyService.getSpecificLobby(id);
+        return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
     }
 
     @PutMapping("/lobbies/{id}/join")
