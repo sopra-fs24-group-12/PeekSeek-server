@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +74,16 @@ public class LobbyController {
                 new ParticipantJoinedDTO(joinPutDTO.getUsername()));
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
         response.setHeader("Authorization", token);
+    }
+
+    @DeleteMapping("/lobbies/{id}/leave")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void leaveLobby(@PathVariable Long id,
+                           @RequestHeader(value = "Authorization", required = false) String token) {
+        String username = lobbyService.leaveLobby(id, token);
+        websocketService.sendMessage("/topic/lobby/" + id,
+                new ParticipantLeftDTO(username));
     }
 
     @PutMapping("/lobbies/{id}")

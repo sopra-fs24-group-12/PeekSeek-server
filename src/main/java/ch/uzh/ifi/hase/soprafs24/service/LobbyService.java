@@ -83,6 +83,27 @@ public class LobbyService {
         return participant.getToken();
     }
 
+    public String leaveLobby(Long id, String token) {
+        Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException
+                (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));
+        Participant participant = participantRepository.findByToken(token);
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A participant with this token does not exist");
+        }
+        if (!participant.getLobby().equals(lobby.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not in the lobby you are trying to leave");
+        }
+        if (participant.getId().equals(lobby.getAdminId())) {
+            // TODO: handle case where admin leaves the lobby
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The admin cannot leave the lobby");
+        }
+        String username = participant.getUsername();
+        participantRepository.delete(participant);
+        lobby.setJoinedParticipants(lobby.getJoinedParticipants() - 1);
+
+        return username;
+    }
+
     public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) {
         Lobby lobby = lobbyRepository.findById(id).orElseThrow(() -> new ResponseStatusException
                 (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));
