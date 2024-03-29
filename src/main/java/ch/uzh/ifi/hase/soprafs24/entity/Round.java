@@ -13,9 +13,9 @@ public class Round {
     private Long id;
     private String quest;
     private int roundTime;
-    private RoundStatus roundStatus;
+    private RoundStatus roundStatus = RoundStatus.PREPARED;
     @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
-    private List<Submission> submissions;
+    private List<Submission> submissions = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "winning_submission_id")
     private Submission winningSubmission;

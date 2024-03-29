@@ -13,14 +13,28 @@ public class Game {
     private Long id;
     private Integer roundDurationSeconds;
     private String gameLocation;
-    private Integer currentRound;
-    private Integer adminId;
-    private GameStatus gameStatus;
+    private Integer currentRound = 0;
+    private Long adminId;
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
+    }
+
+    private GameStatus gameStatus = GameStatus.RUNNING;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<Round> rounds;
+    private List<Round> rounds = new ArrayList<>();
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
+
+    public void addRound(Round round) {
+        round.setGame(id);
+        rounds.add(round);
+    }
 
     public Long getId() {
         return id;
@@ -54,11 +68,11 @@ public class Game {
         this.currentRound = currentRound;
     }
 
-    public Integer getAdminId() {
+    public Long getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(Integer adminId) {
+    public void setAdminId(Long adminId) {
         this.adminId = adminId;
     }
 

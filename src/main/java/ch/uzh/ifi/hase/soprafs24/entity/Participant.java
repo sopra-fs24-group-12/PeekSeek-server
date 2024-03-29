@@ -74,7 +74,7 @@ public class Participant {
         this.streak = streak;
     }
 
-    public Boolean getAdmin() {
+    public Boolean getIsAdmin() {
         return isAdmin;
     }
 
@@ -104,5 +104,13 @@ public class Participant {
 
     public void setLobby(Long lobby) {
         this.lobby = lobby;
+    }
+
+    public Long getGame() {
+        return game;
+    }
+
+    public void setGame(Long game) {
+        this.game = game;
     }
 }

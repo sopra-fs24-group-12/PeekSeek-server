@@ -1,17 +1,22 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.ParticipantRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,12 +25,15 @@ import java.util.UUID;
 public class LobbyService {
     private final LobbyRepository lobbyRepository;
     private final ParticipantRepository participantRepository;
+    private final GameRepository gameRepository;
 
     @Autowired
     public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository,
-                        @Qualifier("participantRepository") ParticipantRepository participantRepository) {
+                        @Qualifier("participantRepository") ParticipantRepository participantRepository,
+                        @Qualifier("gameRepository") GameRepository gameRepository) {
         this.lobbyRepository = lobbyRepository;
         this.participantRepository = participantRepository;
+        this.gameRepository = gameRepository;
     }
 
     public Lobby createLobby(String username, String name, String password) {
@@ -54,6 +62,13 @@ public class LobbyService {
 
     public List<Lobby> getAllLobbies() {
         return this.lobbyRepository.findAll();
+    }
+
+    public List<Participant> getAllParticipants(Long lobbyId, String token) {
+        Lobby lobby = lobbyRepository.findById(lobbyId).orElseThrow(() -> new ResponseStatusException
+                (HttpStatus.NOT_FOUND, "A lobby with this ID does not exist"));
+        authorizeLobbyParticipant(lobbyId, token);
+        return lobby.getParticipants();
     }
 
     public Lobby getSpecificLobby(Long id) {
@@ -124,6 +139,56 @@ public class LobbyService {
         return lobby;
     }
 
+    public Long startGame(Long lobbyId, String token) {
+        Lobby lobby = lobbyRepository.findById(lobbyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "A lobby with this ID does not exist"));
+
+        authorizeLobbyAdmin(lobby.getAdminId(), token);
+
+        if (lobby.getJoinedParticipants() < 3) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "You need at least 3 participants to start the game");
+        }
+
+        List<String> quests = lobby.getQuests();
+        if (quests.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "You need to have at least one quest to start the game");
+        }
+
+        Game createdGame = new Game();
+        gameRepository.save(createdGame);
+
+        List<Round> rounds = new ArrayList<>();
+        for (String quest : quests) {
+            Round round = new Round();
+            round.setQuest(quest);
+            round.setRoundTime(lobby.getRoundDurationSeconds());
+            round.setGame(createdGame.getId());
+            rounds.add(round);
+        }
+
+        createdGame.setRoundDurationSeconds(lobby.getRoundDurationSeconds());
+        createdGame.setAdminId(lobby.getAdminId());
+        createdGame.setGameLocation(lobby.getGameLocation());
+        createdGame.setRounds(rounds);
+
+        List<Participant> participants = new ArrayList<>(lobby.getParticipants());
+        for (Participant participant : participants) {
+            participant.setGame(createdGame.getId());
+            participant.setLobby(null);
+        }
+        createdGame.setParticipants(participants);
+        lobby.getParticipants().clear();
+        lobby.recycleLobby();
+
+        lobby = lobbyRepository.save(lobby);
+        createdGame = gameRepository.save(createdGame);
+        gameRepository.flush();
+        return createdGame.getId();
+    }
+
     private void checkIfLobbyNameExists(String name) {
         Lobby lobby = lobbyRepository.findLobbyByName(name);
         if (lobby != null) {
@@ -144,6 +209,15 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
         } else if (!admin.getId().equals(adminId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
+        }
+    }
+
+    public void authorizeLobbyParticipant(Long lobbyId, String token) {
+        Participant participant = participantRepository.findByToken(token);
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
+        } else if (!participant.getLobby().equals(lobbyId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not in this lobby");
         }
     }
 

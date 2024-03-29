@@ -2,13 +2,11 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyJoinPutDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.GameStartedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
@@ -64,6 +62,20 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
     }
 
+    @GetMapping("/lobbies/{id}/participants")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<ParticipantGetDTO> getLobbyParticipants(@PathVariable Long id,
+                                                        @RequestHeader(value = "Authorization", required = false)
+                                                        String token) {
+        List<ParticipantGetDTO> participantGetDTOs = new ArrayList<>();
+        List<Participant> participants = lobbyService.getAllParticipants(id, token);
+        for (Participant participant : participants) {
+            participantGetDTOs.add(DTOMapper.INSTANCE.convertParticipantToParticipantGetDTO(participant));
+        }
+        return participantGetDTOs;
+    }
+
     @PutMapping("/lobbies/{id}/join")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -82,8 +94,7 @@ public class LobbyController {
     public void leaveLobby(@PathVariable Long id,
                            @RequestHeader(value = "Authorization", required = false) String token) {
         String username = lobbyService.leaveLobby(id, token);
-        websocketService.sendMessage("/topic/lobby/" + id,
-                new ParticipantLeftDTO(username));
+        websocketService.sendMessage("/topic/lobby/" + id, new ParticipantLeftDTO(username));
     }
 
     @PutMapping("/lobbies/{id}")
@@ -94,5 +105,15 @@ public class LobbyController {
         Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
         websocketService.sendMessage("/topic/lobby/" + id,
                 new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getQuests()));
+    }
+
+    @PostMapping("/lobbies/{id}/start")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void startGame(@PathVariable Long id,
+                          @RequestHeader(value = "Authorization", required = false) String token) {
+        Long gameId = lobbyService.startGame(id, token);
+        websocketService.sendMessage("/topic/lobby/" + id,
+                new GameStartedDTO(gameId));
     }
 }

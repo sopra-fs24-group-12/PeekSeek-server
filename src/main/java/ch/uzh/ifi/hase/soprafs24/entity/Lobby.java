@@ -33,6 +33,12 @@ public class Lobby {
         quests.add(quest);
     }
 
+    public void recycleLobby() {
+        setReUsed(true);
+        setJoinedParticipants(0);
+        setAdminId(null);
+    }
+
     public Long getId() {
         return id;
     }
