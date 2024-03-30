@@ -14,6 +14,8 @@ public class Game {
     private Integer roundDurationSeconds;
     private String gameLocation;
     private Integer currentRound = 0;
+
+    private Integer numberRounds;
     private Long adminId;
 
     public GameStatus getGameStatus() {
@@ -90,5 +92,13 @@ public class Game {
 
     public void setParticipants(List<Participant> participants) {
         this.participants = participants;
+    }
+
+    public Integer getNumberRounds() {
+        return numberRounds;
+    }
+
+    public void setNumberRounds(Integer numberRounds) {
+        this.numberRounds = numberRounds;
     }
 }

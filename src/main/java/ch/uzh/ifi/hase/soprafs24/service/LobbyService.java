@@ -10,7 +10,6 @@ import ch.uzh.ifi.hase.soprafs24.repository.ParticipantRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -173,6 +172,7 @@ public class LobbyService {
         createdGame.setAdminId(lobby.getAdminId());
         createdGame.setGameLocation(lobby.getGameLocation());
         createdGame.setRounds(rounds);
+        createdGame.setNumberRounds(lobby.getQuests().size());
 
         List<Participant> participants = new ArrayList<>(lobby.getParticipants());
         for (Participant participant : participants) {
