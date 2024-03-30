@@ -13,6 +13,7 @@ public class Round {
     private Long id;
     private String quest;
     private int roundTime;
+    private int remainingSeconds;
     private RoundStatus roundStatus = RoundStatus.PREPARED;
     @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
     private List<Submission> submissions = new ArrayList<>();
@@ -77,4 +78,13 @@ public class Round {
     public void setGame(Long game) {
         this.game = game;
     }
+
+    public int getRemainingSeconds() {
+        return remainingSeconds;
+    }
+
+    public void setRemainingSeconds(int remainingSeconds) {
+        this.remainingSeconds = remainingSeconds;
+    }
+
 }

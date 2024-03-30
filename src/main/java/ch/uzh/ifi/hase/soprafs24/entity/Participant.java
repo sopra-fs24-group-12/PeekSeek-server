@@ -18,6 +18,12 @@ public class Participant {
     private int streak = 0;
     private Boolean isAdmin = false;
     private Boolean leftGame = false;
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    private Boolean hasSubmitted = false;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -112,5 +118,13 @@ public class Participant {
 
     public void setGame(Long game) {
         this.game = game;
+    }
+
+    public Boolean getHasSubmitted() {
+        return hasSubmitted;
+    }
+
+    public void setHasSubmitted(Boolean hasSubmitted) {
+        this.hasSubmitted = hasSubmitted;
     }
 }
