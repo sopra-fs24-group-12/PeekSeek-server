@@ -11,19 +11,32 @@ public class Lobby {
     private Long id;
     private String name;
     private String password;
-    private Integer roundDurationSeconds;
-    private String gameLocation;
+    private Integer roundDurationSeconds = 60;
+    private String gameLocation = "Zürich";
     private Integer maxParticipants = 6; //TODO: don't hardcode
+    private Integer joinedParticipants = 0;
+
     @ElementCollection
     private List<String> quests;
-    private Boolean reUsed;
+    private Boolean reUsed = false;
     private Long adminId;
     @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
 
     public void addParticipant(Participant participant) {
+        joinedParticipants += 1;
         participant.setLobby(this.getId());
         this.participants.add(participant);
+    }
+
+    public void addQuest(String quest) {
+        quests.add(quest);
+    }
+
+    public void recycleLobby() {
+        setReUsed(true);
+        setJoinedParticipants(0);
+        setAdminId(null);
     }
 
     public Long getId() {
@@ -104,5 +117,13 @@ public class Lobby {
 
     public void setAdminId(Long adminId) {
         this.adminId = adminId;
+    }
+
+    public Integer getJoinedParticipants() {
+        return joinedParticipants;
+    }
+
+    public void setJoinedParticipants(Integer joinedParticipants) {
+        this.joinedParticipants = joinedParticipants;
     }
 }

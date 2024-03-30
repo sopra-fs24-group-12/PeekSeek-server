@@ -11,13 +11,13 @@ public class Participant {
     private String username;
     @Column(nullable = false, unique = true)
     private String token;
-    private int score;
-    private int winningSubmissions;
+    private int score = 0;
+    private int winningSubmissions = 0;
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
     private List<Submission> submissions = new ArrayList<>();
-    private int streak;
-    private Boolean isAdmin;
-    private Boolean leftGame;
+    private int streak = 0;
+    private Boolean isAdmin = false;
+    private Boolean leftGame = false;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -74,7 +74,7 @@ public class Participant {
         this.streak = streak;
     }
 
-    public Boolean getAdmin() {
+    public Boolean getIsAdmin() {
         return isAdmin;
     }
 
@@ -104,5 +104,13 @@ public class Participant {
 
     public void setLobby(Long lobby) {
         this.lobby = lobby;
+    }
+
+    public Long getGame() {
+        return game;
+    }
+
+    public void setGame(Long game) {
+        this.game = game;
     }
 }

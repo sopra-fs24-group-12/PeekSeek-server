@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
     Participant findByUsername(String username);
     Participant findByToken(String token);
+
+    Participant findByUsernameAndLobby(String username, Long lobby);
 }

@@ -8,15 +8,34 @@ import java.util.List;
 public class LobbyGetDTO {
     private Long id;
     private String name;
+    private Integer maxParticipants;
+    private Integer joinedParticipants;
+    private Integer RoundDurationSeconds;
+    private String gameLocation;
+    private List<String> quests;
 
-    public List<Participant> getParticipants() {
-        return participants;
+    public List<String> getQuests() {
+        return quests;
     }
 
-    private List<Participant> participants;
+    public void setQuests(List<String> quests) {
+        this.quests = quests;
+    }
 
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
+    public Integer getRoundDurationSeconds() {
+        return RoundDurationSeconds;
+    }
+
+    public void setRoundDurationSeconds(Integer roundDurationSeconds) {
+        RoundDurationSeconds = roundDurationSeconds;
+    }
+
+    public String getGameLocation() {
+        return gameLocation;
+    }
+
+    public void setGameLocation(String gameLocation) {
+        this.gameLocation = gameLocation;
     }
 
     public Long getId() {
@@ -35,4 +54,19 @@ public class LobbyGetDTO {
         this.name = name;
     }
 
+    public Integer getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public void setMaxParticipants(Integer maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
+
+    public Integer getJoinedParticipants() {
+        return joinedParticipants;
+    }
+
+    public void setJoinedParticipants(Integer joinedParticipants) {
+        this.joinedParticipants = joinedParticipants;
+    }
 }
