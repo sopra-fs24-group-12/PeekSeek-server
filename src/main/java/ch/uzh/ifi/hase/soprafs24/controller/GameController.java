@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
@@ -26,10 +27,18 @@ public class GameController {
         return DTOMapper.INSTANCE.convertRoundToGameRoundGetDTO(currentRound,game);
     }
 
-    @PostMapping("/game/{id}/nextRound")
+    @PostMapping("/games/{id}/nextRound")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void startNextRound(@PathVariable Long id) {
         gameService.startNextRound(id);
+    }
+
+    @PostMapping("/games/{id}/submissions")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void postSubmission(@PathVariable Long id, @RequestBody SubmissionPostDTO submissionPostDTO,
+                               @RequestHeader(value = "Authorization", required = false) String token) {
+        gameService.postSubmission(id, token, submissionPostDTO);
     }
 }

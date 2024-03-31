@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.ParticipantRepository;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.SubmissionPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,6 +51,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "All rounds have been played");
         }
         game.setCurrentRound(currentRound + 1);
+        game.getRounds().get(currentRound).setRoundStatus(RoundStatus.PLAYING);
         game = gameRepository.save(game);
     }
 
@@ -80,9 +81,13 @@ public class GameService {
         submissionData.setLat(submissionPostDTO.getPitch());
         submissionData.setLng(submissionPostDTO.getLng());
         submission.setSubmissionTimeSeconds(submissionTime);
-
+        submission.setRound(round.getId());
         submission.setSubmittedLocation(submissionData);
+        submission.setParticipant(participant.getId());
+
+        round.getSubmissions().add(submission);
 
         game = gameRepository.save(game);
     }
+
 }

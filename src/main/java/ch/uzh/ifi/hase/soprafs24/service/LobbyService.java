@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
@@ -180,6 +181,7 @@ public class LobbyService {
             participant.setLobby(null);
         }
         createdGame.setParticipants(participants);
+        createdGame.getRounds().get(0).setRoundStatus(RoundStatus.PLAYING);
         lobby.getParticipants().clear();
         lobby.recycleLobby();
 

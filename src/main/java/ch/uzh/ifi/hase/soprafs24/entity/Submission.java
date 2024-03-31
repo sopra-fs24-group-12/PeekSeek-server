@@ -7,8 +7,8 @@ import java.io.Serializable;
 public class Submission {
     private Integer submissionTimeSeconds;
     private SubmissionData submittedLocation;
-    private Integer numberVotes;
-    private Integer awardedPoints;
+    private Integer numberVotes = 0;
+    private Integer awardedPoints = 0;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
