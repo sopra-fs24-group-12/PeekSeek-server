@@ -26,14 +26,17 @@ public class LobbyService {
     private final LobbyRepository lobbyRepository;
     private final ParticipantRepository participantRepository;
     private final GameRepository gameRepository;
+    private final GameService gameService;
 
     @Autowired
     public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository,
                         @Qualifier("participantRepository") ParticipantRepository participantRepository,
-                        @Qualifier("gameRepository") GameRepository gameRepository) {
+                        @Qualifier("gameRepository") GameRepository gameRepository,
+                        GameService gameService) {
         this.lobbyRepository = lobbyRepository;
         this.participantRepository = participantRepository;
         this.gameRepository = gameRepository;
+        this.gameService = gameService;
     }
 
     public Lobby createLobby(String username, String name, String password) {
@@ -160,11 +163,12 @@ public class LobbyService {
         Game createdGame = new Game();
         gameRepository.save(createdGame);
 
-        List<Round> rounds = new ArrayList<>();
+        List<Round> rounds = new ArrayList<>(quests.size());
         for (String quest : quests) {
             Round round = new Round();
             round.setQuest(quest);
             round.setRoundTime(lobby.getRoundDurationSeconds());
+            round.setRemainingSeconds(lobby.getRoundDurationSeconds());
             round.setGame(createdGame.getId());
             rounds.add(round);
         }
@@ -188,6 +192,9 @@ public class LobbyService {
         lobby = lobbyRepository.save(lobby);
         createdGame = gameRepository.save(createdGame);
         gameRepository.flush();
+
+        gameService.startTimer(createdGame.getRounds().get(0), createdGame.getId());
+
         return createdGame.getId();
     }
 

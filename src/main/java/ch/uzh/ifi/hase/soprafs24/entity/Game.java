@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs24.constant.GameStatus;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 @Entity
 public class Game {
@@ -14,7 +15,6 @@ public class Game {
     private Integer roundDurationSeconds;
     private String gameLocation;
     private Integer currentRound = 0;
-
     private Integer numberRounds;
     private Long adminId;
 
@@ -101,4 +101,6 @@ public class Game {
     public void setNumberRounds(Integer numberRounds) {
         this.numberRounds = numberRounds;
     }
+
+
 }
