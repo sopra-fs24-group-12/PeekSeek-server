@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.lang.Math;
 
 @Service
 @Transactional
@@ -134,7 +135,7 @@ public class GameService {
 
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
-        submission.setParticipant(participant.getId());
+        submission.setToken(participant.getToken());
     }
 
     private static int getSubmissionTime(Participant participant, Game game) {
@@ -152,6 +153,48 @@ public class GameService {
         }
 
         return round.getRoundTime() - round.getRemainingSeconds();
+    }
+
+    private void setWinningSubmission(Round round, List<Submission> submissions) {
+        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed());
+        Submission winningSubmission = submissions.get(0);
+        round.setWinningSubmission(winningSubmission);
+    }
+
+    private int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
+        int totalPoints = 0;
+        int timebonusPoints = 250;      // basis which is then multiplied with a factor < 1
+        int placementPoints = 250;      // basis which is then multiplied with a factor < 1
+        int votingPoints = 500;         // basis which is then multiplied with a factor < 1
+        Game game = GameRepository.getGameById(gameId);
+        Participant participant = game.getParticipants().get(submission.getToken());
+
+        timebonusPoints *= (submission.getSubmissionTimeSeconds() / round.getRoundTime()); // timebonus is 0 if submissionTime == roundTime
+        placementPoints *= ((round.getSubmissions().size() - placement) / round.getSubmissions().size()) + 0.25;    // +0.25 to avoid 0 points for the last place
+        votingPoints *= (submission.getNumberVotes() / (round.getSubmissions().size() - 1));    // -1 because the participant cannot vote for themselves
+        if(submission == round.getWinningSubmission()){          // if it is the winning submission, the voting points are multiplied by 1.5
+            votingPoints *= 1.5;
+            participant.setWinningSubmissions(participant.getWinningSubmissions() + 1);
+            participant.setStreak(participant.getStreak() + 1);
+        }
+        totalPoints = timebonusPoints + placementPoints + votingPoints;
+        int streak = participant.getStreak();
+        if(streak >= 2){          // streak bonus
+            totalPoints *= Math.pow((1 + streak * 0.1), 1.3);   // the streak bonus is calculated by the formula (1 + streak * 0.1) ^ 1.3
+        }
+        participant.setScore(participant.getScore() + totalPoints);
+        return totalPoints;
+    }
+
+    private void awardPoints(Round round, Long gameId) {
+        Map<Long, Submission> submissionsMap = round.getSubmissions();
+        List<Submission> submissions = new ArrayList<>(submissionsMap.values());
+        setWinningSubmission(round, submissions);
+        submissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds));
+        for (int i = 0; i < submissions.size(); i++) {
+            Submission submission = submissions.get(i);
+            submission.setAwardedPoints(calculatePoints(gameId, round, submission, i));
+        }
     }
 
     void startTimer(Round round, Long gameId) {
@@ -182,11 +225,13 @@ public class GameService {
     }
 
     private void startSummary(Round round, Long gameId) {
+        awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
         startTimer(round, gameId);
     }
 
     private void endRound(Round round, Long gameId) {
+        // TODO: set participants to has submitted false
         round.setRoundStatus(RoundStatus.FINISHED);
         // TODO: websocket message
         startNextRound(gameId);

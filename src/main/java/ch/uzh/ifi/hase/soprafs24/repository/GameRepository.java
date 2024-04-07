@@ -14,7 +14,6 @@ public class GameRepository {
         gameRepositoryById = new HashMap<>();
     }
 
-
     public static void addGame(Game game) {
         INSTANCE.gameRepositoryById.put(game.getId(), game);
     }

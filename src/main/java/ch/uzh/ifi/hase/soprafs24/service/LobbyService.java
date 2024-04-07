@@ -5,12 +5,15 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
+import ch.uzh.ifi.hase.soprafs24.service.APIService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,6 +36,15 @@ public class LobbyService {
 
     public List<Lobby> getAllLobbies() {
         return LobbyRepository.findAll();
+    }
+
+    public Map<String, List<String>> getAllLobbyLocationsWithCoordinates() {
+        List<Lobby> lobbies = getAllLobbies();
+        Map<String, List<String>> locationCoordinates = new HashMap<>();
+        for (Lobby lobby : lobbies) {
+            locationCoordinates.put(lobby.getGameLocation(), lobby.getGameLocationCoordinates());
+        }
+        return locationCoordinates;
     }
 
     public List<Participant> getAllParticipants(Long lobbyId, String token) {
@@ -105,7 +117,14 @@ public class LobbyService {
         }
         authorizeLobbyAdmin(lobby, token);
         if (lobbyPutDTO.getGameLocation() != null) {
+            
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
+        }
+        if(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
+            lobby.setGameLocationCoordinates(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()));
+        } else {
+            List<String> coordinates = APIService.getGameCoordinates(lobbyPutDTO.getGameLocation());
+            lobby.setGameLocationCoordinates(coordinates);
         }
         if (lobbyPutDTO.getQuests() != null) {
             lobby.setQuests(lobbyPutDTO.getQuests());
@@ -184,6 +203,13 @@ public class LobbyService {
         if (lobby.getUsernames().contains(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username already in lobby");
         }
+    }
+
+    public List<String> returnIfLocationAlreadyCalled(String location) {
+        // check if location is already in the database
+        List<String> coordinates = getAllLobbyLocationsWithCoordinates().containsKey(location) ?
+                getAllLobbyLocationsWithCoordinates().get(location) : null;
+        return coordinates;
     }
 
     public void authorizeLobbyAdmin(Lobby lobby, String token) {

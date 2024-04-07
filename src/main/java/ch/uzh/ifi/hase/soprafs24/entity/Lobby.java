@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
+
 public class Lobby {
     private Long id;
     private String name;
     private String password;
     private Integer roundDurationSeconds = 60;
     private String gameLocation = "Zürich";
+    private List<String> gameLocationCoordinates;
     private Integer maxParticipants = 6; //TODO: don't hardcode
     private Integer joinedParticipants = 0;
     private List<String> quests;
@@ -80,6 +83,14 @@ public class Lobby {
 
     public void setGameLocation(String gameLocation) {
         this.gameLocation = gameLocation;
+    }
+
+    public List<String> getGameLocationCoordinates() {
+        return gameLocationCoordinates;
+    }
+
+    public void setGameLocationCoordinates(List<String> gameLocationCoordinates) {
+        this.gameLocationCoordinates = gameLocationCoordinates;
     }
 
     public Integer getMaxParticipants() {
