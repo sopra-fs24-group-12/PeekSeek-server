@@ -53,7 +53,7 @@ public interface DTOMapper {
     @Mapping(source = "currentRound", target = "currentRound")
     @Mapping(source = "numberRounds", target = "numberRounds")
     @Mapping(source = "adminId", target = "adminId")
-    GameGetDTO convertGameToGametGetDTO(Participant participant);
+    GameGetDTO convertGameToGametGetDTO(Game game);
 
 
 
