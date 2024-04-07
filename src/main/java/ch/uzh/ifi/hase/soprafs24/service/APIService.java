@@ -11,11 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class APIService {
-  private final String apiKey;
+  //private final String apiKey;
 
-  public APIService(@Value("${api.key}") String apiKey) {
-    this.apiKey = apiKey;
-  }
+  //public APIService(@Value("${api.key}") String apiKey) {
+  //  this.apiKey = apiKey;
+  //}
 
   static List<String> coordinates_zurich = List.of("47.3768866", "8.541694"); // Zurich coordinates, used as default, if location not found
 
