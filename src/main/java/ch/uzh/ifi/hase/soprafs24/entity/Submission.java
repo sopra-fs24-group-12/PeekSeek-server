@@ -3,19 +3,14 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+
 public class Submission {
     private Integer submissionTimeSeconds;
     private SubmissionData submittedLocation;
     private Integer numberVotes = 0;
     private Integer awardedPoints = 0;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(name = "participant_id")
     private Long participant;
-    @JoinColumn(name = "round_id")
-    private Long round;
 
     public Integer getSubmissionTimeSeconds() {
         return submissionTimeSeconds;
@@ -63,13 +58,5 @@ public class Submission {
 
     public void setParticipant(Long participant) {
         this.participant = participant;
-    }
-
-    public Long getRound() {
-        return round;
-    }
-
-    public void setRound(Long round) {
-        this.round = round;
     }
 }

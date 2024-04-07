@@ -2,40 +2,31 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameStatus;
 
-import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
+import java.util.Map;
 
-@Entity
+
 public class Game {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer roundDurationSeconds;
     private String gameLocation;
-    private Integer currentRound = 0;
+    private Integer currentRound = -1;
     private Integer numberRounds;
     private Long adminId;
-
-    public GameStatus getGameStatus() {
-        return gameStatus;
-    }
-
-    public void setGameStatus(GameStatus gameStatus) {
-        this.gameStatus = gameStatus;
-    }
-
     private GameStatus gameStatus = GameStatus.RUNNING;
-
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private List<Round> rounds = new ArrayList<>();
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<Participant> participants = new ArrayList<>();
+    private Map<String, Participant> participants = new HashMap<>();
+    private static Long id_count = 1L;
+    public static Long rounds_count = 1L;
 
-    public void addRound(Round round) {
-        round.setGame(id);
-        rounds.add(round);
+    public Game() {
+        this.id = id_count++;
+    }
+
+    public Participant getParticipantByToken(String token) {
+        return participants.get(token);
     }
 
     public Long getId() {
@@ -70,12 +61,28 @@ public class Game {
         this.currentRound = currentRound;
     }
 
+    public Integer getNumberRounds() {
+        return numberRounds;
+    }
+
+    public void setNumberRounds(Integer numberRounds) {
+        this.numberRounds = numberRounds;
+    }
+
     public Long getAdminId() {
         return adminId;
     }
 
     public void setAdminId(Long adminId) {
         this.adminId = adminId;
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
     public List<Round> getRounds() {
@@ -86,21 +93,11 @@ public class Game {
         this.rounds = rounds;
     }
 
-    public List<Participant> getParticipants() {
+    public Map<String, Participant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<Participant> participants) {
+    public void setParticipants(Map<String, Participant> participants) {
         this.participants = participants;
     }
-
-    public Integer getNumberRounds() {
-        return numberRounds;
-    }
-
-    public void setNumberRounds(Integer numberRounds) {
-        this.numberRounds = numberRounds;
-    }
-
-
 }

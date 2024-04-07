@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.GameStartedDTO;
@@ -22,24 +23,23 @@ import java.util.List;
 public class LobbyController {
     private final WebsocketService websocketService;
     private final LobbyService lobbyService;
+    private final GameService gameService;
 
-    LobbyController(LobbyService lobbyService, WebsocketService websocketService) {
+    LobbyController(LobbyService lobbyService, WebsocketService websocketService, GameService gameService) {
         this.lobbyService = lobbyService;
         this.websocketService = websocketService;
+        this.gameService = gameService;
     }
 
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseEntity<LobbyGetDTO> createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
+    public void createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
                                                    HttpServletResponse response) {
-        Lobby createdLobby = lobbyService
-                .createLobby(lobbyPostDTO.getUsername(), lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
-        Participant admin = lobbyService.getParticipantById(createdLobby.getAdminId());
+        Long id = lobbyService.createLobby(lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
+        String token = lobbyService.joinLobby(id, lobbyPostDTO.getUsername(), lobbyPostDTO.getPassword());
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
-        response.setHeader("Authorization", admin.getToken());
-        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(createdLobby);
-        return ResponseEntity.ok().body(lobbyGetDTO);
+        response.setHeader("Authorization", token);
     }
 
     @GetMapping("/lobbies")
@@ -112,8 +112,8 @@ public class LobbyController {
     @ResponseBody
     public void startGame(@PathVariable Long id,
                           @RequestHeader(value = "Authorization", required = false) String token) {
-        Long gameId = lobbyService.startGame(id, token);
-        websocketService.sendMessage("/topic/lobby/" + id,
-                new GameStartedDTO(gameId));
+        Lobby lobby = lobbyService.getSpecificLobby(id);
+        Long gameId = gameService.startGame(lobby);
+        websocketService.sendMessage("/topic/lobby/" + id, new GameStartedDTO(gameId));
     }
 }

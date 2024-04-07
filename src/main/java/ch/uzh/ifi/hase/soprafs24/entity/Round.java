@@ -4,24 +4,19 @@ import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Entity
 public class Round {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String quest;
     private int roundTime;
     private int remainingSeconds;
     private RoundStatus roundStatus = RoundStatus.PREPARED;
-    @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
-    private List<Submission> submissions = new ArrayList<>();
-    @OneToOne
-    @JoinColumn(name = "winning_submission_id")
+    private Map<Long, Submission> submissions = new HashMap<>();
     private Submission winningSubmission;
-    @JoinColumn(name = "game_id")
-    private Long game;
+    public static Long submissionCount = 1L;
 
     public Long getId() {
         return id;
@@ -47,6 +42,14 @@ public class Round {
         this.roundTime = roundTime;
     }
 
+    public int getRemainingSeconds() {
+        return remainingSeconds;
+    }
+
+    public void setRemainingSeconds(int remainingSeconds) {
+        this.remainingSeconds = remainingSeconds;
+    }
+
     public RoundStatus getRoundStatus() {
         return roundStatus;
     }
@@ -55,11 +58,11 @@ public class Round {
         this.roundStatus = roundStatus;
     }
 
-    public List<Submission> getSubmissions() {
+    public Map<Long, Submission> getSubmissions() {
         return submissions;
     }
 
-    public void setSubmissions(List<Submission> submissions) {
+    public void setSubmissions(Map<Long, Submission> submissions) {
         this.submissions = submissions;
     }
 
@@ -71,20 +74,11 @@ public class Round {
         this.winningSubmission = winningSubmission;
     }
 
-    public Long getGame() {
-        return game;
+    public static Long getSubmissionCount() {
+        return submissionCount;
     }
 
-    public void setGame(Long game) {
-        this.game = game;
+    public static void setSubmissionCount(Long submissionCount) {
+        Round.submissionCount = submissionCount;
     }
-
-    public int getRemainingSeconds() {
-        return remainingSeconds;
-    }
-
-    public void setRemainingSeconds(int remainingSeconds) {
-        this.remainingSeconds = remainingSeconds;
-    }
-
 }

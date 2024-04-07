@@ -1,13 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Entity
 public class Lobby {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String password;
@@ -15,28 +13,33 @@ public class Lobby {
     private String gameLocation = "Zürich";
     private Integer maxParticipants = 6; //TODO: don't hardcode
     private Integer joinedParticipants = 0;
-
-    @ElementCollection
     private List<String> quests;
     private Boolean reUsed = false;
     private Long adminId;
-    @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
-    private List<Participant> participants = new ArrayList<>();
+    private Map<String, Participant> participants = new HashMap<>();
+    private List<String> usernames = new ArrayList<>();
+    private static Long id_count = 1L;
+
+    public Lobby() {
+        this.id = id_count++;
+    }
 
     public void addParticipant(Participant participant) {
-        joinedParticipants += 1;
-        participant.setLobby(this.getId());
-        this.participants.add(participant);
+        String token = participant.getToken();
+        usernames.add(participant.getUsername());
+        participants.put(token, participant);
+        joinedParticipants++;
     }
 
-    public void addQuest(String quest) {
-        quests.add(quest);
+    public void removeParticipant(String token) {
+        String username = participants.get(token).getUsername();
+        participants.remove(token);
+        usernames.remove(username);
+        joinedParticipants--;
     }
 
-    public void recycleLobby() {
-        setReUsed(true);
-        setJoinedParticipants(0);
-        setAdminId(null);
+    public Participant getParticipantByToken(String token) {
+        return participants.get(token);
     }
 
     public Long getId() {
@@ -87,6 +90,14 @@ public class Lobby {
         this.maxParticipants = maxParticipants;
     }
 
+    public Integer getJoinedParticipants() {
+        return joinedParticipants;
+    }
+
+    public void setJoinedParticipants(Integer joinedParticipants) {
+        this.joinedParticipants = joinedParticipants;
+    }
+
     public List<String> getQuests() {
         return quests;
     }
@@ -103,14 +114,6 @@ public class Lobby {
         this.reUsed = reUsed;
     }
 
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
-    }
-
     public Long getAdminId() {
         return adminId;
     }
@@ -119,11 +122,19 @@ public class Lobby {
         this.adminId = adminId;
     }
 
-    public Integer getJoinedParticipants() {
-        return joinedParticipants;
+    public Map<String, Participant> getParticipants() {
+        return participants;
     }
 
-    public void setJoinedParticipants(Integer joinedParticipants) {
-        this.joinedParticipants = joinedParticipants;
+    public void setParticipants(Map<String, Participant> participants) {
+        this.participants = participants;
+    }
+
+    public List<String> getUsernames() {
+        return usernames;
+    }
+
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
     }
 }
