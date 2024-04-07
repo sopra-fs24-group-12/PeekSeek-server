@@ -35,7 +35,7 @@ public interface DTOMapper {
     LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "isAdmin", target = "admin")
+    @Mapping(source = "admin", target = "admin")
     @Mapping(source = "score", target = "score")
     @Mapping(source = "streak", target = "streak")
     @Mapping(source = "username", target = "username")
@@ -45,6 +45,8 @@ public interface DTOMapper {
     @Mapping(source = "round.quest", target = "quest")
     @Mapping(source = "game.currentRound", target = "currentRound")
     @Mapping(source = "game.numberRounds", target = "numberRounds")
+    @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
+    @Mapping(source = "round.roundStatus", target = "roundStatus")
     GameRoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
     @Mapping(source = "id", target = "id")
