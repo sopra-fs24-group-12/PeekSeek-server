@@ -8,9 +8,11 @@ public class Submission {
     private Integer submissionTimeSeconds;
     private SubmissionData submittedLocation;
     private Integer numberVotes = 0;
+    private Integer numberBanVotes = 0;
     private Integer awardedPoints = 0;
     private Long id;
-    private Long participant;
+    private String token;
+    private boolean noSubmission = false;
 
     public Integer getSubmissionTimeSeconds() {
         return submissionTimeSeconds;
@@ -36,6 +38,14 @@ public class Submission {
         this.numberVotes = numberVotes;
     }
 
+    public Integer getNumberBanVotes() {
+        return numberBanVotes;
+    }
+
+    public void setNumberBanVotes(Integer numberBanVotes) {
+        this.numberBanVotes = numberBanVotes;
+    }
+
     public Integer getAwardedPoints() {
         return awardedPoints;
     }
@@ -52,11 +62,19 @@ public class Submission {
         this.id = id;
     }
 
-    public Long getParticipant() {
-        return participant;
+    public String getToken() {
+        return token;
     }
 
-    public void setParticipant(Long participant) {
-        this.participant = participant;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public boolean getNoSubmission() {
+        return noSubmission;
+    }
+
+    public void setNoSubmission(boolean noSubmission) {
+        this.noSubmission = noSubmission;
     }
 }

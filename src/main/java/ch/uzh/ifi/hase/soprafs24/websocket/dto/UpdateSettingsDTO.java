@@ -6,12 +6,15 @@ public class UpdateSettingsDTO {
     private String status = "update";
     private String gameLocation;
     private Integer roundDurationSeconds;
+    private List<String> gameLocationCoordinates;
     private List<String> quests;
 
-    public UpdateSettingsDTO(String gameLocation, Integer roundDurationSeconds, List<String> quests) {
+    public UpdateSettingsDTO(String gameLocation, Integer roundDurationSeconds, List<String> gameLocationCoordinates, List<String> quests) {
         this.gameLocation = gameLocation;
         this.roundDurationSeconds = roundDurationSeconds;
+        this.gameLocationCoordinates = gameLocationCoordinates;
         this.quests = quests;
+        
     }
 
     public String getStatus() {
@@ -36,6 +39,14 @@ public class UpdateSettingsDTO {
 
     public void setRoundDurationSeconds(Integer roundDurationSeconds) {
         this.roundDurationSeconds = roundDurationSeconds;
+    }
+
+    public List<String> getGameLocationCoordinates() {
+        return gameLocationCoordinates;
+    }
+
+    public void setGameLocationCoordinates(List<String> gameLocationCoordinates) {
+        this.gameLocationCoordinates = gameLocationCoordinates;
     }
 
     public List<String> getQuests() {

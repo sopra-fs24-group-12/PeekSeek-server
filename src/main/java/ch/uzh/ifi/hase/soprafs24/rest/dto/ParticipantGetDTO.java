@@ -37,7 +37,7 @@ public class ParticipantGetDTO {
     }
 
     public void setAdmin(Boolean admin) {
-        admin = admin;
+        this.admin = admin;
     }
 
     public Boolean getLeftGame() {

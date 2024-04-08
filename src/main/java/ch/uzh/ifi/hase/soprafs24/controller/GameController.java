@@ -34,7 +34,7 @@ public class GameController {
         gameService.startNextRound(id);
     }
 
-    @PostMapping("/games/{id}/submissions")
+    @PostMapping("/games/{id}/submission")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void postSubmission(@PathVariable Long id, @RequestBody SubmissionPostDTO submissionPostDTO,

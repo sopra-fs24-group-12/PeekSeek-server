@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs24.service.APIService;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
@@ -104,7 +105,7 @@ public class LobbyController {
                                     @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
         websocketService.sendMessage("/topic/lobby/" + id,
-                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getQuests()));
+                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getGameLocationCoordinates(), lobby.getQuests()));
     }
 
     @PostMapping("/lobbies/{id}/start")

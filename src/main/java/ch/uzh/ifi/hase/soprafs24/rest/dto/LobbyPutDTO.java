@@ -6,6 +6,7 @@ public class LobbyPutDTO {
     private Integer roundDurationSeconds;
     private List<String> quests;
     private String gameLocation;
+    private List<String> gameLocationCoordinates;
 
     public Integer getRoundDurationSeconds() {
         return roundDurationSeconds;
@@ -29,5 +30,13 @@ public class LobbyPutDTO {
 
     public void setGameLocation(String gameLocation) {
         this.gameLocation = gameLocation;
+    }
+
+    public List<String> getGameLocationCoordinates() {
+        return gameLocationCoordinates;
+    }
+
+    public void setGameLocationCoordinates(List<String> gameLocationCoordinates) {
+        this.gameLocationCoordinates = gameLocationCoordinates;
     }
 }
