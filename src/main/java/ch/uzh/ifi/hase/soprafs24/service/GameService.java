@@ -44,7 +44,7 @@ public class GameService {
         return game;
     }
 
-    public List<Participant> getLeaderboard(Long gameId) {
+    public List<Participant> getLeaderboard(Long gameId) {  // get a list of all participants sorted by score
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
