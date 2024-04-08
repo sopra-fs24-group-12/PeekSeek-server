@@ -23,10 +23,30 @@ Record of contributions made to the project and the corresponding GitHub commit 
   - [Leave lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/8954e0ed533dfd0276d7251d03ff7f75ee848602)
   - [Start game](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/215720e1500dbdc0812f09be584d36daa473e0bf)
 ### Silvan
-
+- [x] Setup NextUI on Client-Template
+- [x] Create UI for Game Submission Rating
+- [x] Create UI for Voting Results
+- [x] Create UI for Timer
+- [x] Create UI for Leaderboard
+- [x] Create UI for Submission Card and Winning Card
+- [x] Create Basic Skeleton for Chat
 ### Ece
 
 ### Nils
+- Added voting, getLeaderboard endpoint
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/961f6f84f55eeeac138adff3ebf91f31172ad4b7)
+- Added APIService for GeoCoding-api
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/9da6b21bdfb0db5b843663188893d352e8de432a)
+- Added functionality to determine winningSubmission, calulatePoints, awardPoints
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/9da6b21bdfb0db5b843663188893d352e8de432a)
+- Changed lobbyService to check DB whether an api request to geoCoding api has already been made
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/9da6b21bdfb0db5b843663188893d352e8de432a)
+- Addded getSubmissions, getWinningSubmissions endpoint
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
+- Added SubmissionGetDTO and VotingPostDTO (also in DTOMapper)
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
+- Added getLeaderboard, postVoting functionality in GameService
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
 
 ### Youssef
 
@@ -71,33 +91,3 @@ Record of contributions made to the project and the corresponding GitHub commit 
 ### Nils
 
 ### Youssef
-
-
-
-
-
-
-
-
-=======
-# Contributions File
-
-Development Tasks done by week and member.
-
----
-## 26.03.-09.04.
-
-### Frontend:
-#### Silvan Schlegel
-- [x] Setup NextUI on Client-Template
-- [x] Create UI for Game Submission Rating
-- [x] Create UI for Voting Results
-- [x] Create UI for Timer
-- [x] Create UI for Leaderboard
-- [x] Create UI for Submission Card and Winning Card
-- [x] Create Basic Skeleton for Chat
-
-### Backend:
-
----
-
