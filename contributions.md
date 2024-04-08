@@ -5,7 +5,7 @@ Record of contributions made to the project and the corresponding GitHub commit 
 
 ---
 
-## Week 1: [25.03. - 31.03]
+## Week 1, 2 (Easter Break): [26.03. - 09.04]
 
 ### Georg
 - Basic file setup
@@ -60,7 +60,7 @@ Record of contributions made to the project and the corresponding GitHub commit 
 
 ---
 
-## Week 2, 3: [01.04. - 14.04]
+## Week 3: [09.04. - 16.04]
 
 ### Georg
 
@@ -74,7 +74,7 @@ Record of contributions made to the project and the corresponding GitHub commit 
 
 ---
 
-## Week 4: [15.04. - 21.04]
+## Week 4: [16.04. - 23.04]
 
 ### Georg
 
@@ -88,7 +88,7 @@ Record of contributions made to the project and the corresponding GitHub commit 
 
 ---
 
-## Week 5: [22.04. - 28.04]
+## Week 5: [23.04. - 30.04]
 
 ### Georg
 
@@ -98,9 +98,5 @@ Record of contributions made to the project and the corresponding GitHub commit 
 
 ### Nils
 
-<<<<<<< HEAD
-### Youssef
-=======
 ### Youssef
 
->>>>>>> 35b32e033ac780d97c74659f48627045542f022e
