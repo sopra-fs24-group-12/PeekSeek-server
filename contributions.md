@@ -57,7 +57,22 @@ Record of contributions made to the project and the corresponding GitHub commit 
   - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
 
 ### Youssef
-
+- Added Submission
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/00111046ad1aa61645ca1dd6926f6b6ea3759c3c)
+- Added SubmissionData
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/a9b50ad612288c799d9683b3ff3fd0f03d22b08c)
+- Added functionality to determine all participants sorted by their scores for leaderboard
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
+- Added get leaderboard as enpoint
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
+- Addded LeaderboardGetDTO
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
+- Assigned these issues to myself and worked on them partly, Nils worked also on these issues but did not see that I assigned them to myself, he finished earlier and pushed his part
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
+- Added getLeaderboard, in GameService as well as corresponding endpoint and DTO
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
+- Added GameGetDTO
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/38e23e74556503eb327e7b820411abf22a34564b)
 ---
 
 ## Week 3: [09.04. - 16.04]
