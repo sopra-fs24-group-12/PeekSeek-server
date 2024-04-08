@@ -6,6 +6,8 @@ import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,17 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
         return game;
+    }
+
+    public List<Participant> getLeaderboard(Long gameId) {
+        Game game = GameRepository.getGameById(gameId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
+        }
+
+        List<Participant> participants = new ArrayList<>(game.getParticipants().values());
+        participants.sort(Comparator.comparing(Participant::getScore).reversed()); //TODO: Check in which direction it sorts
+        return participants;
     }
 
     public Long startGame(Lobby lobby) {
@@ -138,6 +151,34 @@ public class GameService {
         submission.setToken(participant.getToken());
     }
 
+    public void postVoting(Long gameId, String token, VotingPostDTO votingPostDTO) {
+        Game game = GameRepository.getGameById(gameId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
+        }
+
+        Round round = game.getRounds().get(game.getCurrentRound());
+        if (round.getRoundStatus() != RoundStatus.VOTING) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the voting phase");
+        }
+
+        Participant participant = game.getParticipantByToken(token);
+        for(Long submissionId : votingPostDTO.getVotes().keySet()){
+            Submission submission = round.getSubmissions().get(submissionId);
+            if (submission == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The submission with this ID does not exist");
+            }
+            if (submission.getToken().equals(participant.getToken())) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot vote for your own submission");
+            }
+            if (votingPostDTO.getVotes().get(submissionId) == "winner") {
+                submission.setNumberVotes(submission.getNumberVotes() + 1);
+            } else if (votingPostDTO.getVotes().get(submissionId) == "ban"){
+                submission.setNumberBanVotes(submission.getNumberBanVotes() + 1);
+            }
+        }
+    }
+
     private static int getSubmissionTime(Participant participant, Game game) {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
@@ -156,9 +197,18 @@ public class GameService {
     }
 
     private void setWinningSubmission(Round round, List<Submission> submissions) {
-        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed());
+        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); // sort submissions by number of votes
         Submission winningSubmission = submissions.get(0);
-        round.setWinningSubmission(winningSubmission);
+        List<Submission> winningSubmissions = new ArrayList<>();
+        if(submissions.size() > 1){
+            for(Submission submission : submissions){
+                if(submission.getNumberVotes() == winningSubmission.getNumberVotes()){
+                    winningSubmissions.add(submission);
+                }
+            }
+        winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds).reversed());
+        }
+        round.setWinningSubmission(winningSubmissions.get(0));
     }
 
     private int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
@@ -169,6 +219,13 @@ public class GameService {
         Game game = GameRepository.getGameById(gameId);
         Participant participant = game.getParticipants().get(submission.getToken());
 
+        if(submission.getNoSubmission()){   // if the participant clicked "Can`t find that", they get 0 points
+            return 0;
+        }
+        if(submission.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2){   // if the submission has more than half of the votes to be banned, they get 0 points
+            return 0;
+        }
+
         timebonusPoints *= (submission.getSubmissionTimeSeconds() / round.getRoundTime()); // timebonus is 0 if submissionTime == roundTime
         placementPoints *= ((round.getSubmissions().size() - placement) / round.getSubmissions().size()) + 0.25;    // +0.25 to avoid 0 points for the last place
         votingPoints *= (submission.getNumberVotes() / (round.getSubmissions().size() - 1));    // -1 because the participant cannot vote for themselves
@@ -176,6 +233,8 @@ public class GameService {
             votingPoints *= 1.5;
             participant.setWinningSubmissions(participant.getWinningSubmissions() + 1);
             participant.setStreak(participant.getStreak() + 1);
+        } else {
+            participant.setStreak(0);
         }
         totalPoints = timebonusPoints + placementPoints + votingPoints;
         int streak = participant.getStreak();
@@ -231,7 +290,6 @@ public class GameService {
     }
 
     private void endRound(Round round, Long gameId) {
-        // TODO: set participants to has submitted false
         round.setRoundStatus(RoundStatus.FINISHED);
         // TODO: websocket message
         startNextRound(gameId);

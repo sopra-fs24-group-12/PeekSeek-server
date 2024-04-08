@@ -17,6 +17,7 @@ public class Participant {
     private Boolean isAdmin = false;
     private Boolean leftGame = false;
     private Boolean hasSubmitted = false;
+    private boolean hasVoted = false;
     private static Long id_count = 1L;
 
     public Participant() {
@@ -101,5 +102,13 @@ public class Participant {
 
     public void setHasSubmitted(Boolean hasSubmitted) {
         this.hasSubmitted = hasSubmitted;
+    }
+
+    public boolean getHasVoted() {
+        return hasVoted;
+    }
+
+    public void setHasVoted(boolean hasVoted) {
+        this.hasVoted = hasVoted;
     }
 }
