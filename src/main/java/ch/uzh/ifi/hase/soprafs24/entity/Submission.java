@@ -13,6 +13,7 @@ public class Submission {
     private Long id;
     private String token;
     private boolean noSubmission = false;
+    private byte[] image;
 
     public Integer getSubmissionTimeSeconds() {
         return submissionTimeSeconds;
@@ -76,5 +77,13 @@ public class Submission {
 
     public void setNoSubmission(boolean noSubmission) {
         this.noSubmission = noSubmission;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

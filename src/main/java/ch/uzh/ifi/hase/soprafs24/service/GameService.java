@@ -1,8 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
+import ch.uzh.ifi.hase.soprafs24.google.StreetviewImageDownloader;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.*;
 import java.lang.Math;
 
@@ -115,7 +116,7 @@ public class GameService {
         startTimer(round, gameId);
     }
 
-    public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) {
+    public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) throws IOException {
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
@@ -133,6 +134,9 @@ public class GameService {
         submissionData.setLat(submissionPostDTO.getPitch());
         submissionData.setLng(submissionPostDTO.getLng());
 
+        byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
+
+        submission.setImage(image);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
