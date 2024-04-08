@@ -17,8 +17,8 @@ public class GameGetDTO {
     private Integer numberRounds;
     private Long adminId;
 
-    private List<Round> rounds = new ArrayList<>();
-    private List<Participant> participants = new ArrayList<>();
+    //private List<Round> rounds = new ArrayList<>();
+    //private List<Participant> participants = new ArrayList<>();
 
 
     public Long getId() {
@@ -61,6 +61,7 @@ public class GameGetDTO {
         this.adminId = adminId;
     }
 
+    /*
     public List<Round> getRounds() {
         return rounds;
     }
@@ -76,6 +77,8 @@ public class GameGetDTO {
     public void setParticipants(List<Participant> participants) {
         this.participants = participants;
     }
+
+     */
 
     public Integer getNumberRounds() {
         return numberRounds;

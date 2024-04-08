@@ -5,9 +5,14 @@ import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.google.StreetviewImageDownloader;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
+<<<<<<< Updated upstream
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 
+=======
+import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+>>>>>>> Stashed changes
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -307,11 +312,42 @@ public class GameService {
         RoundStatus status = round.getRoundStatus();
         if (status == RoundStatus.PLAYING) {
             startVoting(round, gameId);
-        } else if (status == RoundStatus.VOTING) {
+        }
+        else if (status == RoundStatus.VOTING) {
             startSummary(round, gameId);
-        } else if (status == RoundStatus.SUMMARY) {
+        }
+        else if (status == RoundStatus.SUMMARY) {
             endRound(round, gameId);
         }
     }
+    public List<Participant> getLeaderboard(Long id, Game game){
+        List<Participant> leaderboard = new ArrayList<>();
 
+        for (int i = 0; i < game.getParticipants().size(); i++) {
+            leaderboard.add(game.getParticipants().get(i));
+        }
+        leaderboard.sort(Comparator.comparing(Participant::getScore));
+        /*
+        for (int i = 0; i < game.getParticipants().size(); i++) {
+            Participant participant;
+            participant = game.getParticipants().get(i);
+            LeaderboardGetDTO leaderboardGetDTO = new LeaderboardGetDTO();
+            leaderboardGetDTO.setId(participant.getId());
+            leaderboardGetDTO.setUsername(participant.getUsername());
+            leaderboardGetDTO.setScore(participant.getScore());
+            leaderboardGetDTO.setStreak(participant.getStreak());
+            leaderboardGetDTO.setPosition(0);
+            leaderboard.add(leaderboardGetDTO);
+        }
+        leaderboard.sort(Comparator.comparing(LeaderboardGetDTO::getScore));
+        //game.getParticipants().sort(Comparator.comparing(Participant::getScore));
+        for (int i = 1; i < leaderboard.size()+1; i++) {
+            leaderboard.get(i).setPosition(i);
+
+        }*/
+
+        return leaderboard;
+
+
+    }
 }

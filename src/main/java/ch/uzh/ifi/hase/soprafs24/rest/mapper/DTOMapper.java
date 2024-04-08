@@ -5,12 +5,16 @@ import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
+<<<<<<< Updated upstream
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
+=======
+import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
+>>>>>>> Stashed changes
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -52,6 +56,7 @@ public interface DTOMapper {
     GameRoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
     @Mapping(source = "id", target = "id")
+    //@Mapping(source = "participants", target = "participants")
     @Mapping(source = "roundDurationSeconds", target = "roundDurationSeconds")
     @Mapping(source = "gameLocation", target = "gameLocation")
     @Mapping(source = "currentRound", target = "currentRound")
@@ -59,6 +64,7 @@ public interface DTOMapper {
     @Mapping(source = "adminId", target = "adminId")
     GameGetDTO convertGameToGameGetDTO(Game game);
 
+<<<<<<< Updated upstream
     @Mapping(source = "id", target = "id")
     @Mapping(source = "submissionTimeSeconds", target = "submissionTimeSeconds")
     @Mapping(source = "submissionLocation", target = "submissionLocation")
@@ -66,4 +72,15 @@ public interface DTOMapper {
     @Mapping(source = "numberBanVotes", target = "numberBanVotes")
     @Mapping(source = "awardedPoints", target = "awardedPoints")
     SubmissionGetDTO convertSubmissionToSubmissionGetDTO(Submission submission);
+=======
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "score", target = "score")
+    @Mapping(source = "streak", target = "streak")
+    //@Mapping(source = "position", target = "position")
+    @Mapping(source = "id", target = "id")
+    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);
+
+
+
+>>>>>>> Stashed changes
 }
