@@ -11,6 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class APIService {
+  private final String apiKey;
+
+  public APIService(@Value("${api.key}") String apiKey) {
+    this.apiKey = apiKey;
+  }
   //private final String apiKey;
 
   //public APIService(@Value("${api.key}") String apiKey) {
