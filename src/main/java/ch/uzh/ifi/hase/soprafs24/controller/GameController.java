@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,8 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void postSubmission(@PathVariable Long id, @RequestBody SubmissionPostDTO submissionPostDTO,
-                               @RequestHeader(value = "Authorization", required = false) String token) {
+                               @RequestHeader(value = "Authorization", required = false)
+                               String token) throws IOException {
         gameService.postSubmission(id, token, submissionPostDTO);
     }
     @PostMapping("/games/{id}/voting")
