@@ -52,7 +52,7 @@ public class GameService {
         }
 
         List<Participant> participants = new ArrayList<>(game.getParticipants().values());
-        participants.sort(Comparator.comparing(Participant::getScore).reversed()); //TODO: Check in which direction it sorts
+        participants.sort(Comparator.comparing(Participant::getScore).reversed()); //TODO: Check in which  direction it sorts
         return participants;
     }
 
