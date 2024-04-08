@@ -1,8 +1,14 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
+
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Participant;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -20,15 +26,38 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "username", target = "username")
-  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "maxParticipants", target = "maxParticipants")
+    @Mapping(source = "joinedParticipants", target = "joinedParticipants")
+    LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "status", target = "status")
-  UserGetDTO convertEntityToUserGetDTO(User user);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "admin", target = "admin")
+    @Mapping(source = "score", target = "score")
+    @Mapping(source = "streak", target = "streak")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "leftGame", target = "leftGame")
+    ParticipantGetDTO convertParticipantToParticipantGetDTO(Participant participant);
+
+    @Mapping(source = "round.quest", target = "quest")
+    @Mapping(source = "game.currentRound", target = "currentRound")
+    @Mapping(source = "game.numberRounds", target = "numberRounds")
+    @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
+    @Mapping(source = "round.roundStatus", target = "roundStatus")
+    GameRoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "roundDurationSeconds", target = "roundDurationSeconds")
+    @Mapping(source = "gameLocation", target = "gameLocation")
+    @Mapping(source = "currentRound", target = "currentRound")
+    @Mapping(source = "numberRounds", target = "numberRounds")
+    @Mapping(source = "adminId", target = "adminId")
+    GameGetDTO convertGameToGameGetDTO(Game game);
+
+
+
+
 }
