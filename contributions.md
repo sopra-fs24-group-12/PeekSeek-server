@@ -23,13 +23,13 @@ Record of contributions made to the project and the corresponding GitHub commit 
   - [Leave lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/8954e0ed533dfd0276d7251d03ff7f75ee848602)
   - [Start game](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/215720e1500dbdc0812f09be584d36daa473e0bf)
 ### Silvan
-- [x] Setup NextUI on Client-Template
-- [x] Create UI for Game Submission Rating
-- [x] Create UI for Voting Results
-- [x] Create UI for Timer
-- [x] Create UI for Leaderboard
-- [x] Create UI for Submission Card and Winning Card
-- [x] Create Basic Skeleton for Chat
+- [x] Setup NextUI on Client-Template [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0dacd8129b46d9d4e339bc3f94ab6557591cb22a)
+- [x] Create UI for Game Submission Rating [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
+- [x] Create UI for Voting Results [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/87db439b047ae26792263d5e8a5e18a35ac4ba8a)
+- [x] Create UI for Timer [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/87db439b047ae26792263d5e8a5e18a35ac4ba8a)
+- [x] Create UI for Leaderboard [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/ca9cb1bb0a02b245133647f891bfe00adf8138b4)
+- [x] Create UI for Submission Card and Winning Card [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
+- [x] Create Basic Skeleton for Chat [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
 ### Ece
 
 ### Nils
@@ -90,4 +90,9 @@ Record of contributions made to the project and the corresponding GitHub commit 
 
 ### Nils
 
+<<<<<<< HEAD
 ### Youssef
+=======
+### Youssef
+
+>>>>>>> 35b32e033ac780d97c74659f48627045542f022e
