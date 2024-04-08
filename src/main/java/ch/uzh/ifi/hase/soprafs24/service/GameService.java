@@ -136,6 +136,9 @@ public class GameService {
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
+
+        Round currentRound = game.getRounds().get(game.getCurrentRound());
+        currentRound.addSubmission(submission);
     }
 
     private static int getSubmissionTime(Participant participant, Game game) {

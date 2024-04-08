@@ -18,6 +18,10 @@ public class Round {
     private Submission winningSubmission;
     public static Long submissionCount = 1L;
 
+    public void addSubmission(Submission submission) {
+        submissions.put(submission.getId(), submission);
+    }
+
     public Long getId() {
         return id;
     }
