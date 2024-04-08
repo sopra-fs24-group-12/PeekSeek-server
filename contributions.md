@@ -67,12 +67,16 @@ Record of contributions made to the project and the corresponding GitHub commit 
   - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
 - Addded LeaderboardGetDTO
   - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
-- Assigned these issues to myself and worked on them partly, Nils worked also on these issues but did not see that I assigned them to myself, he finished earlier and pushed his part (voting and winingSubmission endpoint)
+- Assigned these issues to myself and worked on them partly, Nils worked also on these issues but did not see that I assigned them to myself, he finished earlier and pushed his part (voting and winingSubmission endpoint) 
   - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
 - Added getLeaderboard, in GameService as well as corresponding endpoint and DTO
   - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
 - Added GameGetDTO
   - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/38e23e74556503eb327e7b820411abf22a34564b)
+- Main structure of winningSubmission implemented
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/fc473f71a8748548cc5ada37a1049843c651a285)
+
+  
 ---
 
 ## Week 3: [09.04. - 16.04]
