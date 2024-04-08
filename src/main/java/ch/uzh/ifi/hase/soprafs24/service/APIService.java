@@ -16,6 +16,11 @@ public class APIService {
   public APIService(@Value("${api.key}") String apiKey) {
     this.apiKey = apiKey;
   }
+  //private final String apiKey;
+
+  //public APIService(@Value("${api.key}") String apiKey) {
+  //  this.apiKey = apiKey;
+  //}
 
   static List<String> coordinates_zurich = List.of("47.3768866", "8.541694"); // Zurich coordinates, used as default, if location not found
 

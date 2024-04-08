@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
@@ -47,6 +48,16 @@ public interface DTOMapper {
     @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
     @Mapping(source = "round.roundStatus", target = "roundStatus")
     GameRoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "roundDurationSeconds", target = "roundDurationSeconds")
+    @Mapping(source = "gameLocation", target = "gameLocation")
+    @Mapping(source = "currentRound", target = "currentRound")
+    @Mapping(source = "numberRounds", target = "numberRounds")
+    @Mapping(source = "adminId", target = "adminId")
+    GameGetDTO convertGameToGameGetDTO(Game game);
+
+
 
 
 }
