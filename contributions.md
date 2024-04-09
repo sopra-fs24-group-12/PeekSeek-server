@@ -1,7 +1,7 @@
 
 # Contribution History
 
-Record of contributions made to the project and the corresponding GitHub commit links.
+Record of contributions made to the project and corresponding tasks
 
 ---
 
