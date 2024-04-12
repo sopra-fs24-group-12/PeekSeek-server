@@ -4,15 +4,10 @@ import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.google.StreetviewImageDownloader;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
-
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
-<<<<<<< Updated upstream
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 
-=======
-import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
->>>>>>> Stashed changes
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +17,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.*;
 import java.lang.Math;
+
+//TODO: Handle case with less than 3 participants remaining
+//TODO: authorize participants/admin
+//TODO: submit current location of player if not submitted
+//TODO: Streetview Static API
+
 
 @Service
 @Transactional
@@ -50,6 +51,7 @@ public class GameService {
         return game;
     }
 
+    // TODO: adjust participant class to include distribution of points and adjust DTO
     public List<Participant> getLeaderboard(Long gameId) {  // get a list of all participants sorted by score
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
@@ -61,6 +63,7 @@ public class GameService {
         return participants;
     }
 
+    // TODO: reset lobby for reuse
     public Long startGame(Lobby lobby) {
         if (lobby.getJoinedParticipants() < 3) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
@@ -122,6 +125,8 @@ public class GameService {
 
         Integer currentRoundIdx = game.getCurrentRound();
         Integer numberRounds = game.getNumberRounds();
+
+        // TODO: correctly handle game over
         if (currentRoundIdx == numberRounds - 1) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "All rounds have been played");
         }
@@ -140,6 +145,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
 
+        // TODO: check if participant submitted
         Participant participant = game.getParticipantByToken(token);
         int submissionTime = getSubmissionTime(participant, game);
 
@@ -178,15 +184,16 @@ public class GameService {
         Participant participant = game.getParticipantByToken(token);
         for(Long submissionId : votingPostDTO.getVotes().keySet()){
             Submission submission = round.getSubmissions().get(submissionId);
+            // TODO: change code if automatic submission implemented
             if (submission == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The submission with this ID does not exist");
             }
             if (submission.getToken().equals(participant.getToken())) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot vote for your own submission");
             }
-            if (votingPostDTO.getVotes().get(submissionId) == "winner") {
+            if (Objects.equals(votingPostDTO.getVotes().get(submissionId), "winner")) {
                 submission.setNumberVotes(submission.getNumberVotes() + 1);
-            } else if (votingPostDTO.getVotes().get(submissionId) == "ban"){
+            } else if (Objects.equals(votingPostDTO.getVotes().get(submissionId), "ban")){
                 submission.setNumberBanVotes(submission.getNumberBanVotes() + 1);
             }
         }
@@ -210,16 +217,16 @@ public class GameService {
     }
 
     private void setWinningSubmission(Round round, List<Submission> submissions) {
-        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); // sort submissions by number of votes
+        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); //TODO: Check sorting order
         Submission winningSubmission = submissions.get(0);
         List<Submission> winningSubmissions = new ArrayList<>();
-        if(submissions.size() > 1){
-            for(Submission submission : submissions){
-                if(submission.getNumberVotes() == winningSubmission.getNumberVotes()){
+        if (submissions.size() > 1){
+            for (Submission submission : submissions){
+                if (Objects.equals(submission.getNumberVotes(), winningSubmission.getNumberVotes())){
                     winningSubmissions.add(submission);
                 }
             }
-        winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds).reversed());
+            winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds).reversed());
         }
         round.setWinningSubmission(winningSubmissions.get(0));
     }
@@ -269,7 +276,7 @@ public class GameService {
         }
     }
 
-    void startTimer(Round round, Long gameId) {
+    private void startTimer(Round round, Long gameId) {
         Timer timer = new Timer();
         int timePerRound = round.getRoundTime();
 
@@ -292,11 +299,13 @@ public class GameService {
     }
 
     private void startVoting(Round round, Long gameId) {
+        // TODO: websocket message
         round.setRoundStatus(RoundStatus.VOTING);
         startTimer(round, gameId);
     }
 
     private void startSummary(Round round, Long gameId) {
+        // TODO: websocket message
         awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
         startTimer(round, gameId);
@@ -319,35 +328,5 @@ public class GameService {
         else if (status == RoundStatus.SUMMARY) {
             endRound(round, gameId);
         }
-    }
-    public List<Participant> getLeaderboard(Long id, Game game){
-        List<Participant> leaderboard = new ArrayList<>();
-
-        for (int i = 0; i < game.getParticipants().size(); i++) {
-            leaderboard.add(game.getParticipants().get(i));
-        }
-        leaderboard.sort(Comparator.comparing(Participant::getScore));
-        /*
-        for (int i = 0; i < game.getParticipants().size(); i++) {
-            Participant participant;
-            participant = game.getParticipants().get(i);
-            LeaderboardGetDTO leaderboardGetDTO = new LeaderboardGetDTO();
-            leaderboardGetDTO.setId(participant.getId());
-            leaderboardGetDTO.setUsername(participant.getUsername());
-            leaderboardGetDTO.setScore(participant.getScore());
-            leaderboardGetDTO.setStreak(participant.getStreak());
-            leaderboardGetDTO.setPosition(0);
-            leaderboard.add(leaderboardGetDTO);
-        }
-        leaderboard.sort(Comparator.comparing(LeaderboardGetDTO::getScore));
-        //game.getParticipants().sort(Comparator.comparing(Participant::getScore));
-        for (int i = 1; i < leaderboard.size()+1; i++) {
-            leaderboard.get(i).setPosition(i);
-
-        }*/
-
-        return leaderboard;
-
-
     }
 }

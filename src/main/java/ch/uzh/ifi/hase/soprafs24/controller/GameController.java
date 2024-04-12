@@ -6,27 +6,19 @@ import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
-<<<<<<< Updated upstream
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
-=======
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
->>>>>>> Stashed changes
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
-import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< Updated upstream
 import java.io.IOException;
-=======
 import java.util.ArrayList;
->>>>>>> Stashed changes
 import java.util.List;
-import java.util.ArrayList;
 
 @RestController
 public class GameController {
@@ -67,19 +59,6 @@ public class GameController {
     public void postVoting(@PathVariable Long id, @RequestBody VotingPostDTO votingPostDTO,
                                @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.postVoting(id, token, votingPostDTO);
-    }
-
-<<<<<<< Updated upstream
-    @GetMapping("/games/{id}/leaderboard")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public List<ParticipantGetDTO> getLeaderboard(@PathVariable Long id) {
-        List<ParticipantGetDTO> participantGetDTOs = new ArrayList<>();
-        List<Participant> participantListOrdered = gameService.getLeaderboard(id);
-        for(Participant participant : participantListOrdered){
-            participantGetDTOs.add(DTOMapper.INSTANCE.convertParticipantToParticipantGetDTO(participant));
-        }
-        return participantGetDTOs;
     }
 
     @GetMapping("/games/{id}/winningSubmission")
@@ -128,18 +107,16 @@ public class GameController {
         return DTOMapper.INSTANCE.convertGameToGameGetDTO(submissions,game);
     }
 */
+    // TODO: rename LeaderboardGetDTO to make it more intuitive to store in list ("don't have a list of leaderboards")
     @GetMapping("/games/{id}/leaderboard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id) {
-        Game game = gameService.getGameInformation(id);
-        //List<LeaderboardGetDTO> leaderboard = gameService.getLeaderboard(id, game);
         List<LeaderboardGetDTO> leaderboard = new ArrayList<>();
-        List<Participant> participants = gameService.getLeaderboard(id, game);
+        List<Participant> participants = gameService.getLeaderboard(id);
         for (Participant participant : participants) {
->>>>>>> Stashed changes
-
             leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
+            // TODO: probably redundant
             leaderboard.get(participants.indexOf(participant)).setPosition(participants.indexOf(participant));
         }
         return leaderboard;

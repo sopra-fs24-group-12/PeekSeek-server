@@ -1,11 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+//TODO: Websocket for checking if user left game/lobby
+//TODO: Protect websockets?
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
-import ch.uzh.ifi.hase.soprafs24.service.APIService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class LobbyService {
 
     public Long createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
+        // TODO: empty password (no password)
 
         Lobby createdLobby = new Lobby();
         createdLobby.setName(name);
@@ -38,6 +40,7 @@ public class LobbyService {
         return LobbyRepository.findAll();
     }
 
+    // TODO: store in database (separate repository) and lowercase, stripped name
     public Map<String, List<String>> getAllLobbyLocationsWithCoordinates() {
         List<Lobby> lobbies = getAllLobbies();
         Map<String, List<String>> locationCoordinates = new HashMap<>();
@@ -56,6 +59,7 @@ public class LobbyService {
         return new ArrayList<>(lobby.getParticipants().values());
     }
 
+    // TODO: maybe protect for only participants (low priority)
     public Lobby getSpecificLobby(Long id) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -64,6 +68,7 @@ public class LobbyService {
         return lobby;
     }
 
+    // TODO: empty password/no password
     public String joinLobby(Long id, String username, String password) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -110,6 +115,7 @@ public class LobbyService {
         return username;
     }
 
+    // TODO: no lobbyPutDTO as parameter
     public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -117,12 +123,14 @@ public class LobbyService {
         }
         authorizeLobbyAdmin(lobby, token);
         if (lobbyPutDTO.getGameLocation() != null) {
-            
+            // TODO: geocoding set corrected city name
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
-        if(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
+        if (returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
+            // TODO: set city name to lowercase and without spaces
             lobby.setGameLocationCoordinates(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()));
         } else {
+            // TODO: check list - string or list coordinates
             List<String> coordinates = APIService.getGameCoordinates(lobbyPutDTO.getGameLocation());
             lobby.setGameLocationCoordinates(coordinates);
         }
@@ -133,6 +141,7 @@ public class LobbyService {
             lobby.setRoundDurationSeconds(lobbyPutDTO.getRoundDurationSeconds());
         }
 
+        // TODO: return list instead of object (in case it is more efficient)
         return lobby;
     }
 
@@ -207,9 +216,7 @@ public class LobbyService {
 
     public List<String> returnIfLocationAlreadyCalled(String location) {
         // check if location is already in the database
-        List<String> coordinates = getAllLobbyLocationsWithCoordinates().containsKey(location) ?
-                getAllLobbyLocationsWithCoordinates().get(location) : null;
-        return coordinates;
+        return getAllLobbyLocationsWithCoordinates().getOrDefault(location, null);
     }
 
     public void authorizeLobbyAdmin(Lobby lobby, String token) {

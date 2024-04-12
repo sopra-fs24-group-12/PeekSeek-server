@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+// TODO: remove id, set fields for previous score etc.
 public class LeaderboardGetDTO {
     private String username;
     private int score;
