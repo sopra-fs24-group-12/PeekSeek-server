@@ -21,7 +21,6 @@ import java.lang.Math;
 //TODO: Handle case with less than 3 participants remaining
 //TODO: authorize participants/admin
 //TODO: submit current location of player if not submitted
-//TODO: Streetview Static API
 
 
 @Service
