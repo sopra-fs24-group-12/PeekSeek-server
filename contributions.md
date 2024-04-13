@@ -30,6 +30,7 @@ Record of contributions made to the project and corresponding tasks
   - [Start next round](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
   - [Get information on current round](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
   - [Download and store streetview image for each submission](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/dfb103e1a852077605a9a41bff43849aa29b6786)
+
 ### Silvan
 - [x] Setup NextUI on Client-Template [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0dacd8129b46d9d4e339bc3f94ab6557591cb22a)
 - [x] Create UI for Game Submission Rating [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
@@ -38,7 +39,21 @@ Record of contributions made to the project and corresponding tasks
 - [x] Create UI for Leaderboard [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/ca9cb1bb0a02b245133647f891bfe00adf8138b4)
 - [x] Create UI for Submission Card and Winning Card [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
 - [x] Create Basic Skeleton for Chat [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
+
 ### Ece
+- Setup Tailwind.css, NextUI, general design and components (base container, etc.).
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/30)
+- Setup background image
+- Create UI for Landing Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/33)
+- Create UI for Join Lobby Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/15)
+- Create UI for Create Lobby Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/17)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/14)
+- Create UI for Game Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/66)
+
 
 ### Nils
 - Added voting, getLeaderboard endpoint
@@ -86,6 +101,9 @@ Record of contributions made to the project and corresponding tasks
 ### Silvan
 
 ### Ece
+- Create UI for Lobby Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/13)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/12)
 
 ### Nils
 
