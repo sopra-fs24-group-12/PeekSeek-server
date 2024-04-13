@@ -74,7 +74,22 @@ public class DTOMapperTest {
         assertEquals(game.getAdminId(), gameGetDTO.getAdminId());
 
     }
-    
+    @Test
+    public void test_convert_Participant_To_LeaderboardGetDTO() {
+        Participant participant = new Participant();
+        participant.setId(3L);
+        participant.setUsername("Beispiel");
+        participant.setScore(33);
+        participant.setStreak(2);
+
+        ParticipantGetDTO participantGetDTO = DTOMapper.INSTANCE.convertParticipantToParticipantGetDTO(participant);
+        assertEquals(participant.getId(), participantGetDTO.getId());
+        assertEquals(participant.getUsername(), participantGetDTO.getUsername());
+        assertEquals(participant.getScore(), participantGetDTO.getScore());
+        assertEquals(participant.getStreak(), participantGetDTO.getStreak());
+
+
+    }
 
 }
 
