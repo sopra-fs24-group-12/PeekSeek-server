@@ -8,6 +8,10 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 
 
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.NextRoundDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.SecondsRemainingDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.ShowSummaryDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.StartVotingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -136,6 +140,8 @@ public class GameService {
         game.getRounds().get(game.getCurrentRound()).setRoundStatus(RoundStatus.PLAYING);
 
         Round round = game.getRounds().get(game.getCurrentRound());
+
+        websocketService.sendMessage("/topic/games/" + gameId, new NextRoundDTO());
 
         startTimer(round, gameId);
     }
@@ -294,19 +300,20 @@ public class GameService {
             @Override
             public void run() {
                 round.setRemainingSeconds(round.getRemainingSeconds() - 1);
-                websocketService.sendMessage("/games/" + gameId + "/timer", round.getRemainingSeconds());
+                websocketService.sendMessage("/topic/games/" + gameId + "/timer",
+                        new SecondsRemainingDTO(round.getRemainingSeconds()));
             }
         }, 0, 1000);
     }
 
     private void startVoting(Round round, Long gameId) {
-        // TODO: websocket message
+        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         round.setRoundStatus(RoundStatus.VOTING);
         startTimer(round, gameId);
     }
 
     private void startSummary(Round round, Long gameId) {
-        // TODO: websocket message
+        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
         awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
         startTimer(round, gameId);
@@ -314,7 +321,6 @@ public class GameService {
 
     private void endRound(Round round, Long gameId) {
         round.setRoundStatus(RoundStatus.FINISHED);
-        // TODO: websocket message
         startNextRound(gameId);
     }
 
