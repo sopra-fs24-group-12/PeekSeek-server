@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
@@ -53,5 +55,26 @@ public class DTOMapperTest {
         assertEquals(participant.getLeftGame(), participantGetDTO.getLeftGame());
 
     }
+    @Test
+    public void test_convert_Game_To_GameGetDTO() {
+        Game game = new Game();
+        game.setId(3L);
+        game.setRoundDurationSeconds(33);
+        game.setGameLocation("Munich");
+        game.setCurrentRound(3);
+        game.setNumberRounds(5);
+        game.setAdminId(1L);
+
+        GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertGameToGameGetDTO(game);
+        assertEquals(game.getId(), gameGetDTO.getId());
+        assertEquals(game.getRoundDurationSeconds(), gameGetDTO.getRoundDurationSeconds());
+        assertEquals(game.getGameLocation(), gameGetDTO.getGameLocation());
+        assertEquals(game.getCurrentRound(), gameGetDTO.getCurrentRound());
+        assertEquals(game.getNumberRounds(), gameGetDTO.getNumberRounds());
+        assertEquals(game.getAdminId(), gameGetDTO.getAdminId());
+
+    }
+    
+
 }
 
