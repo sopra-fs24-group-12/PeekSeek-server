@@ -37,36 +37,42 @@ public class GameService {
         this.websocketService = websocketService;
     }
 
-    public Round getRoundInformation(Long gameId) {
+    public Round getRoundInformation(String token, Long gameId) {
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
 
         return game.getRounds().get(game.getCurrentRound());
     }
 
-    public Game getGameInformation(Long gameId) {
+    public Game getGameInformation(String token, Long gameId) {
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
+
         return game;
     }
 
     // TODO: adjust participant class to include distribution of points and adjust DTO
-    public List<Participant> getLeaderboard(Long gameId) {  // get a list of all participants sorted by score
+    public List<Participant> getLeaderboard(String token, Long gameId) {  // get a list of all participants sorted by score
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
 
         List<Participant> participants = new ArrayList<>(game.getParticipants().values());
         participants.sort(Comparator.comparing(Participant::getScore).reversed()); //TODO: Check in which  direction it sorts
         return participants;
     }
 
-    // TODO: reset lobby for reuse
     public Long startGame(Lobby lobby) {
         if (lobby.getJoinedParticipants() < 3) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
@@ -152,6 +158,8 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
 
+        authorizeGameParticipant(game, token);
+
         Participant participant = game.getParticipantByToken(token);
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The token does not exist");
@@ -189,6 +197,8 @@ public class GameService {
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
 
         Round round = game.getRounds().get(game.getCurrentRound());
         if (round.getRoundStatus() != RoundStatus.VOTING) {
@@ -341,6 +351,13 @@ public class GameService {
         }
         else if (status == RoundStatus.SUMMARY) {
             endRound(round, gameId);
+        }
+    }
+
+    private void authorizeGameParticipant(Game game, String token) {
+        Participant participant = game.getParticipantByToken(token);
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
         }
     }
 }

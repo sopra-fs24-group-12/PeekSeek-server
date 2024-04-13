@@ -31,16 +31,18 @@ public class GameController {
     @GetMapping("/games/{id}/round")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundGetDTO getRoundInformation(@PathVariable Long id) {
-        Round currentRound = gameService.getRoundInformation(id);
-        Game game = gameService.getGameInformation(id);
+    public GameRoundGetDTO getRoundInformation(@PathVariable Long id,
+                                               @RequestHeader(value = "Authorization", required = false) String token) {
+        Round currentRound = gameService.getRoundInformation(token, id);
+        Game game = gameService.getGameInformation(token, id);
         return DTOMapper.INSTANCE.convertRoundToGameRoundGetDTO(currentRound,game);
     }
 
     @PostMapping("/games/{id}/nextRound")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void startNextRound(@PathVariable Long id) {
+    public void startNextRound(@PathVariable Long id,
+                               @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.startNextRound(id);
     }
 
