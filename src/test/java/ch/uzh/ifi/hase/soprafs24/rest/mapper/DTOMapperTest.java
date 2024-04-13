@@ -4,10 +4,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,11 +79,11 @@ public class DTOMapperTest {
         participant.setScore(33);
         participant.setStreak(2);
 
-        ParticipantGetDTO participantGetDTO = DTOMapper.INSTANCE.convertParticipantToParticipantGetDTO(participant);
-        assertEquals(participant.getId(), participantGetDTO.getId());
-        assertEquals(participant.getUsername(), participantGetDTO.getUsername());
-        assertEquals(participant.getScore(), participantGetDTO.getScore());
-        assertEquals(participant.getStreak(), participantGetDTO.getStreak());
+        LeaderboardGetDTO leaderboardGetDTO = DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant);
+        assertEquals(participant.getId(), leaderboardGetDTO.getId());
+        assertEquals(participant.getUsername(), leaderboardGetDTO.getUsername());
+        assertEquals(participant.getScore(), leaderboardGetDTO.getScore());
+        assertEquals(participant.getStreak(), leaderboardGetDTO.getStreak());
 
 
     }
