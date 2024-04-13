@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("summaryRepository")
 public interface SummaryRepository extends JpaRepository<Summary, Long> {
+    public Summary findSummaryById(long id);
 }
