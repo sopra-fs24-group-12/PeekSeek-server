@@ -152,8 +152,15 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
 
-        // TODO: check if participant submitted
         Participant participant = game.getParticipantByToken(token);
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The token does not exist");
+        }
+
+        if (participant.getHasSubmitted()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already submitted in this round");
+        }
+
         int submissionTime = getSubmissionTime(participant, game);
 
         Submission submission = new Submission();
