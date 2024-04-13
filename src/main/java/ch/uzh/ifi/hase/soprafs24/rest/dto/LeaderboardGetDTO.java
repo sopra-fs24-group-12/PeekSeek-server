@@ -5,7 +5,7 @@ public class LeaderboardGetDTO {
     private String username;
     private int score;
     private int streak;
-    private int position;
+    //private int position;
     private Long id;
 
     public String getUsername() {
@@ -32,13 +32,13 @@ public class LeaderboardGetDTO {
         this.streak = streak;
     }
 
-    public int getPosition() {
+    /*public int getPosition() {
         return position;
     }
 
     public void setPosition(int position) {
         this.position = position;
-    }
+    }*/
 
     public Long getId() {
         return id;
