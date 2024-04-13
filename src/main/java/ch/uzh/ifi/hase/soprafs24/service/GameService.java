@@ -162,20 +162,23 @@ public class GameService {
     private Long generateSummary(Game game) {
         List<Quest> winningSubmissions = new ArrayList<>();
 
+        Summary summary = new Summary();
+        summary.setCityName(game.getGameLocation());
+        summary.setRoundsPlayed(game.getNumberRounds());
+        summaryRepository.save(summary);
+        summaryRepository.flush();
+
         for (Round round : game.getRounds()) {
             Quest quest = new Quest();
             quest.setDescription(round.getQuest());
             quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
                     round.getWinningSubmission().getSubmittedLocation().getLng()));
             quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
+            quest.setSummary(summary);
             winningSubmissions.add(quest);
         }
 
-        Summary summary = new Summary();
-        summary.setCityName(game.getGameLocation());
-        summary.setRoundsPlayed(game.getNumberRounds());
         summary.setQuests(winningSubmissions);
-
         summaryRepository.save(summary);
         summaryRepository.flush();
 
