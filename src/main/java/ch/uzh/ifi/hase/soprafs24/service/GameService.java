@@ -96,6 +96,8 @@ public class GameService {
         Map<String, Participant> participants = new HashMap<>(lobby.getParticipants());
         createdGame.setParticipants(participants);
 
+        lobby.resetLobby();
+
         GameRepository.addGame(createdGame);
 
         startNextRound(createdGame.getId());

@@ -26,6 +26,13 @@ public class Lobby {
         this.id = id_count++;
     }
 
+    public void resetLobby() {
+        participants.clear();
+        usernames.clear();
+        setReUsed(true);
+        setJoinedParticipants(0);
+    }
+
     public void addParticipant(Participant participant) {
         String token = participant.getToken();
         usernames.add(participant.getUsername());
