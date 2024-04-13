@@ -1,18 +1,20 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Quest;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Summary;
 import ch.uzh.ifi.hase.soprafs24.google.StreetviewImageDownloader;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.SummaryRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 
 
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.NextRoundDTO;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.SecondsRemainingDTO;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.ShowSummaryDTO;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.StartVotingDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,10 +33,13 @@ import java.lang.Math;
 @Transactional
 public class GameService {
     private final WebsocketService websocketService;
+    private final SummaryRepository summaryRepository;
 
     @Autowired
-    public GameService(WebsocketService websocketService) {
+    public GameService(WebsocketService websocketService,
+                       @Qualifier("summaryRepository") SummaryRepository summaryRepository) {
         this.websocketService = websocketService;
+        this.summaryRepository = summaryRepository;
     }
 
     public Round getRoundInformation(String token, Long gameId) {
@@ -137,9 +142,10 @@ public class GameService {
         Integer currentRoundIdx = game.getCurrentRound();
         Integer numberRounds = game.getNumberRounds();
 
-        // TODO: correctly handle game over
         if (currentRoundIdx == numberRounds - 1) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "All rounds have been played");
+            websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO());
+            game.setGameStatus(GameStatus.SUMMARY);
+            GameRepository.deleteGame(gameId);
         }
 
         game.setCurrentRound(currentRoundIdx + 1);
@@ -150,6 +156,36 @@ public class GameService {
         websocketService.sendMessage("/topic/games/" + gameId, new NextRoundDTO());
 
         startTimer(round, gameId);
+    }
+
+
+    private Long generateSummary(Game game) {
+        List<Quest> winningSubmissions = new ArrayList<>();
+
+        for (Round round : game.getRounds()) {
+            Quest quest = new Quest();
+            quest.setDescription(round.getQuest());
+            quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
+                    round.getWinningSubmission().getSubmittedLocation().getLng()));
+            quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
+            winningSubmissions.add(quest);
+        }
+
+        Summary summary = new Summary();
+        summary.setCityName(game.getGameLocation());
+        summary.setRoundsPlayed(game.getNumberRounds());
+        summary.setQuests(winningSubmissions);
+
+        summaryRepository.save(summary);
+        summaryRepository.flush();
+
+        return summary.getId();
+    }
+
+    private String generateSubmissionLink(String lat, String lng) {
+        String base = "https://www.google.com/maps/place/";
+        base += lat + "," + lng;
+        return base;
     }
 
     public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) throws IOException {
