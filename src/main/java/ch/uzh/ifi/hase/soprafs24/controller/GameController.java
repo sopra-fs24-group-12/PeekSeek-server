@@ -54,7 +54,7 @@ public class GameController {
                                String token) throws IOException {
         gameService.postSubmission(id, token, submissionPostDTO);
     }
-    /*
+    
     @PostMapping("/games/{id}/voting")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -66,8 +66,9 @@ public class GameController {
     @GetMapping("/games/{id}/winningSubmission")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public SubmissionGetDTO getWinningSubmissionCurrent(@PathVariable Long id) {
-        Round currentRound = gameService.getRoundInformation(id);
+    public SubmissionGetDTO getWinningSubmissionCurrent(@PathVariable Long id,
+                                @RequestHeader(value = "Authorization", required = false) String token) {
+        Round currentRound = gameService.getRoundInformation(token, id);
         Submission winningSubmission = currentRound.getWinningSubmission();
         return DTOMapper.INSTANCE.convertSubmissionToSubmissionGetDTO(winningSubmission);
     }
@@ -75,26 +76,24 @@ public class GameController {
     @GetMapping("/games/{id}/submissions")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<SubmissionGetDTO> getSubmissions(@PathVariable Long id) {
+    public List<SubmissionGetDTO> getSubmissions(@PathVariable Long id,
+                                @RequestHeader(value = "Authorization", required = false) String token) {
         List<SubmissionGetDTO> submissionGetDTOs = new ArrayList<>();
-        Round currentRound = gameService.getRoundInformation(id);
+        Round currentRound = gameService.getRoundInformation(token, id);
         List<Submission> submissions = new ArrayList<>(currentRound.getSubmissions().values());
         for (Submission submission : submissions) {
             submissionGetDTOs.add(DTOMapper.INSTANCE.convertSubmissionToSubmissionGetDTO(submission));
         }
         return submissionGetDTOs;
     }
-=======
-
->>>>>>> Stashed changes
 
     @GetMapping("/games/{id}/winningSubmissions")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-<<<<<<< Updated upstream
-    public List<SubmissionGetDTO> getWinningSubmissions(@PathVariable Long id) {
+    public List<SubmissionGetDTO> getWinningSubmissions(@PathVariable Long id,
+                                @RequestHeader(value = "Authorization", required = false) String token) {
         List<SubmissionGetDTO> submissionGetDTOs = new ArrayList<>();
-        Game game = gameService.getGameInformation(id);
+        Game game = gameService.getGameInformation(token, id);
         List<Round> rounds = game.getRounds();
         for (Round round : rounds) {
             Submission winningSubmission = round.getWinningSubmission();
@@ -103,12 +102,6 @@ public class GameController {
         return submissionGetDTOs;
     }
 
-=======
-    public List<Submission> getWinningSubmissions(@PathVariable Long id) {
-        List<Submission> submissions = gameService.getWinningSubmissions(id);
-        return DTOMapper.INSTANCE.convertGameToGameGetDTO(submissions,game);
-    }
-*/
     // TODO: rename LeaderboardGetDTO to make it more intuitive to store in list ("don't have a list of leaderboards")
     @GetMapping("/games/{id}/leaderboard")
     @ResponseStatus(HttpStatus.OK)
