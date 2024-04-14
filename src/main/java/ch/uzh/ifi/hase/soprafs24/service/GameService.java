@@ -107,6 +107,7 @@ public class GameService {
         createdGame.setAdminId(lobby.getAdminId());
         createdGame.setGameLocation(lobby.getGameLocation());
         createdGame.setNumberRounds(rounds.size());
+        createdGame.setLobbyPassword(lobby.getPassword());
 
         Map<String, Participant> participants = new HashMap<>(lobby.getParticipants());
         createdGame.setParticipants(participants);
@@ -143,7 +144,8 @@ public class GameService {
         Integer numberRounds = game.getNumberRounds();
 
         if (currentRoundIdx == numberRounds - 1) {
-            websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO());
+            Long summaryId = generateSummary(game);
+            websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
             game.setGameStatus(GameStatus.SUMMARY);
             GameRepository.deleteGame(gameId);
         }
@@ -165,7 +167,8 @@ public class GameService {
         Summary summary = new Summary();
         summary.setCityName(game.getGameLocation());
         summary.setRoundsPlayed(game.getNumberRounds());
-        summaryRepository.save(summary);
+        summary.setPassword(game.getLobbyPassword());
+        summary = summaryRepository.save(summary);
         summaryRepository.flush();
 
         for (Round round : game.getRounds()) {
@@ -179,7 +182,7 @@ public class GameService {
         }
 
         summary.setQuests(winningSubmissions);
-        summaryRepository.save(summary);
+        summary = summaryRepository.save(summary);
         summaryRepository.flush();
 
         return summary.getId();
