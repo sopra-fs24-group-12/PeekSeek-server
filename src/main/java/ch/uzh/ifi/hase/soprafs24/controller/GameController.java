@@ -113,9 +113,9 @@ public class GameController {
     @GetMapping("/games/{id}/leaderboard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id) {
+    public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
         List<LeaderboardGetDTO> leaderboard = new ArrayList<>();
-        List<Participant> participants = gameService.getLeaderboard(id);
+        List<Participant> participants = gameService.getLeaderboard(token, id);
         for (Participant participant : participants) {
             leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
             // TODO: probably redundant
