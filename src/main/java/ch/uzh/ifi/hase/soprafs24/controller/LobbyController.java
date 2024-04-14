@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.GameStartedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -107,9 +108,8 @@ public class LobbyController {
     public void updateLobbySettings(@PathVariable Long id, @RequestBody LobbyPutDTO lobbyPutDTO,
                                     @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
-        //TODO: Uncomment this line
-        //websocketService.sendMessage("/topic/lobby/" + id,
-        //        new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getGameLocationCoordinates(), lobby.getQuests()));
+        websocketService.sendMessage("/topic/lobby/" + id,
+                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getGameLocationCoordinates(), lobby.getQuests()));
     }
 
     @PostMapping("/lobbies/{id}/start")
