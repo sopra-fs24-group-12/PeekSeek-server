@@ -71,8 +71,6 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "score", target = "score")
     @Mapping(source = "streak", target = "streak")
-    //@Mapping(source = "position", target = "position")
+    @Mapping(source = "position", target = "position")
     @Mapping(source = "id", target = "id")
-    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);
-
-}
+    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);}
