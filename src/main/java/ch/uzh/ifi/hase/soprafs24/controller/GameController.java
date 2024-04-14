@@ -1,12 +1,14 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
@@ -15,8 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class GameController {
@@ -29,16 +31,18 @@ public class GameController {
     @GetMapping("/games/{id}/round")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundGetDTO getRoundInformation(@PathVariable Long id) {
-        Round currentRound = gameService.getRoundInformation(id);
-        Game game = gameService.getGameInformation(id);
+    public GameRoundGetDTO getRoundInformation(@PathVariable Long id,
+                                               @RequestHeader(value = "Authorization", required = false) String token) {
+        Round currentRound = gameService.getRoundInformation(token, id);
+        Game game = gameService.getGameInformation(token, id);
         return DTOMapper.INSTANCE.convertRoundToGameRoundGetDTO(currentRound,game);
     }
 
     @PostMapping("/games/{id}/nextRound")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void startNextRound(@PathVariable Long id) {
+    public void startNextRound(@PathVariable Long id,
+                               @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.startNextRound(id);
     }
 
@@ -50,24 +54,13 @@ public class GameController {
                                String token) throws IOException {
         gameService.postSubmission(id, token, submissionPostDTO);
     }
+    /*
     @PostMapping("/games/{id}/voting")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void postVoting(@PathVariable Long id, @RequestBody VotingPostDTO votingPostDTO,
                                @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.postVoting(id, token, votingPostDTO);
-    }
-
-    @GetMapping("/games/{id}/leaderboard")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public List<ParticipantGetDTO> getLeaderboard(@PathVariable Long id) {
-        List<ParticipantGetDTO> participantGetDTOs = new ArrayList<>();
-        List<Participant> participantListOrdered = gameService.getLeaderboard(id);
-        for(Participant participant : participantListOrdered){
-            participantGetDTOs.add(DTOMapper.INSTANCE.convertParticipantToParticipantGetDTO(participant));
-        }
-        return participantGetDTOs;
     }
 
     @GetMapping("/games/{id}/winningSubmission")
@@ -91,10 +84,14 @@ public class GameController {
         }
         return submissionGetDTOs;
     }
+=======
+
+>>>>>>> Stashed changes
 
     @GetMapping("/games/{id}/winningSubmissions")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
+<<<<<<< Updated upstream
     public List<SubmissionGetDTO> getWinningSubmissions(@PathVariable Long id) {
         List<SubmissionGetDTO> submissionGetDTOs = new ArrayList<>();
         Game game = gameService.getGameInformation(id);
@@ -106,5 +103,24 @@ public class GameController {
         return submissionGetDTOs;
     }
 
-
+=======
+    public List<Submission> getWinningSubmissions(@PathVariable Long id) {
+        List<Submission> submissions = gameService.getWinningSubmissions(id);
+        return DTOMapper.INSTANCE.convertGameToGameGetDTO(submissions,game);
+    }
+*/
+    // TODO: rename LeaderboardGetDTO to make it more intuitive to store in list ("don't have a list of leaderboards")
+    @GetMapping("/games/{id}/leaderboard")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
+        List<LeaderboardGetDTO> leaderboard = new ArrayList<>();
+        List<Participant> participants = gameService.getLeaderboard(token, id);
+        for (Participant participant : participants) {
+            leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
+            // TODO: probably redundant
+            leaderboard.get(participants.indexOf(participant)).setPosition(participants.indexOf(participant));
+        }
+        return leaderboard;
+    }
 }

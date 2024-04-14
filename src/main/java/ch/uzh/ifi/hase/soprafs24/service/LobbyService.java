@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+//TODO: Websocket for checking if user left game/lobby
+//TODO: Protect websockets?
 
 import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +31,7 @@ public class LobbyService {
 
     public Long createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
+        // TODO: empty password (no password)
 
         Lobby createdLobby = new Lobby();
         createdLobby.setName(name);
@@ -61,6 +65,7 @@ public class LobbyService {
         return new ArrayList<>(lobby.getParticipants().values());
     }
 
+    // TODO: maybe protect for only participants (low priority)
     public Lobby getSpecificLobby(Long id) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -69,6 +74,7 @@ public class LobbyService {
         return lobby;
     }
 
+    // TODO: empty password/no password
     public String joinLobby(Long id, String username, String password) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -96,7 +102,7 @@ public class LobbyService {
         return participant.getToken();
     }
 
-    public String leaveLobby(Long id, String token) {
+    public List<String> leaveLobby(Long id, String token) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
@@ -105,16 +111,27 @@ public class LobbyService {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A participant with this token does not exist");
         }
-        if (participant.getId().equals(lobby.getAdminId())) {
-            // TODO: handle case where admin leaves the lobby
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The admin cannot leave the lobby");
-        }
-        String username = participant.getUsername();
-        lobby.removeParticipant(token);
 
-        return username;
+        String username = participant.getUsername();
+        String newAdminUsername = null;
+
+        if (participant.getAdmin()) {
+            lobby.removeParticipant(token);
+            Participant newAdmin = lobby.getParticipants().entrySet().iterator().next().getValue();
+            lobby.setAdminId(newAdmin.getId());
+            newAdmin.setAdmin(true);
+            newAdminUsername = newAdmin.getUsername();
+        } else {
+            lobby.removeParticipant(token);
+        }
+
+        List<String> usernames = new ArrayList<>();
+        usernames.add(username);
+        usernames.add(newAdminUsername);
+        return usernames;
     }
 
+    // TODO: no lobbyPutDTO as parameter
     public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) throws IOException {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -137,6 +154,7 @@ public class LobbyService {
             lobby.setRoundDurationSeconds(lobbyPutDTO.getRoundDurationSeconds());
         }
 
+        // TODO: return list instead of object (in case it is more efficient)
         return lobby;
     }
 
@@ -224,7 +242,7 @@ public class LobbyService {
         Participant admin = lobby.getParticipantByToken(token);
         if (admin == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
-        } else if (!admin.getId().equals(lobby.getAdminId())) {
+        } else if (!admin.getAdmin()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not sufficient permissions");
         }
     }

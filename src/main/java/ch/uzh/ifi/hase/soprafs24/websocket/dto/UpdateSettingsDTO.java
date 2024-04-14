@@ -9,7 +9,8 @@ public class UpdateSettingsDTO {
     private List<String> gameLocationCoordinates;
     private List<String> quests;
 
-    public UpdateSettingsDTO(String gameLocation, Integer roundDurationSeconds, List<String> gameLocationCoordinates, List<String> quests) {
+    public UpdateSettingsDTO(String gameLocation, Integer roundDurationSeconds, List<String> gameLocationCoordinates,
+                             List<String> quests) {
         this.gameLocation = gameLocation;
         this.roundDurationSeconds = roundDurationSeconds;
         this.gameLocationCoordinates = gameLocationCoordinates;

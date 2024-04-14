@@ -20,6 +20,8 @@ public class Game {
     private Map<String, Participant> participants = new HashMap<>();
     private static Long id_count = 1L;
     public static Long rounds_count = 1L;
+    private String lobbyPassword;
+
 
     public Game() {
         this.id = id_count++;
@@ -99,5 +101,13 @@ public class Game {
 
     public void setParticipants(Map<String, Participant> participants) {
         this.participants = participants;
+    }
+
+    public String getLobbyPassword() {
+        return lobbyPassword;
+    }
+
+    public void setLobbyPassword(String lobbyPassword) {
+        this.lobbyPassword = lobbyPassword;
     }
 }

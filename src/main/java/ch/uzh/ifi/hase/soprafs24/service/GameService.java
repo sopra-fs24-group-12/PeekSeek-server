@@ -1,14 +1,20 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Quest;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Summary;
 import ch.uzh.ifi.hase.soprafs24.google.StreetviewImageDownloader;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
-
+import ch.uzh.ifi.hase.soprafs24.repository.SummaryRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 
+
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,38 +24,54 @@ import java.io.IOException;
 import java.util.*;
 import java.lang.Math;
 
+//TODO: Handle case with less than 3 participants remaining
+//TODO: authorize participants/admin
+//TODO: submit current location of player if not submitted
+
+
 @Service
 @Transactional
 public class GameService {
     private final WebsocketService websocketService;
+    private final SummaryRepository summaryRepository;
 
     @Autowired
-    public GameService(WebsocketService websocketService) {
+    public GameService(WebsocketService websocketService,
+                       @Qualifier("summaryRepository") SummaryRepository summaryRepository) {
         this.websocketService = websocketService;
+        this.summaryRepository = summaryRepository;
     }
 
-    public Round getRoundInformation(Long gameId) {
+    public Round getRoundInformation(String token, Long gameId) {
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
 
         return game.getRounds().get(game.getCurrentRound());
     }
 
-    public Game getGameInformation(Long gameId) {
+    public Game getGameInformation(String token, Long gameId) {
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
+
         return game;
     }
 
-    public List<Participant> getLeaderboard(Long gameId) {  // get a list of all participants sorted by score
+    // TODO: adjust participant class to include distribution of points and adjust DTO
+    public List<Participant> getLeaderboard(String token, Long gameId) {  // get a list of all participants sorted by score
         Game game = GameRepository.getGameById(gameId);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
+
+        authorizeGameParticipant(game, token);
 
         List<Participant> participants = new ArrayList<>(game.getParticipants().values());
         participants.sort(Comparator.comparing(Participant::getScore).reversed()); //TODO: Check in which  direction it sorts
@@ -85,9 +107,12 @@ public class GameService {
         createdGame.setAdminId(lobby.getAdminId());
         createdGame.setGameLocation(lobby.getGameLocation());
         createdGame.setNumberRounds(rounds.size());
+        createdGame.setLobbyPassword(lobby.getPassword());
 
         Map<String, Participant> participants = new HashMap<>(lobby.getParticipants());
         createdGame.setParticipants(participants);
+
+        lobby.resetLobby();
 
         GameRepository.addGame(createdGame);
 
@@ -117,8 +142,12 @@ public class GameService {
 
         Integer currentRoundIdx = game.getCurrentRound();
         Integer numberRounds = game.getNumberRounds();
+
         if (currentRoundIdx == numberRounds - 1) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "All rounds have been played");
+            Long summaryId = generateSummary(game);
+            websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
+            game.setGameStatus(GameStatus.SUMMARY);
+            GameRepository.deleteGame(gameId);
         }
 
         game.setCurrentRound(currentRoundIdx + 1);
@@ -126,7 +155,43 @@ public class GameService {
 
         Round round = game.getRounds().get(game.getCurrentRound());
 
+        websocketService.sendMessage("/topic/games/" + gameId, new NextRoundDTO());
+
         startTimer(round, gameId);
+    }
+
+
+    private Long generateSummary(Game game) {
+        List<Quest> winningSubmissions = new ArrayList<>();
+
+        Summary summary = new Summary();
+        summary.setCityName(game.getGameLocation());
+        summary.setRoundsPlayed(game.getNumberRounds());
+        summary.setPassword(game.getLobbyPassword());
+        summary = summaryRepository.save(summary);
+        summaryRepository.flush();
+
+        for (Round round : game.getRounds()) {
+            Quest quest = new Quest();
+            quest.setDescription(round.getQuest());
+            quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
+                    round.getWinningSubmission().getSubmittedLocation().getLng()));
+            quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
+            quest.setSummary(summary);
+            winningSubmissions.add(quest);
+        }
+
+        summary.setQuests(winningSubmissions);
+        summary = summaryRepository.save(summary);
+        summaryRepository.flush();
+
+        return summary.getId();
+    }
+
+    private String generateSubmissionLink(String lat, String lng) {
+        String base = "https://www.google.com/maps/place/";
+        base += lat + "," + lng;
+        return base;
     }
 
     public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) throws IOException {
@@ -135,7 +200,17 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
 
+        authorizeGameParticipant(game, token);
+
         Participant participant = game.getParticipantByToken(token);
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The token does not exist");
+        }
+
+        if (participant.getHasSubmitted()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already submitted in this round");
+        }
+
         int submissionTime = getSubmissionTime(participant, game);
 
         Submission submission = new Submission();
@@ -164,6 +239,8 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
         }
 
+        authorizeGameParticipant(game, token);
+
         Round round = game.getRounds().get(game.getCurrentRound());
         if (round.getRoundStatus() != RoundStatus.VOTING) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the voting phase");
@@ -172,15 +249,16 @@ public class GameService {
         Participant participant = game.getParticipantByToken(token);
         for(Long submissionId : votingPostDTO.getVotes().keySet()){
             Submission submission = round.getSubmissions().get(submissionId);
+            // TODO: change code if automatic submission implemented
             if (submission == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The submission with this ID does not exist");
             }
             if (submission.getToken().equals(participant.getToken())) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot vote for your own submission");
             }
-            if (votingPostDTO.getVotes().get(submissionId) == "winner") {
+            if (Objects.equals(votingPostDTO.getVotes().get(submissionId), "winner")) {
                 submission.setNumberVotes(submission.getNumberVotes() + 1);
-            } else if (votingPostDTO.getVotes().get(submissionId) == "ban"){
+            } else if (Objects.equals(votingPostDTO.getVotes().get(submissionId), "ban")){
                 submission.setNumberBanVotes(submission.getNumberBanVotes() + 1);
             }
         }
@@ -204,16 +282,16 @@ public class GameService {
     }
 
     private void setWinningSubmission(Round round, List<Submission> submissions) {
-        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); // sort submissions by number of votes
+        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); //TODO: Check sorting order
         Submission winningSubmission = submissions.get(0);
         List<Submission> winningSubmissions = new ArrayList<>();
-        if(submissions.size() > 1){
-            for(Submission submission : submissions){
-                if(submission.getNumberVotes() == winningSubmission.getNumberVotes()){
+        if (submissions.size() > 1){
+            for (Submission submission : submissions){
+                if (Objects.equals(submission.getNumberVotes(), winningSubmission.getNumberVotes())){
                     winningSubmissions.add(submission);
                 }
             }
-        winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds).reversed());
+            winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds).reversed());
         }
         round.setWinningSubmission(winningSubmissions.get(0));
     }
@@ -263,7 +341,7 @@ public class GameService {
         }
     }
 
-    void startTimer(Round round, Long gameId) {
+    private void startTimer(Round round, Long gameId) {
         Timer timer = new Timer();
         int timePerRound = round.getRoundTime();
 
@@ -280,17 +358,20 @@ public class GameService {
             @Override
             public void run() {
                 round.setRemainingSeconds(round.getRemainingSeconds() - 1);
-                websocketService.sendMessage("/games/" + gameId + "/timer", round.getRemainingSeconds());
+                websocketService.sendMessage("/topic/games/" + gameId + "/timer",
+                        new SecondsRemainingDTO(round.getRemainingSeconds()));
             }
         }, 0, 1000);
     }
 
     private void startVoting(Round round, Long gameId) {
+        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         round.setRoundStatus(RoundStatus.VOTING);
         startTimer(round, gameId);
     }
 
     private void startSummary(Round round, Long gameId) {
+        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
         awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
         startTimer(round, gameId);
@@ -298,7 +379,6 @@ public class GameService {
 
     private void endRound(Round round, Long gameId) {
         round.setRoundStatus(RoundStatus.FINISHED);
-        // TODO: websocket message
         startNextRound(gameId);
     }
 
@@ -306,11 +386,19 @@ public class GameService {
         RoundStatus status = round.getRoundStatus();
         if (status == RoundStatus.PLAYING) {
             startVoting(round, gameId);
-        } else if (status == RoundStatus.VOTING) {
+        }
+        else if (status == RoundStatus.VOTING) {
             startSummary(round, gameId);
-        } else if (status == RoundStatus.SUMMARY) {
+        }
+        else if (status == RoundStatus.SUMMARY) {
             endRound(round, gameId);
         }
     }
 
+    private void authorizeGameParticipant(Game game, String token) {
+        Participant participant = game.getParticipantByToken(token);
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
+        }
+    }
 }

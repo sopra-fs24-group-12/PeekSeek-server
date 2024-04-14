@@ -62,6 +62,7 @@ public class GameGetDTO {
         this.adminId = adminId;
     }
 
+    /*
     public List<Round> getRounds() {
         return rounds;
     }
@@ -77,6 +78,8 @@ public class GameGetDTO {
     public void setParticipants(Map<String, Participant> participants) {
         this.participants = participants;
     }
+
+     */
 
     public Integer getNumberRounds() {
         return numberRounds;
