@@ -18,6 +18,9 @@ public class Summary {
     @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
     private List<Quest> quests;
 
+    private String password;
+
+
     public Long getId() {
         return id;
     }
@@ -56,5 +59,13 @@ public class Summary {
 
     public void setQuests(List<Quest> quests) {
         this.quests = quests;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
