@@ -4,18 +4,16 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs24.service.APIService;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.GameStartedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,10 +100,11 @@ public class LobbyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateLobbySettings(@PathVariable Long id, @RequestBody LobbyPutDTO lobbyPutDTO,
-                                    @RequestHeader(value = "Authorization", required = false) String token) {
+                                    @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
-        websocketService.sendMessage("/topic/lobby/" + id,
-                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getGameLocationCoordinates(), lobby.getQuests()));
+        //TODO: Uncomment this line
+        //websocketService.sendMessage("/topic/lobby/" + id,
+        //        new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getGameLocationCoordinates(), lobby.getQuests()));
     }
 
     @PostMapping("/lobbies/{id}/start")

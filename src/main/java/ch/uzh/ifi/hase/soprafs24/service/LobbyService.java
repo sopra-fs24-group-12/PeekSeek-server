@@ -1,11 +1,14 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 
+import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GeoCodingGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
-import ch.uzh.ifi.hase.soprafs24.service.APIService;
+import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.UUID;
+
+import java.io.IOException;
 
 @Service
 @Transactional
@@ -38,9 +43,9 @@ public class LobbyService {
         return LobbyRepository.findAll();
     }
 
-    public Map<String, List<String>> getAllLobbyLocationsWithCoordinates() {
+    public Map<String, GeoCodingData> getAllLobbyLocationsWithCoordinates() {
         List<Lobby> lobbies = getAllLobbies();
-        Map<String, List<String>> locationCoordinates = new HashMap<>();
+        Map<String, GeoCodingData> locationCoordinates = new HashMap<>();
         for (Lobby lobby : lobbies) {
             locationCoordinates.put(lobby.getGameLocation(), lobby.getGameLocationCoordinates());
         }
@@ -110,20 +115,19 @@ public class LobbyService {
         return username;
     }
 
-    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) {
+    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) throws IOException {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
         }
         authorizeLobbyAdmin(lobby, token);
         if (lobbyPutDTO.getGameLocation() != null) {
-            
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
-        if(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
-            lobby.setGameLocationCoordinates(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()));
+        if(locationIfAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
+            lobby.setGameLocationCoordinates(locationIfAlreadyCalled(lobbyPutDTO.getGameLocation()));
         } else {
-            List<String> coordinates = APIService.getGameCoordinates(lobbyPutDTO.getGameLocation());
+            GeoCodingData coordinates = GeoCoding.getGameCoordinates(lobbyPutDTO.getGameLocation());
             lobby.setGameLocationCoordinates(coordinates);
         }
         if (lobbyPutDTO.getQuests() != null) {
@@ -205,11 +209,15 @@ public class LobbyService {
         }
     }
 
-    public List<String> returnIfLocationAlreadyCalled(String location) {
+    public GeoCodingData locationIfAlreadyCalled(String location) throws IOException {
         // check if location is already in the database
-        List<String> coordinates = getAllLobbyLocationsWithCoordinates().containsKey(location) ?
-                getAllLobbyLocationsWithCoordinates().get(location) : null;
-        return coordinates;
+        List<GeoCodingData> lookedUpcoordinates = GeoCodingDataRepository.findAll();
+        for (GeoCodingData geoCodingData : lookedUpcoordinates) {
+            if (geoCodingData.getLocation().toLowerCase().contains(location.toLowerCase())) {
+                return geoCodingData;
+            }
+        }
+        return null;
     }
 
     public void authorizeLobbyAdmin(Lobby lobby, String token) {

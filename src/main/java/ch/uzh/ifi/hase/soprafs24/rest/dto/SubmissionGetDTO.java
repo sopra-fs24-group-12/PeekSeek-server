@@ -1,9 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs24.entity.SubmissionData;
+
 public class SubmissionGetDTO {
   private Long id;
   private Integer submissionTimeSeconds;
-  private String submissionLocation;
+  private SubmissionData submittedLocation;
   private Integer numberVotes;
   private Integer numberBanVotes;
   private Integer awardedPoints;
@@ -24,12 +26,12 @@ public class SubmissionGetDTO {
     this.submissionTimeSeconds = submissionTimeSeconds;
   }
 
-  public String getSubmissionLocation() {
-    return submissionLocation;
+  public SubmissionData getSubmittedLocation() {
+    return submittedLocation;
   }
 
-  public void setSubmissionLocation(String submissionLocation) {
-    this.submissionLocation = submissionLocation;
+  public void setSubmittedLocation(SubmissionData submissionLocation) {
+    this.submittedLocation = submissionLocation;
   }
 
   public Integer getNumberVotes() {

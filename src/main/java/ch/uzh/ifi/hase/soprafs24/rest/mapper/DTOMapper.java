@@ -61,7 +61,7 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "submissionTimeSeconds", target = "submissionTimeSeconds")
-    @Mapping(source = "submissionLocation", target = "submissionLocation")
+    @Mapping(source = "submittedLocation", target = "submittedLocation")
     @Mapping(source = "numberVotes", target = "numberVotes")
     @Mapping(source = "numberBanVotes", target = "numberBanVotes")
     @Mapping(source = "awardedPoints", target = "awardedPoints")

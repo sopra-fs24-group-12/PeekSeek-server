@@ -156,7 +156,6 @@ public class GameService {
 
         Round currentRound = game.getRounds().get(game.getCurrentRound());
         currentRound.addSubmission(submission);
-
     }
 
     public void postVoting(Long gameId, String token, VotingPostDTO votingPostDTO) {
