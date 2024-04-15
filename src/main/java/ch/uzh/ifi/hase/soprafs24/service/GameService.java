@@ -251,7 +251,7 @@ public class GameService {
         }
 
         Participant participant = game.getParticipantByToken(token);
-        for(Long submissionId : votingPostDTO.getVotes().keySet()){
+        for (Long submissionId : votingPostDTO.getVotes().keySet()){
             Submission submission = round.getSubmissions().get(submissionId);
             // TODO: change code if automatic submission implemented
             if (submission == null) {
@@ -370,15 +370,15 @@ public class GameService {
 
     private void startVoting(Round round, Long gameId) {
         handleMissingSubmissions(round, gameId);
-        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         round.setRoundStatus(RoundStatus.VOTING);
+        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         startTimer(round, gameId);
     }
 
     private void startSummary(Round round, Long gameId) {
-        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
         awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
+        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
         startTimer(round, gameId);
     }
 
