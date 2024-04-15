@@ -148,6 +148,7 @@ public class GameService {
             websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
             game.setGameStatus(GameStatus.SUMMARY);
             GameRepository.deleteGame(gameId);
+            return;
         }
 
         game.setCurrentRound(currentRoundIdx + 1);
@@ -178,6 +179,7 @@ public class GameService {
                     round.getWinningSubmission().getSubmittedLocation().getLng()));
             quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
             quest.setSummary(summary);
+            quest.setImage(round.getWinningSubmission().getImage());
             winningSubmissions.add(quest);
         }
 
@@ -285,6 +287,7 @@ public class GameService {
         submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); //TODO: Check sorting order
         Submission winningSubmission = submissions.get(0);
         List<Submission> winningSubmissions = new ArrayList<>();
+        winningSubmissions.add(winningSubmission);
         if (submissions.size() > 1){
             for (Submission submission : submissions){
                 if (Objects.equals(submission.getNumberVotes(), winningSubmission.getNumberVotes())){
@@ -365,6 +368,7 @@ public class GameService {
     }
 
     private void startVoting(Round round, Long gameId) {
+        handleMissingSubmissions(round, gameId);
         websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         round.setRoundStatus(RoundStatus.VOTING);
         startTimer(round, gameId);
@@ -392,6 +396,37 @@ public class GameService {
         }
         else if (status == RoundStatus.SUMMARY) {
             endRound(round, gameId);
+        }
+    }
+
+    private void handleMissingSubmissions(Round round, Long gameId) {
+        Game game = GameRepository.getGameById(gameId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
+        }
+
+        Map<String, Participant> participants = game.getParticipants();
+
+        for (Participant participant : participants.values()) {
+            if (!participant.getHasSubmitted()) {
+                SubmissionData submissionData = new SubmissionData();
+                submissionData.setLat("47.3768866");
+                submissionData.setLng("8.541694");
+                submissionData.setPitch("50");
+                submissionData.setHeading("50");
+
+                Submission emptySubmission = new Submission();
+                try {
+                    emptySubmission.setImage(StreetviewImageDownloader.retrieveStreetViewImage(submissionData));
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                emptySubmission.setToken(participant.getToken());
+                emptySubmission.setNoSubmission(true);
+                emptySubmission.setSubmittedLocation(submissionData);
+                round.addSubmission(emptySubmission);
+            }
         }
     }
 

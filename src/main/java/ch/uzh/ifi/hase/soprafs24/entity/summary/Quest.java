@@ -18,6 +18,16 @@ public class Quest {
 
     private String link;
 
+    private byte[] image;
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }

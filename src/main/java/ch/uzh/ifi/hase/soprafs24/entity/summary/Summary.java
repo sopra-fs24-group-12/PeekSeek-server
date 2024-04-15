@@ -13,8 +13,6 @@ public class Summary {
 
     private int roundsPlayed;
 
-    private String image;
-
     @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
     private List<Quest> quests;
 
@@ -43,14 +41,6 @@ public class Summary {
 
     public void setRoundsPlayed(int roundsPlayed) {
         this.roundsPlayed = roundsPlayed;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public List<Quest> getQuests() {

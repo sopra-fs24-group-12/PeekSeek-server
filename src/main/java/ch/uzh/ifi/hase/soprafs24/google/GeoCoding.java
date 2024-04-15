@@ -32,6 +32,7 @@ public class GeoCoding {
 
     @Value("${api.key}")
     public void setApiKey(String apiKey) {
+        System.out.println(apiKey);
         GeoCoding.apiKey = apiKey;
     }
 

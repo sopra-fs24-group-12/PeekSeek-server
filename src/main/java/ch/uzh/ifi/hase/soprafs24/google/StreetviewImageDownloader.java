@@ -2,15 +2,19 @@ package ch.uzh.ifi.hase.soprafs24.google;
 
 import ch.uzh.ifi.hase.soprafs24.entity.SubmissionData;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Service
+@Transactional
+@PropertySource("classpath:secrets.properties")
 public class StreetviewImageDownloader {
     private static String apiKey;
 
@@ -31,14 +35,11 @@ public class StreetviewImageDownloader {
 
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream inputStream = connection.getInputStream();
-            BufferedImage image = ImageIO.read(inputStream);
             inputStream.close();
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ImageIO.write(image, "jpg", outputStream);
-            byte[] imageBytes = outputStream.toByteArray();
 
-            return imageBytes;
+            return outputStream.toByteArray();
         } else {
             throw new IOException("Failed to retrieve image. HTTP error code: " + connection.getResponseCode());
         }
