@@ -65,7 +65,7 @@ public class GeoCoding {
                 coordinates_zurich.setFormAddress(formattedAddress);
             } else {
                 // Use default coordinates if location not found
-                coordinates_zurich.setLocation("Zurich");
+                coordinates_zurich.setLocation("zurich");
                 coordinates_zurich.setLat("47.3768866");
                 coordinates_zurich.setLng("8.541694");
                 coordinates_zurich.setResLatNe("47.434665");
