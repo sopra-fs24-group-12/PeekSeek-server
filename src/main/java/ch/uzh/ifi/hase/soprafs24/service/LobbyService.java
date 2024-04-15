@@ -37,7 +37,7 @@ public class LobbyService {
         this.geoCodingDataRepository = geoCodingDataRepository;
     }
 
-    public Long createLobby(String name, String password) {
+    public Lobby createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
         // TODO: empty password (no password)
 
@@ -47,7 +47,7 @@ public class LobbyService {
 
         LobbyRepository.addLobby(createdLobby);
 
-        return createdLobby.getId();
+        return createdLobby;
 
     }
 
@@ -155,7 +155,18 @@ public class LobbyService {
             lobby.setGameLocationCoordinates(locationInDatabase);
             lobby.setGameLocation(locationInDatabase.getFormAddress());
         } else {
-            GeoCodingData coordinates = GeoCoding.getGameCoordinates(lobbyPutDTO.getGameLocation().toLowerCase());
+            GeoCodingData coordinates = new GeoCodingData();
+            GeoCodingData returnedCoordinates = GeoCoding.getGameCoordinates(lobbyPutDTO.getGameLocation().toLowerCase());
+
+            coordinates.setLocation(returnedCoordinates.getLocation());
+            coordinates.setLat(returnedCoordinates.getLat());
+            coordinates.setLng(returnedCoordinates.getLng());
+            coordinates.setFormAddress(returnedCoordinates.getFormAddress());
+            coordinates.setResLatNe(returnedCoordinates.getResLatNe());
+            coordinates.setResLngNe(returnedCoordinates.getResLngNe());
+            coordinates.setResLngSw(returnedCoordinates.getResLngSw());
+            coordinates.setResLatSw(returnedCoordinates.getResLatSw());
+
             coordinates = geoCodingDataRepository.save(coordinates);
             geoCodingDataRepository.flush();
             lobby.setGameLocationCoordinates(coordinates);
