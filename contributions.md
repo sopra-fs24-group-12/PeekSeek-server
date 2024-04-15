@@ -130,6 +130,23 @@ Record of contributions made to the project and corresponding tasks
 ### Nils
 
 ### Youssef
+- Fix getLeaderboard endpoint and its corresponding service and DTO
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/96)
+- Understanding testing environment and its functionalities and Setting it up
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/116)
+- Adding tests for participant- and lobbyDTOMapper
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/117)
+- Add test for LobbyRepository
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/118)
+- Add test for GameRepository
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/119)
+- Add test for GameToGameGetDTO
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/130)
+- Add test for ParticipantToParticipantGetDTO
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/131)
+- Add test for GameController
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/114)
+
 
 ---
 
