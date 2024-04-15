@@ -14,7 +14,6 @@ import java.net.URL;
 
 @Service
 @Transactional
-@PropertySource("classpath:secrets.properties")
 public class StreetviewImageDownloader {
     private static String apiKey;
 

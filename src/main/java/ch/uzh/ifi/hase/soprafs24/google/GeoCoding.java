@@ -25,7 +25,6 @@ import java.util.Objects;
 
 @Service
 @Transactional
-@PropertySource("classpath:secrets.properties")
 public class GeoCoding {
 
     private static String apiKey;
