@@ -7,7 +7,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.RoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
@@ -50,7 +50,7 @@ public interface DTOMapper {
     @Mapping(source = "game.numberRounds", target = "numberRounds")
     @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
     @Mapping(source = "round.roundStatus", target = "roundStatus")
-    GameRoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
+    RoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
     @Mapping(source = "id", target = "id")
     //@Mapping(source = "participants", target = "participants")
@@ -68,9 +68,10 @@ public interface DTOMapper {
     @Mapping(source = "numberBanVotes", target = "numberBanVotes")
     @Mapping(source = "awardedPoints", target = "awardedPoints")
     SubmissionGetDTO convertSubmissionToSubmissionGetDTO(Submission submission);
+
     @Mapping(source = "username", target = "username")
     @Mapping(source = "score", target = "score")
     @Mapping(source = "streak", target = "streak")
-    @Mapping(source = "position", target = "position")
+    //@Mapping(source = "position", target = "position")
     @Mapping(source = "id", target = "id")
     LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);}

@@ -3,10 +3,8 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
-import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.GameRoundGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.RoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
@@ -31,8 +29,8 @@ public class GameController {
     @GetMapping("/games/{id}/round")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameRoundGetDTO getRoundInformation(@PathVariable Long id,
-                                               @RequestHeader(value = "Authorization", required = false) String token) {
+    public RoundGetDTO getRoundInformation(@PathVariable Long id,
+                                           @RequestHeader(value = "Authorization", required = false) String token) {
         Round currentRound = gameService.getRoundInformation(token, id);
         Game game = gameService.getGameInformation(token, id);
         return DTOMapper.INSTANCE.convertRoundToGameRoundGetDTO(currentRound,game);
@@ -111,8 +109,6 @@ public class GameController {
         List<Participant> participants = gameService.getLeaderboard(token, id);
         for (Participant participant : participants) {
             leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
-            // TODO: probably redundant
-            leaderboard.get(participants.indexOf(participant)).setPosition(participants.indexOf(participant));
         }
         return leaderboard;
     }

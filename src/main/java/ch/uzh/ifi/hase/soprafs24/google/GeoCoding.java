@@ -9,12 +9,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+import org.json.JSONString;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -45,8 +47,8 @@ public class GeoCoding {
       // Parse JSON response
       JSONObject jsonResponse = new JSONObject(response.toString());
       JSONArray results = jsonResponse.getJSONArray("results");
-      JSONArray status = jsonResponse.getJSONArray("status"); // TODO: Check if status is OK
-      if (status.getString(0) == "OK" && results.length() > 0) {
+      String status = jsonResponse.getString("status"); // TODO: Check if status is OK
+      if (Objects.equals(status, "OK") && results.length() > 0) {
         JSONObject locationCoords = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
         JSONObject restrictionsNe = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("viewport").getJSONObject("northeast");
         JSONObject restrictionsSw = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("viewport").getJSONObject("southwest");

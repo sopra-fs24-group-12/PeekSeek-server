@@ -85,7 +85,7 @@ public class GameService {
         }
 
         List<String> quests = lobby.getQuests();
-        if (quests.isEmpty()) {
+        if (quests == null || quests.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "You need to have at least one quest to start the game");
         }

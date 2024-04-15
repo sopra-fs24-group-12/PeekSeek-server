@@ -109,7 +109,8 @@ public class LobbyController {
                                     @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
         websocketService.sendMessage("/topic/lobby/" + id,
-                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(), lobby.getGameLocationCoordinates(), lobby.getQuests()));
+                new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(),
+                        lobby.getGameLocationCoordinates(), lobby.getQuests()));
     }
 
     @PostMapping("/lobbies/{id}/start")
