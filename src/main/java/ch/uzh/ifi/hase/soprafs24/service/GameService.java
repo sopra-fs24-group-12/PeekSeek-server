@@ -137,6 +137,7 @@ public class GameService {
 
             for (Participant participant : participants.values()) {
                 participant.setHasSubmitted(false);
+                participant.setHasVoted(false);
             }
         }
 
@@ -251,6 +252,11 @@ public class GameService {
         }
 
         Participant participant = game.getParticipantByToken(token);
+
+        if (participant.getHasVoted()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already voted in this round");
+        }
+
         for (Long submissionId : votingPostDTO.getVotes().keySet()){
             Submission submission = round.getSubmissions().get(submissionId);
             // TODO: change code if automatic submission implemented
@@ -266,6 +272,7 @@ public class GameService {
                 submission.setNumberBanVotes(submission.getNumberBanVotes() + 1);
             }
         }
+        participant.setHasVoted(true);
     }
 
     private static int getSubmissionTime(Participant participant, Round round) {
