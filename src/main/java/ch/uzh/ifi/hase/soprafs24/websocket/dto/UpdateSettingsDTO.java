@@ -2,16 +2,23 @@ package ch.uzh.ifi.hase.soprafs24.websocket.dto;
 
 import java.util.List;
 
+import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
+import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
+
 public class UpdateSettingsDTO {
     private String status = "update";
     private String gameLocation;
     private Integer roundDurationSeconds;
+    private GeoCodingData gameLocationCoordinates;
     private List<String> quests;
 
-    public UpdateSettingsDTO(String gameLocation, Integer roundDurationSeconds, List<String> quests) {
+    public UpdateSettingsDTO(String gameLocation, Integer roundDurationSeconds, GeoCodingData gameLocationCoordinates,
+                             List<String> quests) {
         this.gameLocation = gameLocation;
         this.roundDurationSeconds = roundDurationSeconds;
+        this.gameLocationCoordinates = gameLocationCoordinates;
         this.quests = quests;
+        
     }
 
     public String getStatus() {
@@ -36,6 +43,14 @@ public class UpdateSettingsDTO {
 
     public void setRoundDurationSeconds(Integer roundDurationSeconds) {
         this.roundDurationSeconds = roundDurationSeconds;
+    }
+
+    public GeoCodingData getGameLocationCoordinates() {
+        return gameLocationCoordinates;
+    }
+
+    public void setGameLocationCoordinates(GeoCodingData gameLocationCoordinates) {
+        this.gameLocationCoordinates = gameLocationCoordinates;
     }
 
     public List<String> getQuests() {

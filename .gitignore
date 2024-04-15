@@ -41,4 +41,7 @@ local.properties
 
 .vscode
 
+**/secrets.properties
+.env
+
 /bin

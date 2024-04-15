@@ -4,6 +4,6 @@ public enum RoundStatus {
     PREPARED,
     PLAYING,
     VOTING,
-    FINISHED,
-    SUMMARY
+    SUMMARY,
+    FINISHED
 }

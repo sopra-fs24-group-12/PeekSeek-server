@@ -1,10 +1,17 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.Submission;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.RoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.ParticipantGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,12 +38,40 @@ public interface DTOMapper {
     LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "isAdmin", target = "admin")
+    @Mapping(source = "admin", target = "admin")
     @Mapping(source = "score", target = "score")
     @Mapping(source = "streak", target = "streak")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "leftGame", target = "leftGame")
     ParticipantGetDTO convertParticipantToParticipantGetDTO(Participant participant);
 
+    @Mapping(source = "round.quest", target = "quest")
+    @Mapping(source = "game.currentRound", target = "currentRound")
+    @Mapping(source = "game.numberRounds", target = "numberRounds")
+    @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
+    @Mapping(source = "round.roundStatus", target = "roundStatus")
+    RoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
-}
+    @Mapping(source = "id", target = "id")
+    //@Mapping(source = "participants", target = "participants")
+    @Mapping(source = "roundDurationSeconds", target = "roundDurationSeconds")
+    @Mapping(source = "gameLocation", target = "gameLocation")
+    @Mapping(source = "currentRound", target = "currentRound")
+    @Mapping(source = "numberRounds", target = "numberRounds")
+    @Mapping(source = "adminId", target = "adminId")
+    GameGetDTO convertGameToGameGetDTO(Game game);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "submissionTimeSeconds", target = "submissionTimeSeconds")
+    @Mapping(source = "submittedLocation", target = "submittedLocation")
+    @Mapping(source = "numberVotes", target = "numberVotes")
+    @Mapping(source = "numberBanVotes", target = "numberBanVotes")
+    @Mapping(source = "awardedPoints", target = "awardedPoints")
+    SubmissionGetDTO convertSubmissionToSubmissionGetDTO(Submission submission);
+
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "score", target = "score")
+    @Mapping(source = "streak", target = "streak")
+    //@Mapping(source = "position", target = "position")
+    @Mapping(source = "id", target = "id")
+    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);}

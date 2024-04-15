@@ -1,0 +1,103 @@
+
+# Contribution History
+
+Record of contributions made to the project and the corresponding GitHub commit links.
+
+---
+
+## Week 1: [25.03. - 31.03]
+
+### Georg
+- Basic file setup
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/822d549c800364a12b50eb4da0f124f95125748d)
+- Basic websocket setup
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/21cfb8c3afb6872fb0336a681977beb5a6555526)
+- Entity setup for database relations
+  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d89a66d8c4649870407565c01184881c1b147ae4)
+- Lobby controller and service methods for all main functions
+  - [Creating lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/28fe2b268f4fcebc9fde93f145d1975669b21941)
+  - [Get all existing lobbies](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/c30c667b1c91733a2d8bcfc5c9ad7c8e06569a4e)
+  - [Join lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/b8b473c2bd6af270eebbc75b4917d3804f200770)
+  - [Update lobby settings](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/f96f1eef550b617c3a99df46e2369eb44389c9d8)
+  - [Get information about specific lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bdca5239dae7ba3f17f7cdf2215ef59d3097aec7)
+  - [Leave lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/8954e0ed533dfd0276d7251d03ff7f75ee848602)
+  - [Start game](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/215720e1500dbdc0812f09be584d36daa473e0bf)
+### Silvan
+
+### Ece
+
+### Nils
+
+### Youssef
+
+---
+
+## Week 2, 3: [01.04. - 14.04]
+
+### Georg
+
+### Silvan
+
+### Ece
+
+### Nils
+
+### Youssef
+
+---
+
+## Week 4: [15.04. - 21.04]
+
+### Georg
+
+### Silvan
+
+### Ece
+
+### Nils
+
+### Youssef
+
+---
+
+## Week 5: [22.04. - 28.04]
+
+### Georg
+
+### Silvan
+
+### Ece
+
+### Nils
+
+### Youssef
+
+
+
+
+
+
+
+
+=======
+# Contributions File
+
+Development Tasks done by week and member.
+
+---
+## 26.03.-09.04.
+
+### Frontend:
+#### Silvan Schlegel
+- [x] Setup NextUI on Client-Template
+- [x] Create UI for Game Submission Rating
+- [x] Create UI for Voting Results
+- [x] Create UI for Timer
+- [x] Create UI for Leaderboard
+- [x] Create UI for Submission Card and Winning Card
+- [x] Create Basic Skeleton for Chat
+
+### Backend:
+
+---
+

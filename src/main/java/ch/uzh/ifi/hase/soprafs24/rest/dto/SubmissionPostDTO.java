@@ -1,39 +1,37 @@
-package ch.uzh.ifi.hase.soprafs24.entity;
+package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
-public class SubmissionData {
+public class SubmissionPostDTO {
     private String lat;
     private String lng;
     private String heading;
     private String pitch;
 
-    public String getHeading() {
-        return heading;
-    }
-
     public String getLat() {
         return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
     public String getLng() {
         return lng;
     }
 
-    public String getPitch() {
-        return pitch;
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getHeading() {
+        return heading;
     }
 
     public void setHeading(String heading) {
         this.heading = heading;
     }
 
-    public void setLat(String lat) {
-        this.lat = lat;}
-
-    public void setLng(String lng) {
-        this.lng = lng;
+    public String getPitch() {
+        return pitch;
     }
 
     public void setPitch(String pitch) {

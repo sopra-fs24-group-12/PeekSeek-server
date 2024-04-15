@@ -3,19 +3,18 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+
 public class Submission {
     private Integer submissionTimeSeconds;
     private SubmissionData submittedLocation;
-    private Integer numberVotes;
-    private Integer awardedPoints;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer numberVotes = 0;
+    private Integer numberBanVotes = 0;
+    private Integer awardedPoints = 0;
     private Long id;
-    @JoinColumn(name = "participant_id")
-    private Long participant;
-    @JoinColumn(name = "round_id")
-    private Long round;
+    private String token;
+    private boolean noSubmission = false; // if the user clicked on "Can`t find that"
+
+    private byte[] image;
 
     public Integer getSubmissionTimeSeconds() {
         return submissionTimeSeconds;
@@ -41,6 +40,14 @@ public class Submission {
         this.numberVotes = numberVotes;
     }
 
+    public Integer getNumberBanVotes() {
+        return numberBanVotes;
+    }
+
+    public void setNumberBanVotes(Integer numberBanVotes) {
+        this.numberBanVotes = numberBanVotes;
+    }
+
     public Integer getAwardedPoints() {
         return awardedPoints;
     }
@@ -57,19 +64,28 @@ public class Submission {
         this.id = id;
     }
 
-    public Long getParticipant() {
-        return participant;
+    public String getToken() {
+        return token;
     }
 
-    public void setParticipant(Long participant) {
-        this.participant = participant;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public Long getRound() {
-        return round;
+    public boolean getNoSubmission() {
+        return noSubmission;
     }
 
-    public void setRound(Long round) {
-        this.round = round;
+    public void setNoSubmission(boolean noSubmission) {
+        this.noSubmission = noSubmission;
+
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

@@ -1,11 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-public class ParticipantGetDTO {
+// TODO: remove id, set fields for previous score etc.
+public class LeaderboardGetDTO {
     private String username;
     private int score;
     private int streak;
-    private Boolean admin;
-    private Boolean leftGame;
+    //private int position;
     private Long id;
 
     public String getUsername() {
@@ -32,21 +32,13 @@ public class ParticipantGetDTO {
         this.streak = streak;
     }
 
-    public Boolean getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
-    }
-
-    public Boolean getLeftGame() {
-        return leftGame;
-    }
-
-    public void setLeftGame(Boolean leftGame) {
-        this.leftGame = leftGame;
-    }
+//    public int getPosition() {
+//        return position;
+//    }
+//
+//    public void setPosition(int position) {
+//        this.position = position;
+//    }
 
     public Long getId() {
         return id;
