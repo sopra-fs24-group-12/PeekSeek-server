@@ -417,11 +417,11 @@ public class GameService {
                 submissionData.setHeading("50");
 
                 Submission emptySubmission = new Submission();
-                try {
-                    emptySubmission.setImage(StreetviewImageDownloader.retrieveStreetViewImage(submissionData));
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+//                try {
+//                    emptySubmission.setImage(StreetviewImageDownloader.retrieveStreetViewImage(submissionData));
+//                } catch (IOException e) {
+//                    System.out.println(e.getMessage());
+//                }
 
                 emptySubmission.setId(Round.submissionCount++);
                 emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
