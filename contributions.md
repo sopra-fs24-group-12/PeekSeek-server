@@ -102,6 +102,8 @@ Record of contributions made to the project and corresponding tasks
 - [x] [UI for GameSummary Page](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/18)
 - [x] [UI List of Winning Submissions for GameSummary](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/19)
 - [x] [Website Background Deployment Fix](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/52)
+- [x] [Added Pick and Ban Buttons to Submission Cards](https://github.com/orgs/sopra-fs24-group-12/projects/2/views/1?pane=issue&itemId=56961333)
+- [x] [Made Submission Images clickable and added hover effect for UX](https://github.com/orgs/sopra-fs24-group-12/projects/2/views/1?pane=issue&itemId=56961333)
 ### Ece
 - Create UI for Lobby Page
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/13)
