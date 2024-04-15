@@ -213,7 +213,9 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already submitted in this round");
         }
 
-        int submissionTime = getSubmissionTime(participant, game);
+        Round currentRound = game.getRounds().get(game.getCurrentRound());
+
+        int submissionTime = getSubmissionTime(participant, currentRound);
 
         Submission submission = new Submission();
         participant.setHasSubmitted(true);
@@ -226,12 +228,12 @@ public class GameService {
 
         byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
 
+        submission.setId(Round.submissionCount++);
         submission.setImage(image);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
 
-        Round currentRound = game.getRounds().get(game.getCurrentRound());
         currentRound.addSubmission(submission);
     }
 
@@ -266,12 +268,11 @@ public class GameService {
         }
     }
 
-    private static int getSubmissionTime(Participant participant, Game game) {
+    private static int getSubmissionTime(Participant participant, Round round) {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
         }
 
-        Round round = game.getRounds().get(game.getCurrentRound());
         if (round.getRoundStatus() != RoundStatus.PLAYING) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the submission phase");
         }
@@ -422,6 +423,8 @@ public class GameService {
                     System.out.println(e.getMessage());
                 }
 
+                emptySubmission.setId(Round.submissionCount++);
+                emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
                 emptySubmission.setToken(participant.getToken());
                 emptySubmission.setNoSubmission(true);
                 emptySubmission.setSubmittedLocation(submissionData);
