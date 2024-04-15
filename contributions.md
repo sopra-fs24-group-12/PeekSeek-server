@@ -99,7 +99,9 @@ Record of contributions made to the project and corresponding tasks
 ### Georg
 
 ### Silvan
-
+- [x] [UI for GameSummary Page](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/18)
+- [x] [UI List of Winning Submissions for GameSummary](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/19)
+- [x] [Website Background Deployment Fix](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/52)
 ### Ece
 - Create UI for Lobby Page
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/13)
