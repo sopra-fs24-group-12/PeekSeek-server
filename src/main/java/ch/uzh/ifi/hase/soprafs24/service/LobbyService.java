@@ -11,6 +11,8 @@ import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GeoCodingGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,12 @@ import java.io.IOException;
 @Service
 @Transactional
 public class LobbyService {
+    private final GeoCodingDataRepository geoCodingDataRepository;
+
+    @Autowired
+    public LobbyService(@Qualifier("geoCodingDataRepository") GeoCodingDataRepository geoCodingDataRepository) {
+        this.geoCodingDataRepository = geoCodingDataRepository;
+    }
 
     public Long createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
@@ -141,11 +149,17 @@ public class LobbyService {
         if (lobbyPutDTO.getGameLocation() != null) {
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
-        if(locationIfAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
-            lobby.setGameLocationCoordinates(locationIfAlreadyCalled(lobbyPutDTO.getGameLocation()));
+
+        GeoCodingData locationInDatabase = locationIfAlreadyCalled(lobbyPutDTO.getGameLocation());
+        if (locationInDatabase != null) {
+            lobby.setGameLocationCoordinates(locationInDatabase);
+            lobby.setGameLocation(locationInDatabase.getFormAddress());
         } else {
-            GeoCodingData coordinates = GeoCoding.getGameCoordinates(lobbyPutDTO.getGameLocation());
+            GeoCodingData coordinates = GeoCoding.getGameCoordinates(lobbyPutDTO.getGameLocation().toLowerCase());
+            coordinates = geoCodingDataRepository.save(coordinates);
+            geoCodingDataRepository.flush();
             lobby.setGameLocationCoordinates(coordinates);
+            lobby.setGameLocation(coordinates.getFormAddress());
         }
         if (lobbyPutDTO.getQuests() != null) {
             lobby.setQuests(lobbyPutDTO.getQuests());
@@ -229,13 +243,14 @@ public class LobbyService {
 
     public GeoCodingData locationIfAlreadyCalled(String location) throws IOException {
         // check if location is already in the database
-        List<GeoCodingData> lookedUpcoordinates = GeoCodingDataRepository.findAll();
-        for (GeoCodingData geoCodingData : lookedUpcoordinates) {
-            if (geoCodingData.getLocation().toLowerCase().contains(location.toLowerCase())) {
-                return geoCodingData;
-            }
-        }
-        return null;
+//        List<GeoCodingData> lookedUpCoordinates = geoCodingDataRepository.findAll();
+//        for (GeoCodingData geoCodingData : lookedUpCoordinates) {
+//            if (geoCodingData.getLocation().toLowerCase().contains(location.toLowerCase())) {
+//                return geoCodingData;
+//            }
+//        }
+        //return null;
+        return geoCodingDataRepository.findGeoCodingDataByLocation(location);
     }
 
     public void authorizeLobbyAdmin(Lobby lobby, String token) {
