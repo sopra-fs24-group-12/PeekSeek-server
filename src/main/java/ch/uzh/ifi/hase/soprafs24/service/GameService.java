@@ -137,6 +137,7 @@ public class GameService {
 
             for (Participant participant : participants.values()) {
                 participant.setHasSubmitted(false);
+                participant.setHasVoted(false);
             }
         }
 
@@ -213,7 +214,9 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already submitted in this round");
         }
 
-        int submissionTime = getSubmissionTime(participant, game);
+        Round currentRound = game.getRounds().get(game.getCurrentRound());
+
+        int submissionTime = getSubmissionTime(participant, currentRound);
 
         Submission submission = new Submission();
         participant.setHasSubmitted(true);
@@ -226,12 +229,12 @@ public class GameService {
 
         byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
 
+        submission.setId(Round.submissionCount++);
         submission.setImage(image);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
 
-        Round currentRound = game.getRounds().get(game.getCurrentRound());
         currentRound.addSubmission(submission);
     }
 
@@ -249,7 +252,12 @@ public class GameService {
         }
 
         Participant participant = game.getParticipantByToken(token);
-        for(Long submissionId : votingPostDTO.getVotes().keySet()){
+
+        if (participant.getHasVoted()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already voted in this round");
+        }
+
+        for (Long submissionId : votingPostDTO.getVotes().keySet()){
             Submission submission = round.getSubmissions().get(submissionId);
             // TODO: change code if automatic submission implemented
             if (submission == null) {
@@ -264,14 +272,14 @@ public class GameService {
                 submission.setNumberBanVotes(submission.getNumberBanVotes() + 1);
             }
         }
+        participant.setHasVoted(true);
     }
 
-    private static int getSubmissionTime(Participant participant, Game game) {
+    private static int getSubmissionTime(Participant participant, Round round) {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
         }
 
-        Round round = game.getRounds().get(game.getCurrentRound());
         if (round.getRoundStatus() != RoundStatus.PLAYING) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the submission phase");
         }
@@ -369,15 +377,15 @@ public class GameService {
 
     private void startVoting(Round round, Long gameId) {
         handleMissingSubmissions(round, gameId);
-        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         round.setRoundStatus(RoundStatus.VOTING);
+        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         startTimer(round, gameId);
     }
 
     private void startSummary(Round round, Long gameId) {
-        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
         awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
+        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
         startTimer(round, gameId);
     }
 
@@ -416,12 +424,14 @@ public class GameService {
                 submissionData.setHeading("50");
 
                 Submission emptySubmission = new Submission();
-                try {
-                    emptySubmission.setImage(StreetviewImageDownloader.retrieveStreetViewImage(submissionData));
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+//                try {
+//                    emptySubmission.setImage(StreetviewImageDownloader.retrieveStreetViewImage(submissionData));
+//                } catch (IOException e) {
+//                    System.out.println(e.getMessage());
+//                }
 
+                emptySubmission.setId(Round.submissionCount++);
+                emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
                 emptySubmission.setToken(participant.getToken());
                 emptySubmission.setNoSubmission(true);
                 emptySubmission.setSubmittedLocation(submissionData);

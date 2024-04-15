@@ -34,12 +34,13 @@ public class LobbyController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
+    public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
                                                    HttpServletResponse response) {
-        Long id = lobbyService.createLobby(lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
-        String token = lobbyService.joinLobby(id, lobbyPostDTO.getUsername(), lobbyPostDTO.getPassword());
+        Lobby lobby = lobbyService.createLobby(lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
+        String token = lobbyService.joinLobby(lobby.getId(), lobbyPostDTO.getUsername(), lobbyPostDTO.getPassword());
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
         response.setHeader("Authorization", token);
+        return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
     }
 
     @GetMapping("/lobbies")
