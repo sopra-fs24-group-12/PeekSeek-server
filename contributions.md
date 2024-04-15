@@ -122,10 +122,18 @@ Record of contributions made to the project and corresponding tasks
 - [x] [Website Background Deployment Fix](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/52)
 - [x] [Added Pick and Ban Buttons to Submission Cards](https://github.com/orgs/sopra-fs24-group-12/projects/2/views/1?pane=issue&itemId=56961333)
 - [x] [Made Submission Images clickable and added hover effect for UX](https://github.com/orgs/sopra-fs24-group-12/projects/2/views/1?pane=issue&itemId=56961333)
+
 ### Ece
-- Create UI for Lobby Page
-    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/13)
+- Created UI for Lobby Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/14)
+- Created input component for quests
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/12)
+- Created autocomplete input component for destination
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/13)
+ - Implemented logic for players joining lobby
+     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/6)
+- Created UI for Join User Page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/64)
 
 ### Nils
 
