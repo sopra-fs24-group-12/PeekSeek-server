@@ -11,6 +11,10 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 import org.json.JSONString;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,12 +25,19 @@ import java.util.Objects;
 
 @Service
 @Transactional
+@PropertySource("classpath:secrets.properties")
 public class GeoCoding {
+
+    private static String apiKey;
+
+    @Value("${api.key}")
+    public void setApiKey(String apiKey) {
+        GeoCoding.apiKey = apiKey;
+    }
 
     static GeoCodingData coordinates_zurich = new GeoCodingData();
 
     public static GeoCodingData getGameCoordinates(String location) throws IOException {
-        String apiKey = ""; // TODO: API key from .env file
         String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=" + apiKey; // GeoCoding does an autocomplete/correction. e.g. "zÜrI" -> "Zurich, Switzerland" + coordinates
 
 

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.google;
 
 import ch.uzh.ifi.hase.soprafs24.entity.SubmissionData;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,8 +12,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class StreetviewImageDownloader {
+    private static String apiKey;
+
+    @Value("${api.key}")
+    public void setApiKey(String apiKey) {
+        StreetviewImageDownloader.apiKey = apiKey;
+    }
+
+
     public static byte[] retrieveStreetViewImage(SubmissionData submissionData) throws IOException {
-        String apiKey = ""; // TODO: API key from .env file
         String urlString = "https://maps.googleapis.com/maps/api/streetview?size=600x400&location=" +
                 submissionData.getLat() + "," + submissionData.getLng() + "&heading=" + submissionData.getHeading() +
                 "&pitch=" + submissionData.getPitch() + "&key=" + apiKey;
