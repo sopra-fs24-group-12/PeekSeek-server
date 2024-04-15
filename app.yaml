@@ -2,6 +2,7 @@
 # https://cloud.google.com/appengine/docs/standard
 
 runtime: java
+instance_class: F1
 env: flex
 
 automatic_scaling:
@@ -10,3 +11,9 @@ automatic_scaling:
 runtime_config:
   operating_system: "ubuntu22"
   runtime_version: "17"
+
+network:
+  session_affinity: true
+
+readiness_check:
+  app_start_timeout_sec: 1800
