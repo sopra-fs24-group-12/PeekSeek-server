@@ -39,9 +39,9 @@ hs_err_pid*
 # don't track the local.properties -> contains secrets
 local.properties
 
+application.properties
+
 .vscode
 
-**/secrets.properties
-.env
 
 /bin
