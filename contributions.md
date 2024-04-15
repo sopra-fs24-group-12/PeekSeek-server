@@ -97,7 +97,25 @@ Record of contributions made to the project and corresponding tasks
 ## Week 3: [09.04. - 16.04]
 
 ### Georg
-
+- Store the game summary in the database to be able to retrieve it after a game is done
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/122)
+- Handle transitions within a round correctly and send websocket messages to all participants
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/127)
+- Reset the lobby for re-use so that participants can join an already set up lobby 
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/123)
+- Deal with the case when an admin is leaving the lobby
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/124)
+- After last round is over, correctly transfer to the game summary and close game
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/126)
+- Add authorization mechanism to game service methods
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/128)
+- Adjust configuration and test websockets when deployed
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/136)
+- Rework persistence for coordinates used in the game
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/137)
+- Go through sample use cases and fix bugs 
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/138)
+      
 ### Silvan
 - [x] [UI for GameSummary Page](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/18)
 - [x] [UI List of Winning Submissions for GameSummary](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/19)
