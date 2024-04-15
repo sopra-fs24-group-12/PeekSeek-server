@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 
-public class GameRoundGetDTO {
+public class RoundGetDTO {
     private String quest;
     private Integer currentRound;
     private Integer numberRounds;

@@ -12,7 +12,7 @@ public class Submission {
     private Integer awardedPoints = 0;
     private Long id;
     private String token;
-    private boolean noSubmission = false;
+    private boolean noSubmission = false; // if the user clicked on "Can`t find that"
 
     private byte[] image;
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
 
 public class Lobby {
     private Long id;
@@ -13,7 +12,7 @@ public class Lobby {
     private String password;
     private Integer roundDurationSeconds = 60;
     private String gameLocation = "Zürich";
-    private List<String> gameLocationCoordinates;
+    private GeoCodingData gameLocationCoordinates;
     private Integer maxParticipants = 6; //TODO: don't hardcode
     private Integer joinedParticipants = 0;
     private List<String> quests;
@@ -25,6 +24,13 @@ public class Lobby {
 
     public Lobby() {
         this.id = id_count++;
+    }
+
+    public void resetLobby() {
+        participants.clear();
+        usernames.clear();
+        setReUsed(true);
+        setJoinedParticipants(0);
     }
 
     public void addParticipant(Participant participant) {
@@ -85,11 +91,11 @@ public class Lobby {
         this.gameLocation = gameLocation;
     }
 
-    public List<String> getGameLocationCoordinates() {
+    public GeoCodingData getGameLocationCoordinates() {
         return gameLocationCoordinates;
     }
 
-    public void setGameLocationCoordinates(List<String> gameLocationCoordinates) {
+    public void setGameLocationCoordinates(GeoCodingData gameLocationCoordinates) {
         this.gameLocationCoordinates = gameLocationCoordinates;
     }
 

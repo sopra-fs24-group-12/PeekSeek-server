@@ -1,28 +1,45 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+//TODO: Websocket for checking if user left game/lobby
+//TODO: Protect websockets?
 
+import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GeoCodingGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
-import ch.uzh.ifi.hase.soprafs24.service.APIService;
+import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.UUID;
 
+import java.io.IOException;
+
 @Service
 @Transactional
 public class LobbyService {
+    private final GeoCodingDataRepository geoCodingDataRepository;
+
+    @Autowired
+    public LobbyService(@Qualifier("geoCodingDataRepository") GeoCodingDataRepository geoCodingDataRepository) {
+        this.geoCodingDataRepository = geoCodingDataRepository;
+    }
 
     public Long createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
+        // TODO: empty password (no password)
 
         Lobby createdLobby = new Lobby();
         createdLobby.setName(name);
@@ -38,9 +55,9 @@ public class LobbyService {
         return LobbyRepository.findAll();
     }
 
-    public Map<String, List<String>> getAllLobbyLocationsWithCoordinates() {
+    public Map<String, GeoCodingData> getAllLobbyLocationsWithCoordinates() {
         List<Lobby> lobbies = getAllLobbies();
-        Map<String, List<String>> locationCoordinates = new HashMap<>();
+        Map<String, GeoCodingData> locationCoordinates = new HashMap<>();
         for (Lobby lobby : lobbies) {
             locationCoordinates.put(lobby.getGameLocation(), lobby.getGameLocationCoordinates());
         }
@@ -56,6 +73,7 @@ public class LobbyService {
         return new ArrayList<>(lobby.getParticipants().values());
     }
 
+    // TODO: maybe protect for only participants (low priority)
     public Lobby getSpecificLobby(Long id) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -64,6 +82,7 @@ public class LobbyService {
         return lobby;
     }
 
+    // TODO: empty password/no password
     public String joinLobby(Long id, String username, String password) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -91,7 +110,7 @@ public class LobbyService {
         return participant.getToken();
     }
 
-    public String leaveLobby(Long id, String token) {
+    public List<String> leaveLobby(Long id, String token) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
@@ -100,31 +119,47 @@ public class LobbyService {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A participant with this token does not exist");
         }
-        if (participant.getId().equals(lobby.getAdminId())) {
-            // TODO: handle case where admin leaves the lobby
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The admin cannot leave the lobby");
-        }
-        String username = participant.getUsername();
-        lobby.removeParticipant(token);
 
-        return username;
+        String username = participant.getUsername();
+        String newAdminUsername = null;
+
+        if (participant.getAdmin()) {
+            lobby.removeParticipant(token);
+            Participant newAdmin = lobby.getParticipants().entrySet().iterator().next().getValue();
+            lobby.setAdminId(newAdmin.getId());
+            newAdmin.setAdmin(true);
+            newAdminUsername = newAdmin.getUsername();
+        } else {
+            lobby.removeParticipant(token);
+        }
+
+        List<String> usernames = new ArrayList<>();
+        usernames.add(username);
+        usernames.add(newAdminUsername);
+        return usernames;
     }
 
-    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) {
+    // TODO: no lobbyPutDTO as parameter
+    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) throws IOException {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
         }
         authorizeLobbyAdmin(lobby, token);
         if (lobbyPutDTO.getGameLocation() != null) {
-            
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
-        if(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()) != null) {
-            lobby.setGameLocationCoordinates(returnIfLocationAlreadyCalled(lobbyPutDTO.getGameLocation()));
+
+        GeoCodingData locationInDatabase = locationIfAlreadyCalled(lobbyPutDTO.getGameLocation());
+        if (locationInDatabase != null) {
+            lobby.setGameLocationCoordinates(locationInDatabase);
+            lobby.setGameLocation(locationInDatabase.getFormAddress());
         } else {
-            List<String> coordinates = APIService.getGameCoordinates(lobbyPutDTO.getGameLocation());
+            GeoCodingData coordinates = GeoCoding.getGameCoordinates(lobbyPutDTO.getGameLocation().toLowerCase());
+            coordinates = geoCodingDataRepository.save(coordinates);
+            geoCodingDataRepository.flush();
             lobby.setGameLocationCoordinates(coordinates);
+            lobby.setGameLocation(coordinates.getFormAddress());
         }
         if (lobbyPutDTO.getQuests() != null) {
             lobby.setQuests(lobbyPutDTO.getQuests());
@@ -133,6 +168,7 @@ public class LobbyService {
             lobby.setRoundDurationSeconds(lobbyPutDTO.getRoundDurationSeconds());
         }
 
+        // TODO: return list instead of object (in case it is more efficient)
         return lobby;
     }
 
@@ -205,18 +241,23 @@ public class LobbyService {
         }
     }
 
-    public List<String> returnIfLocationAlreadyCalled(String location) {
+    public GeoCodingData locationIfAlreadyCalled(String location) throws IOException {
         // check if location is already in the database
-        List<String> coordinates = getAllLobbyLocationsWithCoordinates().containsKey(location) ?
-                getAllLobbyLocationsWithCoordinates().get(location) : null;
-        return coordinates;
+//        List<GeoCodingData> lookedUpCoordinates = geoCodingDataRepository.findAll();
+//        for (GeoCodingData geoCodingData : lookedUpCoordinates) {
+//            if (geoCodingData.getLocation().toLowerCase().contains(location.toLowerCase())) {
+//                return geoCodingData;
+//            }
+//        }
+        //return null;
+        return geoCodingDataRepository.findGeoCodingDataByLocation(location);
     }
 
     public void authorizeLobbyAdmin(Lobby lobby, String token) {
         Participant admin = lobby.getParticipantByToken(token);
         if (admin == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
-        } else if (!admin.getId().equals(lobby.getAdminId())) {
+        } else if (!admin.getAdmin()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not sufficient permissions");
         }
     }
