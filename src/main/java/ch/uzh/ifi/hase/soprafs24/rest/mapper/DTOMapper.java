@@ -15,6 +15,10 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * DTOMapper
  * This class is responsible for generating classes that will automatically
@@ -36,6 +40,13 @@ public interface DTOMapper {
     @Mapping(source = "maxParticipants", target = "maxParticipants")
     @Mapping(source = "joinedParticipants", target = "joinedParticipants")
     LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
+
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "usernames", target = "participants")
+    @Mapping(source = "quests", target = "quests")
+    @Mapping(source = "gameLocation", target = "gameLocation")
+    @Mapping(source = "gameLocationCoordinates", target = "gameLocationCoordinates")
+    LobbyGetInformationDTO convertLobbyToLobbyGetInformationDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "admin", target = "admin")

@@ -58,9 +58,9 @@ public class LobbyController {
     @GetMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO getLobby(@PathVariable Long id) {
+    public LobbyGetInformationDTO getLobbyInformation(@PathVariable Long id) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
-        return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
+        return DTOMapper.INSTANCE.convertLobbyToLobbyGetInformationDTO(lobby);
     }
 
     @GetMapping("/lobbies/{id}/participants")

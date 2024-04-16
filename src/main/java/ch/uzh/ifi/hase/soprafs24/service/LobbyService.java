@@ -133,6 +133,10 @@ public class LobbyService {
             lobby.removeParticipant(token);
         }
 
+        if (lobby.getJoinedParticipants() == 0 && !lobby.getQuests().isEmpty()) {
+            lobby.resetLobby();
+        }
+
         List<String> usernames = new ArrayList<>();
         usernames.add(username);
         usernames.add(newAdminUsername);
