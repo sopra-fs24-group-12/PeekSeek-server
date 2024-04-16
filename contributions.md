@@ -64,7 +64,6 @@ Record of contributions made to the project and corresponding tasks
   - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/94)
 - Added SubmissionGetDTO and VotingPostDTO (also in DTOMapper)
   - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/20)
-- Added 
 
 ### Youssef
 - Added Submission
