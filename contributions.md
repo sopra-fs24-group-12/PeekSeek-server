@@ -57,19 +57,14 @@ Record of contributions made to the project and corresponding tasks
 
 ### Nils
 - Added voting, getLeaderboard endpoint
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/961f6f84f55eeeac138adff3ebf91f31172ad4b7)
-- Added APIService for GeoCoding-api
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/9da6b21bdfb0db5b843663188893d352e8de432a)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/42)
 - Added functionality to determine winningSubmission, calulatePoints, awardPoints
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/9da6b21bdfb0db5b843663188893d352e8de432a)
-- Changed lobbyService to check DB whether an api request to geoCoding api has already been made
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/9da6b21bdfb0db5b843663188893d352e8de432a)
-- Addded getSubmissions, getWinningSubmissions endpoint
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/41)
+- Added getSubmissions, getWinningSubmissions endpoint, getLeaderboard, postVoting functionality in GameService
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/94)
 - Added SubmissionGetDTO and VotingPostDTO (also in DTOMapper)
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
-- Added getLeaderboard, postVoting functionality in GameService
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/20)
+- Added 
 
 ### Youssef
 - Added Submission
@@ -136,6 +131,18 @@ Record of contributions made to the project and corresponding tasks
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/64)
 
 ### Nils
+
+- Added functionality to GeoCoding API calls
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/100)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/101)
+- Stored coordinates etc. reveiced by GeoCoding in DB
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/102)
+- Implemented functionality for all necessary GoogleMaps API calls in the frontend
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/97)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/98)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/99)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/106)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/110)
 
 ### Youssef
 - Fix getLeaderboard endpoint and its corresponding service and DTO
