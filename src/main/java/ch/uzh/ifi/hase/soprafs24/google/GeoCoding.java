@@ -63,7 +63,7 @@ public class GeoCoding {
             // Parse JSON response
             JSONObject jsonResponse = new JSONObject(response.toString());
             JSONArray results = jsonResponse.getJSONArray("results");
-            String status = jsonResponse.getString("status"); // TODO: Check if status is OK
+            String status = jsonResponse.getString("status");
             if (Objects.equals(status, "OK") && !results.isEmpty()) {
                 JSONObject locationCoords = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
                 JSONObject restrictionsNe = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("viewport").getJSONObject("northeast");

@@ -8,16 +8,11 @@ public class Summary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String cityName;
-
     private int roundsPlayed;
-
     @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
     private List<Quest> quests;
-
     private String password;
-
 
     public Long getId() {
         return id;

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
+import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 
 public class RoundGetDTO {
     private String quest;
@@ -8,6 +9,7 @@ public class RoundGetDTO {
     private Integer numberRounds;
     private RoundStatus roundStatus;
     private Integer remainingSeconds;
+    private GeoCodingData geoCodingData;
 
     public Integer getCurrentRound() {
         return currentRound + 1;
@@ -47,5 +49,13 @@ public class RoundGetDTO {
 
     public void setRemainingSeconds(Integer remainingSeconds) {
         this.remainingSeconds = remainingSeconds;
+    }
+
+    public GeoCodingData getGeoCodingData() {
+        return geoCodingData;
+    }
+
+    public void setGeoCodingData(GeoCodingData geoCodingData) {
+        this.geoCodingData = geoCodingData;
     }
 }

@@ -62,6 +62,7 @@ public interface DTOMapper {
     @Mapping(source = "game.numberRounds", target = "numberRounds")
     @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
     @Mapping(source = "round.roundStatus", target = "roundStatus")
+    @Mapping(source = "round.geoCodingData", target = "geoCodingData")
     RoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
     @Mapping(source = "id", target = "id")
@@ -88,4 +89,5 @@ public interface DTOMapper {
     @Mapping(source = "streak", target = "streak")
     //@Mapping(source = "position", target = "position")
     @Mapping(source = "id", target = "id")
-    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);}
+    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);
+}
