@@ -45,5 +45,3 @@ application.properties
 
 
 /bin
-
-src/main/resources/application.properties
