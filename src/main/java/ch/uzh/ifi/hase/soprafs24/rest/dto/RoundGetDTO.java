@@ -8,6 +8,7 @@ public class RoundGetDTO {
     private Integer currentRound;
     private Integer numberRounds;
     private RoundStatus roundStatus;
+    private Integer roundTime;
     private Integer remainingSeconds;
     private GeoCodingData geoCodingData;
 
@@ -41,6 +42,14 @@ public class RoundGetDTO {
 
     public void setRoundStatus(RoundStatus roundStatus) {
         this.roundStatus = roundStatus;
+    }
+
+    public Integer getRoundTime() {
+        return roundTime;
+    }
+
+    public void setRoundTime(Integer roundTime) {
+        this.roundTime = roundTime;
     }
 
     public Integer getRemainingSeconds() {

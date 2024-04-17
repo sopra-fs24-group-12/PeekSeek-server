@@ -11,6 +11,7 @@ import java.util.Map;
 public class Round {
     private Long id;
     private String quest;
+    private GeoCodingData geoCodingData;
     private int roundTime;
     private int remainingSeconds;
     private RoundStatus roundStatus = RoundStatus.PREPARED;
@@ -36,6 +37,14 @@ public class Round {
 
     public void setQuest(String quest) {
         this.quest = quest;
+    }
+
+    public GeoCodingData getGeoCodingData() {
+        return geoCodingData;
+    }
+
+    public void setGeoCodingData(GeoCodingData geoCodingData) {
+        this.geoCodingData = geoCodingData;
     }
 
     public int getRoundTime() {
