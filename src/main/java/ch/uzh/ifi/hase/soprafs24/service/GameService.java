@@ -99,6 +99,7 @@ public class GameService {
             round.setQuest(quest);
             round.setRoundTime(lobby.getRoundDurationSeconds());
             round.setRemainingSeconds(lobby.getRoundDurationSeconds());
+            round.setGeoCodingData(lobby.getGameLocationCoordinates());
             rounds.add(round);
         }
 
