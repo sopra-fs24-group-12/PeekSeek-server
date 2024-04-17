@@ -10,6 +10,8 @@ public class LobbyGetInformationDTO {
     private List<String> participants;
     private String gameLocation;
     private GeoCodingData gameLocationCoordinates;
+    private Integer RoundDurationSeconds;
+
 
     public String getName() {
         return name;
@@ -49,5 +51,13 @@ public class LobbyGetInformationDTO {
 
     public void setGameLocationCoordinates(GeoCodingData gameLocationCoordinates) {
         this.gameLocationCoordinates = gameLocationCoordinates;
+    }
+
+    public Integer getRoundDurationSeconds() {
+        return RoundDurationSeconds;
+    }
+
+    public void setRoundDurationSeconds(Integer roundDurationSeconds) {
+        RoundDurationSeconds = roundDurationSeconds;
     }
 }

@@ -37,8 +37,12 @@ public class GeoCoding {
 
     static GeoCodingData coordinates_zurich = new GeoCodingData();
 
+    private static String encodeKeyword(String keyword) {
+        return java.net.URLEncoder.encode(keyword, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
     public static GeoCodingData getGameCoordinates(String location) throws IOException {
-        String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=" + apiKey; // GeoCoding does an autocomplete/correction. e.g. "zÜrI" -> "Zurich, Switzerland" + coordinates
+        String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + encodeKeyword(location) + "&key=" + apiKey; // GeoCoding does an autocomplete/correction. e.g. "zÜrI" -> "Zurich, Switzerland" + coordinates
 
 
         URL url = new URL(urlString);
