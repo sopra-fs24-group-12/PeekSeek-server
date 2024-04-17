@@ -51,6 +51,10 @@ public class LobbyService {
 
     }
 
+    public List<String> getExistingCities() {
+        return geoCodingDataRepository.findAllCityNames();
+    }
+
     public List<Lobby> getAllLobbies() {
         return LobbyRepository.findAll();
     }

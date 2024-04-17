@@ -126,4 +126,11 @@ public class LobbyController {
         Long gameId = gameService.startGame(lobby);
         websocketService.sendMessage("/topic/lobby/" + id, new GameStartedDTO(gameId));
     }
+
+    @GetMapping("/lobbies/cities")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<String> getExistingCities() {
+        return lobbyService.getExistingCities();
+    }
 }
