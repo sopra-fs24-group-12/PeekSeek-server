@@ -14,13 +14,9 @@ public class Quest {
     @JoinColumn(name = "summary_id", nullable = false)
     @JsonIgnore
     private Summary summary;
-
     private String description;
-
     private String name;
-
     private String link;
-
     private byte[] image;
 
     public byte[] getImage() {

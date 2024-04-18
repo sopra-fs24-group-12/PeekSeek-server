@@ -16,8 +16,6 @@ public class Summary {
     private List<Quest> quests;
     private String password;
 
-
-
     public Long getId() {
         return id;
     }

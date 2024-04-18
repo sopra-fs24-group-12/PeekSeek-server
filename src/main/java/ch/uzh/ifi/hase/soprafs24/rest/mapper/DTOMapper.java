@@ -63,6 +63,8 @@ public interface DTOMapper {
     @Mapping(source = "game.numberRounds", target = "numberRounds")
     @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
     @Mapping(source = "round.roundStatus", target = "roundStatus")
+    @Mapping(source = "round.roundTime", target = "roundTime")
+    @Mapping(source = "round.geoCodingData", target = "geoCodingData")
     RoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
     @Mapping(source = "id", target = "id")
@@ -98,3 +100,4 @@ public interface DTOMapper {
     SummaryGetDTO convertSummaryToSummaryGetDTO(Summary summary);
 
 }
+
