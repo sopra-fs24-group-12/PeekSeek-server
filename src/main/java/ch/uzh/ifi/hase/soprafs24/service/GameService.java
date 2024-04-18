@@ -229,10 +229,10 @@ public class GameService {
         submissionData.setPitch(submissionPostDTO.getPitch());
         
 
-        byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
+        //byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
 
         submission.setId(Round.submissionCount++);
-        submission.setImage(image);
+        // submission.setImage(image);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
