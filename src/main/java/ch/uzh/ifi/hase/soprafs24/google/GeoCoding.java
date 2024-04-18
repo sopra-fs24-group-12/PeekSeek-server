@@ -36,7 +36,7 @@ public class GeoCoding {
         GeoCoding.apiKey = apiKey;
     }
 
-    static GeoCodingData coordinates_zurich = new GeoCodingData();
+    static GeoCodingData coordinateData = new GeoCodingData();
 
     private static String encodeKeyword(String keyword) {
         return java.net.URLEncoder.encode(keyword, java.nio.charset.StandardCharsets.UTF_8);
@@ -71,38 +71,38 @@ public class GeoCoding {
                     JSONObject restrictionsSw = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("viewport").getJSONObject("southwest");
                     String formattedAddress = results.getJSONObject(0).getString("formatted_address");
 
-                    coordinates_zurich.setLocation(location);
-                    coordinates_zurich.setLat(locationCoords.getBigDecimal("lat").toString());
-                    coordinates_zurich.setLng(locationCoords.getBigDecimal("lng").toString());
-                    coordinates_zurich.setResLatNe(restrictionsNe.getBigDecimal("lat").toString());
-                    coordinates_zurich.setResLngNe(restrictionsNe.getBigDecimal("lng").toString());
-                    coordinates_zurich.setResLatSw(restrictionsSw.getBigDecimal("lat").toString());
-                    coordinates_zurich.setResLngSw(restrictionsSw.getBigDecimal("lng").toString());
-                    coordinates_zurich.setFormAddress(formattedAddress);
+                    coordinateData.setLocation(location);
+                    coordinateData.setLat(locationCoords.getBigDecimal("lat").toString());
+                    coordinateData.setLng(locationCoords.getBigDecimal("lng").toString());
+                    coordinateData.setResLatNe(restrictionsNe.getBigDecimal("lat").toString());
+                    coordinateData.setResLngNe(restrictionsNe.getBigDecimal("lng").toString());
+                    coordinateData.setResLatSw(restrictionsSw.getBigDecimal("lat").toString());
+                    coordinateData.setResLngSw(restrictionsSw.getBigDecimal("lng").toString());
+                    coordinateData.setFormAddress(formattedAddress);
                 } else {
                     setDefaultLocation();
                 }
-                return coordinates_zurich;
+                return coordinateData;
             }
             else {
                 setDefaultLocation();
-                return coordinates_zurich;
+                return coordinateData;
                 //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to retrieve coordinates. HTTP error code: " + connection.getResponseCode());
             }
         } catch (IOException e) {
             setDefaultLocation();
-            return coordinates_zurich;
+            return coordinateData;
         }
     }
 
     private static void setDefaultLocation() {
-        coordinates_zurich.setLocation("zurich");
-        coordinates_zurich.setLat("47.3768866");
-        coordinates_zurich.setLng("8.541694");
-        coordinates_zurich.setResLatNe("47.434665");
-        coordinates_zurich.setResLngNe("8.625452899999999");
-        coordinates_zurich.setResLatSw("47.32021839999999");
-        coordinates_zurich.setResLngSw("8.448018099999999");
-        coordinates_zurich.setFormAddress("Zürich, Switzerland");
+        coordinateData.setLocation("zurich");
+        coordinateData.setLat("47.3768866");
+        coordinateData.setLng("8.541694");
+        coordinateData.setResLatNe("47.434665");
+        coordinateData.setResLngNe("8.625452899999999");
+        coordinateData.setResLatSw("47.32021839999999");
+        coordinateData.setResLngSw("8.448018099999999");
+        coordinateData.setFormAddress("Zürich, Switzerland");
     }
 }
