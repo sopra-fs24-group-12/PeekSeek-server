@@ -223,10 +223,11 @@ public class GameService {
         participant.setHasSubmitted(true);
 
         SubmissionData submissionData = new SubmissionData();
+        submissionData.setLat(submissionPostDTO.getLat());
+        submissionData.setLng(submissionPostDTO.getLng());
         submissionData.setHeading(submissionPostDTO.getHeading());
         submissionData.setPitch(submissionPostDTO.getPitch());
-        submissionData.setLat(submissionPostDTO.getPitch());
-        submissionData.setLng(submissionPostDTO.getLng());
+        
 
         byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
 

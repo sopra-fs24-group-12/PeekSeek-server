@@ -17,7 +17,7 @@ public class SubmissionPostDTO {
     public String getLng() {
         return lng;
     }
-
+    
     public void setLng(String lng) {
         this.lng = lng;
     }
