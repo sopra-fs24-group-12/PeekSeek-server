@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Summary;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.RoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
@@ -88,4 +89,12 @@ public interface DTOMapper {
     @Mapping(source = "streak", target = "streak")
     //@Mapping(source = "position", target = "position")
     @Mapping(source = "id", target = "id")
-    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);}
+    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "cityName", target = "cityName")
+    @Mapping(source = "roundsPlayed", target = "roundsPlayed")
+    @Mapping(source = "quests", target = "quests")
+    SummaryGetDTO convertSummaryToSummaryGetDTO(Summary summary);
+
+}

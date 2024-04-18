@@ -1,22 +1,14 @@
-package ch.uzh.ifi.hase.soprafs24.entity.summary;
+package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Quest;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-public class Summary {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SummaryGetDTO {
     private Long id;
     private String cityName;
     private int roundsPlayed;
-    @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
     private List<Quest> quests;
-    private String password;
-
-
 
     public Long getId() {
         return id;
@@ -48,13 +40,5 @@ public class Summary {
 
     public void setQuests(List<Quest> quests) {
         this.quests = quests;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
