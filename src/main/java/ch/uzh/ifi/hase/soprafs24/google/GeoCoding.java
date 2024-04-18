@@ -85,7 +85,9 @@ public class GeoCoding {
                 return coordinates_zurich;
             }
             else {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to retrieve coordinates. HTTP error code: " + connection.getResponseCode());
+                setDefaultLocation();
+                return coordinates_zurich;
+                //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to retrieve coordinates. HTTP error code: " + connection.getResponseCode());
             }
         } catch (IOException e) {
             setDefaultLocation();
