@@ -146,10 +146,7 @@ public class GameService {
         Integer numberRounds = game.getNumberRounds();
 
         if (currentRoundIdx == numberRounds - 1) {
-            Long summaryId = generateSummary(game);
-            websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
-            game.setGameStatus(GameStatus.SUMMARY);
-            GameRepository.deleteGame(gameId);
+            endGame(game, game.getId());
             return;
         }
 
@@ -163,26 +160,43 @@ public class GameService {
         startTimer(round, gameId);
     }
 
+    private void endGame(Game game, Long gameId) {
+        Long summaryId = generateSummary(game);
+        websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
+        game.setGameStatus(GameStatus.SUMMARY);
+        GameRepository.deleteGame(gameId);
+    }
+
 
     private Long generateSummary(Game game) {
         List<Quest> winningSubmissions = new ArrayList<>();
 
+        int roundsPlayed = 0;
+
+        for (Round round : game.getRounds()) {
+            if (round.getRoundStatus() == RoundStatus.FINISHED) {
+                roundsPlayed++;
+            }
+        }
+
         Summary summary = new Summary();
         summary.setCityName(game.getGameLocation());
-        summary.setRoundsPlayed(game.getNumberRounds());
+        summary.setRoundsPlayed(roundsPlayed);
         summary.setPassword(game.getLobbyPassword());
         summary = summaryRepository.save(summary);
         summaryRepository.flush();
 
         for (Round round : game.getRounds()) {
-            Quest quest = new Quest();
-            quest.setDescription(round.getQuest());
-            quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
-                    round.getWinningSubmission().getSubmittedLocation().getLng()));
-            quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
-            quest.setSummary(summary);
-            quest.setImage(round.getWinningSubmission().getImage());
-            winningSubmissions.add(quest);
+            if (round.getRoundStatus() == RoundStatus.FINISHED) {
+                Quest quest = new Quest();
+                quest.setDescription(round.getQuest());
+                quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
+                        round.getWinningSubmission().getSubmittedLocation().getLng()));
+                quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
+                quest.setSummary(summary);
+                quest.setImage(round.getWinningSubmission().getImage());
+                winningSubmissions.add(quest);
+            }
         }
 
         summary.setQuests(winningSubmissions);
@@ -227,17 +241,45 @@ public class GameService {
         submissionData.setLng(submissionPostDTO.getLng());
         submissionData.setHeading(submissionPostDTO.getHeading());
         submissionData.setPitch(submissionPostDTO.getPitch());
-        
-
-        //byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
 
         submission.setId(Round.submissionCount++);
-        // submission.setImage(image);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
 
         currentRound.addSubmission(submission);
+    }
+
+    public void leaveGame(Long gameId, String token) {
+        Game game = GameRepository.getGameById(gameId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
+        }
+
+        authorizeGameParticipant(game, token);
+
+        Participant participant = game.getParticipantByToken(token);
+
+        if (participant.getLeftGame()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already left the game");
+        }
+
+        participant.setLeftGame(true);
+
+        int remainingParticipants = 0;
+        for (Participant participant1: game.getParticipants().values()) {
+            if (!participant1.getLeftGame()) {
+                remainingParticipants++;
+            } if (remainingParticipants >= 3) {
+                break;
+            }
+        }
+
+        if (remainingParticipants < 3) {
+            endGame(game, game.getId());
+        }
+
+        websocketService.sendMessage("/topic/games/" + gameId, new ParticipantLeftDTO(participant.getUsername()));
     }
 
     public void postVoting(Long gameId, String token, VotingPostDTO votingPostDTO) {
@@ -418,7 +460,7 @@ public class GameService {
         Map<String, Participant> participants = game.getParticipants();
 
         for (Participant participant : participants.values()) {
-            if (!participant.getHasSubmitted()) {
+            if (!participant.getHasSubmitted() && !participant.getLeftGame()) {
                 SubmissionData submissionData = new SubmissionData();
                 submissionData.setLat("47.3768866");
                 submissionData.setLng("8.541694");
@@ -426,11 +468,6 @@ public class GameService {
                 submissionData.setHeading("50");
 
                 Submission emptySubmission = new Submission();
-//                try {
-//                    emptySubmission.setImage(StreetviewImageDownloader.retrieveStreetViewImage(submissionData));
-//                } catch (IOException e) {
-//                    System.out.println(e.getMessage());
-//                }
 
                 emptySubmission.setId(Round.submissionCount++);
                 emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
@@ -446,6 +483,9 @@ public class GameService {
         Participant participant = game.getParticipantByToken(token);
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");
+        }
+        if (participant.getLeftGame()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Participant has left the game");
         }
     }
 }
