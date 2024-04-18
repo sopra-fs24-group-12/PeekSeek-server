@@ -51,6 +51,10 @@ public class LobbyService {
 
     }
 
+    public List<String> getExistingCities() {
+        return geoCodingDataRepository.findAllCityNames();
+    }
+
     public List<Lobby> getAllLobbies() {
         return LobbyRepository.findAll();
     }
@@ -123,7 +127,7 @@ public class LobbyService {
         String username = participant.getUsername();
         String newAdminUsername = null;
 
-        if (participant.getAdmin()) {
+        if (participant.getAdmin() && lobby.getJoinedParticipants() > 1) {
             lobby.removeParticipant(token);
             Participant newAdmin = lobby.getParticipants().entrySet().iterator().next().getValue();
             lobby.setAdminId(newAdmin.getId());
@@ -131,6 +135,10 @@ public class LobbyService {
             newAdminUsername = newAdmin.getUsername();
         } else {
             lobby.removeParticipant(token);
+        }
+
+        if (lobby.getJoinedParticipants() == 0 && lobby.getQuests() != null && !lobby.getQuests().isEmpty()) {
+            lobby.resetLobby();
         }
 
         List<String> usernames = new ArrayList<>();
@@ -183,61 +191,6 @@ public class LobbyService {
         return lobby;
     }
 
-//    public Long startGame(Long lobbyId, String token) {
-//        Lobby lobby = LobbyRepository.getLobbyById(lobbyId);
-//        if (lobby == null) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
-//        }
-//
-//        authorizeLobbyAdmin(lobby, token);
-//
-//        if (lobby.getJoinedParticipants() < 3) {
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-//                    "You need at least 3 participants to start the game");
-//        }
-//
-//        List<String> quests = lobby.getQuests();
-//        if (quests.isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-//                    "You need to have at least one quest to start the game");
-//        }
-//
-//        Game createdGame = new Game();
-//
-//        List<Round> rounds = new ArrayList<>(quests.size());
-//        for (String quest : quests) {
-//            Round round = new Round();
-//            round.setQuest(quest);
-//            round.setRoundTime(lobby.getRoundDurationSeconds());
-//            round.setRemainingSeconds(lobby.getRoundDurationSeconds());
-//            round.setGame(createdGame.getId());
-//            rounds.add(round);
-//        }
-//
-//        createdGame.setRoundDurationSeconds(lobby.getRoundDurationSeconds());
-//        createdGame.setAdminId(lobby.getAdminId());
-//        createdGame.setGameLocation(lobby.getGameLocation());
-//        createdGame.setRounds(rounds);
-//        createdGame.setNumberRounds(lobby.getQuests().size());
-//
-//        List<Participant> participants = new ArrayList<>(lobby.getParticipants());
-//        for (Participant participant : participants) {
-//            participant.setGame(createdGame.getId());
-//            participant.setLobby(null);
-//        }
-//        createdGame.setParticipants(participants);
-//        createdGame.getRounds().get(0).setRoundStatus(RoundStatus.PLAYING);
-//        lobby.getParticipants().clear();
-//        lobby.recycleLobby();
-//
-//        lobby = lobbyRepository.save(lobby);
-//        createdGame = gameRepository.save(createdGame);
-//        gameRepository.flush();
-//
-//        gameService.startTimer(createdGame.getRounds().get(0), createdGame.getId());
-//
-//        return createdGame.getId();
-//    }
 
     private void checkIfLobbyNameExists(String name) {
         Boolean nameFree = LobbyRepository.lobbyNameFree(name);
@@ -252,15 +205,7 @@ public class LobbyService {
         }
     }
 
-    public GeoCodingData locationIfAlreadyCalled(String location) throws IOException {
-        // check if location is already in the database
-//        List<GeoCodingData> lookedUpCoordinates = geoCodingDataRepository.findAll();
-//        for (GeoCodingData geoCodingData : lookedUpCoordinates) {
-//            if (geoCodingData.getLocation().toLowerCase().contains(location.toLowerCase())) {
-//                return geoCodingData;
-//            }
-//        }
-        //return null;
+    public GeoCodingData locationIfAlreadyCalled(String location) {
         return geoCodingDataRepository.findGeoCodingDataByLocation(location);
     }
 

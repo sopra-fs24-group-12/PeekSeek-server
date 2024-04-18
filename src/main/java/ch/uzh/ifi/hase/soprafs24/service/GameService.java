@@ -99,6 +99,7 @@ public class GameService {
             round.setQuest(quest);
             round.setRoundTime(lobby.getRoundDurationSeconds());
             round.setRemainingSeconds(lobby.getRoundDurationSeconds());
+            round.setGeoCodingData(lobby.getGameLocationCoordinates());
             rounds.add(round);
         }
 
@@ -227,10 +228,10 @@ public class GameService {
         submissionData.setLat(submissionPostDTO.getPitch());
         submissionData.setLng(submissionPostDTO.getLng());
 
-        byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
+        //byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
 
         submission.setId(Round.submissionCount++);
-        submission.setImage(image);
+        // submission.setImage(image);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
