@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity.summary;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class Quest {
 
     @ManyToOne
     @JoinColumn(name = "summary_id", nullable = false)
+    @JsonIgnore
     private Summary summary;
     private String description;
     private String name;
