@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -111,5 +112,13 @@ public class GameController {
             leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
         }
         return leaderboard;
+    }
+
+    @DeleteMapping("/games/{id}/leave")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void leaveGame(@PathVariable Long id,
+                           @RequestHeader(value = "Authorization", required = false) String token) {
+        gameService.leaveGame(id, token);
     }
 }

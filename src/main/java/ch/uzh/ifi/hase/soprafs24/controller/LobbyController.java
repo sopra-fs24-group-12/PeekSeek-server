@@ -123,6 +123,7 @@ public class LobbyController {
     public void startGame(@PathVariable Long id,
                           @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
+        lobbyService.authorizeLobbyAdmin(lobby, token);
         Long gameId = gameService.startGame(lobby);
         websocketService.sendMessage("/topic/lobby/" + id, new GameStartedDTO(gameId));
     }

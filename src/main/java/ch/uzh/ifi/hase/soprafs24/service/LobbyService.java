@@ -201,7 +201,7 @@ public class LobbyService {
 
     public void checkIfUsernameInLobby(String username, Lobby lobby) {
         if (lobby.getUsernames().contains(username)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username already in lobby");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already in lobby");
         }
     }
 
