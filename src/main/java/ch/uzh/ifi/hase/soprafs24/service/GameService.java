@@ -227,6 +227,7 @@ public class GameService {
         submissionData.setLng(submissionPostDTO.getLng());
         submissionData.setHeading(submissionPostDTO.getHeading());
         submissionData.setPitch(submissionPostDTO.getPitch());
+        submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
         
 
         //byte[] image = StreetviewImageDownloader.retrieveStreetViewImage(submissionData);
