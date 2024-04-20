@@ -24,10 +24,10 @@ public class SummaryService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Summary with this id does not exist");
         }
 
-        if (!password.equals(summary.getPassword())) {
-            //System.out.println(password + " " + summary.getPassword());
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
-        }
+//        if (!password.equals(summary.getPassword())) {
+//            //System.out.println(password + " " + summary.getPassword());
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
+//        }
 
         return summary;
     }
