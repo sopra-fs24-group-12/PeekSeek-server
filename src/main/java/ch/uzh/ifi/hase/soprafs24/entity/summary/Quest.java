@@ -18,6 +18,7 @@ public class Quest {
     private String name;
     private String link;
     private byte[] image;
+    private Boolean noSubmission;
 
     public byte[] getImage() {
         return image;
@@ -65,5 +66,13 @@ public class Quest {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Boolean getNoSubmission() {
+        return noSubmission;
+    }
+
+    public void setNoSubmission(Boolean noSubmission) {
+        this.noSubmission = noSubmission;
     }
 }

@@ -187,7 +187,7 @@ public class GameService {
         summaryRepository.flush();
 
         for (Round round : game.getRounds()) {
-            if (round.getRoundStatus() == RoundStatus.FINISHED) {
+            if (round.getRoundStatus() == RoundStatus.FINISHED && !round.getWinningSubmission().getNoSubmission()) {
                 Quest quest = new Quest();
                 quest.setDescription(round.getQuest());
                 quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
@@ -195,6 +195,7 @@ public class GameService {
                 quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
                 quest.setSummary(summary);
                 quest.setImage(round.getWinningSubmission().getImage());
+                quest.setNoSubmission(round.getWinningSubmission().getNoSubmission());
                 winningSubmissions.add(quest);
             }
         }
