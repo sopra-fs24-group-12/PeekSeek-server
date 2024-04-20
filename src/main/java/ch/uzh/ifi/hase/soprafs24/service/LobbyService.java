@@ -96,7 +96,7 @@ public class LobbyService {
         if (lobby.getJoinedParticipants() >= lobby.getMaxParticipants()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The lobby is full");
         }
-        if (!lobby.getPassword().equals(password)) {
+        if (lobby.getPassword() != null && !lobby.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
         }
         Participant participant = new Participant();
