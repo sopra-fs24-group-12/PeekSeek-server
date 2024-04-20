@@ -105,6 +105,7 @@ public class LobbyService {
         participant.setLobbyId(lobby.getId());
 
         if (lobby.getJoinedParticipants() == 0) {
+            lobby.setAdminUsername(participant.getUsername());
             participant.setAdmin(true);
             lobby.setAdminId(participant.getId());
         }
@@ -133,6 +134,7 @@ public class LobbyService {
             lobby.setAdminId(newAdmin.getId());
             newAdmin.setAdmin(true);
             newAdminUsername = newAdmin.getUsername();
+            lobby.setAdminUsername(newAdminUsername);
         } else {
             lobby.removeParticipant(token);
         }

@@ -18,6 +18,8 @@ public class Lobby {
     private List<String> quests;
     private Boolean reUsed = false;
     private Long adminId;
+
+    private String adminUsername;
     private Map<String, Participant> participants = new HashMap<>();
     private List<String> usernames = new ArrayList<>();
     private static Long id_count = 1L;
@@ -29,6 +31,7 @@ public class Lobby {
     public void resetLobby() {
         participants.clear();
         usernames.clear();
+        setAdminUsername(null);
         setReUsed(true);
         setJoinedParticipants(0);
     }
@@ -153,5 +156,13 @@ public class Lobby {
 
     public void setUsernames(List<String> usernames) {
         this.usernames = usernames;
+    }
+
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
     }
 }
