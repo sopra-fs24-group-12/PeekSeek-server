@@ -196,6 +196,8 @@ public class GameService {
                 quest.setSummary(summary);
                 quest.setImage(round.getWinningSubmission().getImage());
                 quest.setNoSubmission(round.getWinningSubmission().getNoSubmission());
+                quest.setLat(round.getWinningSubmission().getSubmittedLocation().getLat());
+                quest.setLng(round.getWinningSubmission().getSubmittedLocation().getLng());
                 winningSubmissions.add(quest);
             }
         }
