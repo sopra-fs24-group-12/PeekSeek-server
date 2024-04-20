@@ -69,7 +69,7 @@ public class GeoCoding {
                     JSONObject locationCoords = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
                     JSONObject restrictionsNe = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("viewport").getJSONObject("northeast");
                     JSONObject restrictionsSw = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("viewport").getJSONObject("southwest");
-                    String formattedAddress = results.getJSONObject(0).getString("formatted_address");
+                    String formattedAddress =   results.getJSONObject(0).getJSONArray("address_components").getJSONObject(0).getString("long_name");
 
                     coordinateData.setLocation(location);
                     coordinateData.setLat(locationCoords.getBigDecimal("lat").toString());

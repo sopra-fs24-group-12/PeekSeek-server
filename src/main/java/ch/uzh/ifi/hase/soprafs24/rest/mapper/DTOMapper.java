@@ -48,6 +48,7 @@ public interface DTOMapper {
     @Mapping(source = "gameLocation", target = "gameLocation")
     @Mapping(source = "gameLocationCoordinates", target = "gameLocationCoordinates")
     @Mapping(source = "roundDurationSeconds", target = "roundDurationSeconds")
+    @Mapping(source = "adminUsername", target = "adminUsername")
     LobbyGetInformationDTO convertLobbyToLobbyGetInformationDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")

@@ -96,7 +96,7 @@ public class LobbyService {
         if (lobby.getJoinedParticipants() >= lobby.getMaxParticipants()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The lobby is full");
         }
-        if (!lobby.getPassword().equals(password)) {
+        if (lobby.getPassword() != null && !lobby.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
         }
         Participant participant = new Participant();
@@ -105,6 +105,7 @@ public class LobbyService {
         participant.setLobbyId(lobby.getId());
 
         if (lobby.getJoinedParticipants() == 0) {
+            lobby.setAdminUsername(participant.getUsername());
             participant.setAdmin(true);
             lobby.setAdminId(participant.getId());
         }
@@ -133,6 +134,7 @@ public class LobbyService {
             lobby.setAdminId(newAdmin.getId());
             newAdmin.setAdmin(true);
             newAdminUsername = newAdmin.getUsername();
+            lobby.setAdminUsername(newAdminUsername);
         } else {
             lobby.removeParticipant(token);
         }
@@ -201,7 +203,7 @@ public class LobbyService {
 
     public void checkIfUsernameInLobby(String username, Lobby lobby) {
         if (lobby.getUsernames().contains(username)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username already in lobby");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already in lobby");
         }
     }
 
