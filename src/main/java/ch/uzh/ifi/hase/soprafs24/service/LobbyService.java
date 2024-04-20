@@ -45,6 +45,10 @@ public class LobbyService {
         createdLobby.setName(name);
         createdLobby.setPassword(password);
 
+        if (password != null && !password.isEmpty()) {
+            createdLobby.setPasswordProtected(true);
+        }
+
         LobbyRepository.addLobby(createdLobby);
 
         return createdLobby;

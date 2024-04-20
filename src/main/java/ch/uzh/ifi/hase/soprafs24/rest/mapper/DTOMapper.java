@@ -40,6 +40,7 @@ public interface DTOMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "maxParticipants", target = "maxParticipants")
     @Mapping(source = "joinedParticipants", target = "joinedParticipants")
+    @Mapping(source = "passwordProtected", target = "passwordProtected")
     LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
 
     @Mapping(source = "name", target = "name")
