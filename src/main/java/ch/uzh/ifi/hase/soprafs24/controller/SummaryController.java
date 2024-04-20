@@ -34,8 +34,8 @@ public class SummaryController {
     @GetMapping("/summaries/{summaryId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public SummaryGetDTO getSummary(@PathVariable long summaryId, @RequestBody SummaryPasswordDTO summaryPasswordDTO) {
-        Summary summary = summaryService.getSummary(summaryId, summaryPasswordDTO.getPassword());
+    public SummaryGetDTO getSummary(@PathVariable long summaryId) {
+        Summary summary = summaryService.getSummary(summaryId, "replace with password");
         return DTOMapper.INSTANCE.convertSummaryToSummaryGetDTO(summary);
     }
 
