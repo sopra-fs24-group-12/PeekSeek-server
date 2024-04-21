@@ -405,12 +405,12 @@ public class GameService {
 
     private void startTimer(Round round, Long gameId) {
         Timer timer = new Timer();
-        int timePerRound = round.getRoundTime();
+        int timePerRound = (round.getRoundStatus() == RoundStatus.SUMMARY)?round.getSummaryTime():round.getRoundTime();
 
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                round.setRemainingSeconds(round.getRoundTime());
+                round.setRemainingSeconds(round.getRoundStatus() == RoundStatus.PLAYING?round.getRoundTime():round.getSummaryTime());
                 timer.cancel();
                 handleNextPhase(round, gameId);
             }
