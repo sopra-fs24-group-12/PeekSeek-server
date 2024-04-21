@@ -351,7 +351,6 @@ public class GameService {
 
         for (Long submissionId : votingPostDTO.getVotes().keySet()){
             Submission submission = round.getSubmissions().get(submissionId);
-            // TODO: change code if automatic submission implemented
             if (submission == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The submission with this ID does not exist");
             }
@@ -384,19 +383,20 @@ public class GameService {
     }
 
     private void setWinningSubmission(Round round, List<Submission> submissions) {
-        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed()); //TODO: Check sorting order
-        Submission winningSubmission = submissions.get(0);
-        List<Submission> winningSubmissions = new ArrayList<>();
-        winningSubmissions.add(winningSubmission);
-        if (submissions.size() > 1){
-            for (Submission submission : submissions){
-                if (Objects.equals(submission.getNumberVotes(), winningSubmission.getNumberVotes())){
-                    winningSubmissions.add(submission);
-                }
-            }
-            winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds).reversed());
-        }
-        round.setWinningSubmission(winningSubmissions.get(0));
+        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
+//        Submission winningSubmission = submissions.get(0);
+//        List<Submission> winningSubmissions = new ArrayList<>();
+//        winningSubmissions.add(winningSubmission);
+//        if (submissions.size() > 1){
+//            for (Submission submission : submissions){
+//                if (Objects.equals(submission.getNumberVotes(), winningSubmission.getNumberVotes())){
+//                    winningSubmissions.add(submission);
+//                }
+//            }
+//            winningSubmissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds));
+//        }
+//        round.setWinningSubmission(winningSubmissions.get(0));
+        round.setWinningSubmission(submissions.get(0));
     }
 
     private int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
@@ -407,29 +407,33 @@ public class GameService {
         Game game = GameRepository.getGameById(gameId);
         Participant participant = game.getParticipants().get(submission.getToken());
 
-        if(submission.getNoSubmission()){   // if the participant clicked "Can`t find that", they get 0 points
+        if (submission.getNoSubmission()) {   // if the participant clicked "Can`t find that", they get 0 points
             return 0;
         }
-        if(submission.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2){   // if the submission has more than half of the votes to be banned, they get 0 points
+        if (submission.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2) {   // if the submission has more than half of the votes to be banned, they get 0 points
             return 0;
         }
 
-        timebonusPoints *= (submission.getSubmissionTimeSeconds() / round.getRoundTime()); // timebonus is 0 if submissionTime == roundTime
-        placementPoints *= ((round.getSubmissions().size() - placement) / round.getSubmissions().size()) + 0.25;    // +0.25 to avoid 0 points for the last place
-        votingPoints *= (submission.getNumberVotes() / (round.getSubmissions().size() - 1));    // -1 because the participant cannot vote for themselves
-        if(submission == round.getWinningSubmission()){          // if it is the winning submission, the voting points are multiplied by 1.5
-            votingPoints *= 1.5;
+        timebonusPoints *= (double)submission.getSubmissionTimeSeconds() / (double)round.getRoundTime(); // timebonus is 0 if submissionTime == roundTime
+        placementPoints *= ((double)(round.getSubmissions().size() - placement) / (double)round.getSubmissions().size()) + 0.25;    // +0.25 to avoid 0 points for the last place
+        votingPoints *= (double)submission.getNumberVotes() / (double)(round.getSubmissions().size() - 1);    // -1 because the participant cannot vote for themselves
+
+
+        if (submission == round.getWinningSubmission()) {          // if it is the winning submission, the voting points are multiplied by 1.5
+            votingPoints = (int) ((double) votingPoints * 1.5);
             participant.setWinningSubmissions(participant.getWinningSubmissions() + 1);
             participant.setStreak(participant.getStreak() + 1);
         } else {
             participant.setStreak(0);
         }
+
         totalPoints = timebonusPoints + placementPoints + votingPoints;
         int streak = participant.getStreak();
-        if(streak >= 2){          // streak bonus
-            totalPoints *= Math.pow((1 + streak * 0.1), 1.3);   // the streak bonus is calculated by the formula (1 + streak * 0.1) ^ 1.3
+        if (streak >= 2) {          // streak bonus
+            totalPoints *= Math.pow((1 + (double)streak * 0.1), 1.3);   // the streak bonus is calculated by the formula (1 + streak * 0.1) ^ 1.3
         }
         participant.setScore(participant.getScore() + totalPoints);
+
         return totalPoints;
     }
 
@@ -437,10 +441,9 @@ public class GameService {
         Map<Long, Submission> submissionsMap = round.getSubmissions();
         List<Submission> submissions = new ArrayList<>(submissionsMap.values());
         setWinningSubmission(round, submissions);
-        submissions.sort(Comparator.comparing(Submission::getSubmissionTimeSeconds));
         for (int i = 0; i < submissions.size(); i++) {
             Submission submission = submissions.get(i);
-            submission.setAwardedPoints(calculatePoints(gameId, round, submission, i));
+            submission.setAwardedPoints(calculatePoints(gameId, round, submission, i + 1));
         }
     }
 
