@@ -17,6 +17,7 @@ public class Round {
     private RoundStatus roundStatus = RoundStatus.PREPARED;
     private Map<Long, Submission> submissions = new HashMap<>();
     private Submission winningSubmission;
+    private Integer summaryTime = 20;
     public static Long submissionCount = 1L;
 
     public void addSubmission(Submission submission) {
@@ -93,5 +94,13 @@ public class Round {
 
     public static void setSubmissionCount(Long submissionCount) {
         Round.submissionCount = submissionCount;
+    }
+
+    public Integer getSummaryTime() {
+        return summaryTime;
+    }
+
+    public void setSummaryTime(Integer summaryTime) {
+        this.summaryTime = summaryTime;
     }
 }

@@ -187,7 +187,7 @@ public class GameService {
         summaryRepository.flush();
 
         for (Round round : game.getRounds()) {
-            if (round.getRoundStatus() == RoundStatus.FINISHED) {
+            if (round.getRoundStatus() == RoundStatus.FINISHED && !round.getWinningSubmission().getNoSubmission()) {
                 Quest quest = new Quest();
                 quest.setDescription(round.getQuest());
                 quest.setLink(generateSubmissionLink(round.getWinningSubmission().getSubmittedLocation().getLat(),
@@ -195,6 +195,9 @@ public class GameService {
                 quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
                 quest.setSummary(summary);
                 quest.setImage(round.getWinningSubmission().getImage());
+                quest.setNoSubmission(round.getWinningSubmission().getNoSubmission());
+                quest.setLat(round.getWinningSubmission().getSubmittedLocation().getLat());
+                quest.setLng(round.getWinningSubmission().getSubmittedLocation().getLng());
                 winningSubmissions.add(quest);
             }
         }
@@ -402,12 +405,12 @@ public class GameService {
 
     private void startTimer(Round round, Long gameId) {
         Timer timer = new Timer();
-        int timePerRound = round.getRoundTime();
+        int timePerRound = (round.getRoundStatus() == RoundStatus.SUMMARY)?round.getSummaryTime():round.getRoundTime();
 
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                round.setRemainingSeconds(round.getRoundTime());
+                round.setRemainingSeconds(round.getRoundStatus() == RoundStatus.PLAYING?round.getRoundTime():round.getSummaryTime());
                 timer.cancel();
                 handleNextPhase(round, gameId);
             }

@@ -18,7 +18,7 @@ public class Lobby {
     private List<String> quests;
     private Boolean reUsed = false;
     private Long adminId;
-
+    private Boolean passwordProtected = false;
     private String adminUsername;
     private Map<String, Participant> participants = new HashMap<>();
     private List<String> usernames = new ArrayList<>();
@@ -164,5 +164,13 @@ public class Lobby {
 
     public void setAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
+    }
+
+    public Boolean getPasswordProtected() {
+        return passwordProtected;
+    }
+
+    public void setPasswordProtected(Boolean passwordProtected) {
+        this.passwordProtected = passwordProtected;
     }
 }

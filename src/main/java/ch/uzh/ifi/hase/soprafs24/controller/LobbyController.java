@@ -120,7 +120,7 @@ public class LobbyController {
     @PostMapping("/lobbies/{id}/start")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void startGame(@PathVariable Long id,
+    public void startGame(@PathVariable Long id, @RequestBody(required = false) String body,
                           @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
         lobbyService.authorizeLobbyAdmin(lobby, token);
