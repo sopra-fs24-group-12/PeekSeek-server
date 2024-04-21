@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GeoCodingGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
+import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.Part;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import java.io.IOException;
 
@@ -31,10 +28,14 @@ import java.io.IOException;
 @Transactional
 public class LobbyService {
     private final GeoCodingDataRepository geoCodingDataRepository;
+    private final WebsocketService websocketService;
+
+    private final Map<Long, Timer> lobbyTimers = new HashMap<>();
 
     @Autowired
-    public LobbyService(@Qualifier("geoCodingDataRepository") GeoCodingDataRepository geoCodingDataRepository) {
+    public LobbyService(@Qualifier("geoCodingDataRepository") GeoCodingDataRepository geoCodingDataRepository, WebsocketService websocketService) {
         this.geoCodingDataRepository = geoCodingDataRepository;
+        this.websocketService = websocketService;
     }
 
     public Lobby createLobby(String name, String password) {
@@ -50,9 +51,36 @@ public class LobbyService {
         }
 
         LobbyRepository.addLobby(createdLobby);
+        startInactivityTimer(createdLobby);
 
         return createdLobby;
+    }
 
+    public void updateActiveStatus(Long lobbyId, String token) {
+        Lobby lobby = LobbyRepository.getLobbyById(lobbyId);
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
+        }
+
+        authorizeLobbyParticipant(lobby, token);
+
+        lobby.updateActivityTime(token);
+    }
+
+    private void startInactivityTimer(Lobby lobby) {
+        Timer timer = new Timer(true);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                List<String> inactiveTokens = lobby.removeInactiveParticipants(4000);
+                for (String token : inactiveTokens) {
+                    leaveLobby(lobby.getId(), token);
+                }
+            }
+        };
+        timer.schedule(task, 0, 4000);
+
+        lobbyTimers.put(lobby.getId(), timer);
     }
 
     public List<String> getExistingCities() {
@@ -119,7 +147,7 @@ public class LobbyService {
         return participant.getToken();
     }
 
-    public List<String> leaveLobby(Long id, String token) {
+    public void leaveLobby(Long id, String token) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
@@ -147,10 +175,11 @@ public class LobbyService {
             lobby.resetLobby();
         }
 
-        List<String> usernames = new ArrayList<>();
-        usernames.add(username);
-        usernames.add(newAdminUsername);
-        return usernames;
+        ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO(username);
+        if (newAdminUsername != null) {
+            participantLeftDTO.setNewAdmin(newAdminUsername);
+        }
+        websocketService.sendMessage("/topic/lobby/" + id, participantLeftDTO);
     }
 
     // TODO: no lobbyPutDTO as parameter

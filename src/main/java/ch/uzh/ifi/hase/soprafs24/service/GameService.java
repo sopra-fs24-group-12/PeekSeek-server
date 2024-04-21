@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.summary.Quest;
 import ch.uzh.ifi.hase.soprafs24.entity.summary.Summary;
 import ch.uzh.ifi.hase.soprafs24.google.StreetviewImageDownloader;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.SummaryRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
@@ -34,6 +35,8 @@ import java.lang.Math;
 public class GameService {
     private final WebsocketService websocketService;
     private final SummaryRepository summaryRepository;
+
+    private final Map<Long, Timer> gameTimers = new HashMap<>();
 
     @Autowired
     public GameService(WebsocketService websocketService,
@@ -117,9 +120,46 @@ public class GameService {
 
         GameRepository.addGame(createdGame);
 
+        startInactivityTimer(createdGame);
+
         startNextRound(createdGame.getId());
 
         return createdGame.getId();
+    }
+
+    public void updateActiveStatus(Long gameId, String token) {
+        Game game = GameRepository.getGameById(gameId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
+        }
+
+        authorizeGameParticipant(game, token);
+
+        game.updateActivityTime(token);
+    }
+
+    private void startInactivityTimer(Game game) {
+        Timer timer = new Timer(true);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                List<String> inactiveTokens = game.removeInactiveParticipants(4000);
+                for (String token : inactiveTokens) {
+                    leaveGame(game.getId(), token);
+                }
+            }
+        };
+        timer.schedule(task, 0, 4000);
+
+        gameTimers.put(game.getId(), timer);
+    }
+
+    private void stopInactivityTimer(Long gameId) {
+        Timer timer = gameTimers.get(gameId);
+        if (timer != null) {
+            timer.cancel();
+            gameTimers.remove(gameId);
+        }
     }
 
     public void startNextRound(Long gameId) {
@@ -164,6 +204,7 @@ public class GameService {
         Long summaryId = generateSummary(game);
         websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
         game.setGameStatus(GameStatus.SUMMARY);
+        stopInactivityTimer(gameId);
         GameRepository.deleteGame(gameId);
     }
 
