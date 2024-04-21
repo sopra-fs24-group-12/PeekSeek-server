@@ -97,13 +97,7 @@ public class LobbyController {
     @ResponseBody
     public void leaveLobby(@PathVariable Long id,
                            @RequestHeader(value = "Authorization", required = false) String token) {
-        List<String> usernames = lobbyService.leaveLobby(id, token);
-        ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO(usernames.get(0));
-        String newAdmin = usernames.get(1);
-        if (newAdmin != null) {
-            participantLeftDTO.setNewAdmin(newAdmin);
-        }
-        websocketService.sendMessage("/topic/lobby/" + id, participantLeftDTO);
+        lobbyService.leaveLobby(id, token);
     }
 
     @PutMapping("/lobbies/{id}")

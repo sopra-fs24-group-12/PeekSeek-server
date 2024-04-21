@@ -21,10 +21,27 @@ public class Game {
     private static Long id_count = 1L;
     public static Long rounds_count = 1L;
     private String lobbyPassword;
+    private Map<String, Long> lastActivityTimes = new HashMap<>();
 
 
     public Game() {
         this.id = id_count++;
+    }
+
+    public void updateActivityTime(String token) {
+        lastActivityTimes.put(token, System.currentTimeMillis());
+    }
+
+    public List<String> removeInactiveParticipants(long timeout) {
+        long currentTime = System.currentTimeMillis();
+        List<String> inactiveParticipants = new ArrayList<>();
+        for (Map.Entry<String, Long> entry : lastActivityTimes.entrySet()) {
+            if (currentTime - entry.getValue() > timeout) {
+                inactiveParticipants.add(entry.getKey());
+            }
+        }
+
+        return inactiveParticipants;
     }
 
     public Participant getParticipantByToken(String token) {
