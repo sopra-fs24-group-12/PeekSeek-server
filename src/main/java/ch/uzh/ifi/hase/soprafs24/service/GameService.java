@@ -388,7 +388,7 @@ public class GameService {
 //        List<Submission> winningSubmissions = new ArrayList<>();
 //        winningSubmissions.add(winningSubmission);
 //        if (submissions.size() > 1){
-//            for (Submission submission : submissions){
+//            for (Submission submission : submissions) {
 //                if (Objects.equals(submission.getNumberVotes(), winningSubmission.getNumberVotes())){
 //                    winningSubmissions.add(submission);
 //                }
@@ -414,7 +414,7 @@ public class GameService {
             return 0;
         }
 
-        timebonusPoints *= (double)submission.getSubmissionTimeSeconds() / (double)round.getRoundTime(); // timebonus is 0 if submissionTime == roundTime
+        timebonusPoints *= (double)(round.getRoundTime() - submission.getSubmissionTimeSeconds()) / (double)round.getRoundTime(); // timebonus is 0 if submissionTime == roundTime
         placementPoints *= ((double)(round.getSubmissions().size() - placement) / (double)round.getSubmissions().size()) + 0.25;    // +0.25 to avoid 0 points for the last place
         votingPoints *= (double)submission.getNumberVotes() / (double)(round.getSubmissions().size() - 1);    // -1 because the participant cannot vote for themselves
 
