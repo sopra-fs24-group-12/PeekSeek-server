@@ -32,6 +32,7 @@ public class Lobby {
     public void resetLobby() {
         participants.clear();
         usernames.clear();
+        lastActivityTimes.clear();
         setAdminUsername(null);
         setReUsed(true);
         setJoinedParticipants(0);

@@ -76,11 +76,23 @@ public class LobbyService {
                 for (String token : inactiveTokens) {
                     leaveLobby(lobby.getId(), token);
                 }
+
+                if (lobby.getJoinedParticipants() == 0) {
+                    stopInactivityTimer(lobby.getId());
+                }
             }
         };
         timer.schedule(task, 0, 4000);
 
         lobbyTimers.put(lobby.getId(), timer);
+    }
+
+    private void stopInactivityTimer(Long lobbyId) {
+        Timer timer = lobbyTimers.get(lobbyId);
+        if (timer != null) {
+            timer.cancel();
+            lobbyTimers.remove(lobbyId);
+        }
     }
 
     public List<String> getExistingCities() {
@@ -109,7 +121,6 @@ public class LobbyService {
         return new ArrayList<>(lobby.getParticipants().values());
     }
 
-    // TODO: maybe protect for only participants (low priority)
     public Lobby getSpecificLobby(Long id) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -118,7 +129,6 @@ public class LobbyService {
         return lobby;
     }
 
-    // TODO: empty password/no password
     public String joinLobby(Long id, String username, String password) {
         Lobby lobby = LobbyRepository.getLobbyById(id);
         if (lobby == null) {
@@ -131,6 +141,7 @@ public class LobbyService {
         if (lobby.getPassword() != null && !lobby.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
         }
+
         Participant participant = new Participant();
         participant.setUsername(username);
         participant.setToken(UUID.randomUUID().toString());
@@ -143,6 +154,10 @@ public class LobbyService {
         }
 
         lobby.addParticipant(participant);
+
+        if (lobby.getJoinedParticipants() == 1) {
+            startInactivityTimer(lobby);
+        }
 
         return participant.getToken();
     }
@@ -172,6 +187,7 @@ public class LobbyService {
         }
 
         if (lobby.getJoinedParticipants() == 0 && lobby.getQuests() != null && !lobby.getQuests().isEmpty()) {
+            stopInactivityTimer(lobby.getId());
             lobby.resetLobby();
         }
 
@@ -179,6 +195,7 @@ public class LobbyService {
         if (newAdminUsername != null) {
             participantLeftDTO.setNewAdmin(newAdminUsername);
         }
+
         websocketService.sendMessage("/topic/lobby/" + id, participantLeftDTO);
     }
 
