@@ -432,6 +432,7 @@ public class GameService {
         if (streak >= 2) {          // streak bonus
             totalPoints *= Math.pow((1 + (double)streak * 0.1), 1.3);   // the streak bonus is calculated by the formula (1 + streak * 0.1) ^ 1.3
         }
+        participant.setPointsThisRound(totalPoints);
         participant.setScore(participant.getScore() + totalPoints);
 
         return totalPoints;
