@@ -167,6 +167,29 @@ Record of contributions made to the project and corresponding tasks
 ## Week 4: [16.04. - 23.04]
 
 ### Georg
+- Connect lobby to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/131
+- Connect voting page to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/132
+- Connect round summary page to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/134
+- Connect game summary page to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/133
+- Implement functionality to detect players leaving the lobby/game by closing tab (backend and frontend)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/135
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/168
+- Restrict the summary time to 20 seconds
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/167
+- End a phase within a round prematurely if everybody is done
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/157
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/156
+- Fixed point awarding logic
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/148
+- Store points gained for each player per round to display the point gain in the leaderboard
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/169
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/153
+- Handle the case where less than 3 players are remaining (end game)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/129
 
 ### Nils & Silvan
 We worked together on these Issues on one device most of the time.
