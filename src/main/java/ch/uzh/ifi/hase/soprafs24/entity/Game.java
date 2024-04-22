@@ -22,7 +22,7 @@ public class Game {
     public static Long rounds_count = 1L;
     private String lobbyPassword;
     private Map<String, Long> lastActivityTimes = new HashMap<>();
-
+    private Integer activeParticipants;
 
     public Game() {
         this.id = id_count++;
@@ -126,5 +126,13 @@ public class Game {
 
     public void setLobbyPassword(String lobbyPassword) {
         this.lobbyPassword = lobbyPassword;
+    }
+
+    public Integer getActiveParticipants() {
+        return activeParticipants;
+    }
+
+    public void setActiveParticipants(Integer activeParticipants) {
+        this.activeParticipants = activeParticipants;
     }
 }

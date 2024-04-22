@@ -18,6 +18,8 @@ public class Round {
     private Map<Long, Submission> submissions = new HashMap<>();
     private Submission winningSubmission;
     private Integer summaryTime = 20;
+    private Integer participantsDone = 0;
+
     public static Long submissionCount = 1L;
 
     public void addSubmission(Submission submission) {
@@ -102,5 +104,13 @@ public class Round {
 
     public void setSummaryTime(Integer summaryTime) {
         this.summaryTime = summaryTime;
+    }
+
+    public Integer getParticipantsDone() {
+        return participantsDone;
+    }
+
+    public void setParticipantsDone(Integer participantsDone) {
+        this.participantsDone = participantsDone;
     }
 }
