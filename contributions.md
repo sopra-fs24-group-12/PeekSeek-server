@@ -215,7 +215,22 @@ We worked together on these Issues on one device most of the time.
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/92)
 
 ### Youssef
-
+- Connect and adjust functionalities of JoinUser page (page where user should enter username and password of lobby)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/71
+- Connect JoinLobby page to backend, added and removed functionalities
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/72
+- Connect CreateLobby page to backend, added and removed functionalities
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/73
+- LobbyTable UI was totally reformatted
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/74
+- Adjust JoinButton, CreateButton, Backbutton UI for extended use
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/75
+- Create new model "Lobby"
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/77
+- Added a new button specifically for creating a lobby
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/76
+- Adjust guards and routers for entering a lobby in different cases
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/78
 ---
 
 ## Week 5: [23.04. - 30.04]
