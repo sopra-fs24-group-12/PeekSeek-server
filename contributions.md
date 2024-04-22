@@ -168,11 +168,17 @@ Record of contributions made to the project and corresponding tasks
 
 ### Georg
 
-### Silvan
+### Nils & Silvan
+We worked together on these Issues on one device most of the time.
+- [x] [Create Game Page Logic](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/94)
+- [x] [Adding Listeners to Simple Map etc, using Google Maps JavaScript API to update current location data](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/95)
+- [x] [Handle Google Maps javaScript API Simple Map calls](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/96)
+- [x] [Handle Google Maps javaScript API Street View calls](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/97)
+- [x] [API calls for submissions](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/98)
+- [x] [Design of Google Maps Simple Maps](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/99)
+- [x] [Add feature to accept noSubmission](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/100)
 
 ### Ece
-
-### Nils
 
 ### Youssef
 
