@@ -179,6 +179,17 @@ We worked together on these Issues on one device most of the time.
 - [x] [Add feature to accept noSubmission](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/100)
 
 ### Ece
+- Implement Lobby logic (connect with backend)
+    - Adapt Lobby UI: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/53)
+    - Joined players list: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/120)
+    - API request for destination: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/165)
+- Add time per round component
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/164)
+- Fix re-rendering issue in destination & quest input fields
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/5)
+- Implement admin - player logic: disable input fields and buttons
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/166)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/92)
 
 ### Youssef
 
