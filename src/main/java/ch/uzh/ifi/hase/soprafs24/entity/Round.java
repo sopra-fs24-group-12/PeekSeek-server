@@ -19,6 +19,9 @@ public class Round {
     private Submission winningSubmission;
     private Integer summaryTime = 20;
     private Integer participantsDone = 0;
+    private Integer bufferTime = 1;
+    private Long lastPhaseChangeTime;
+
 
     public static Long submissionCount = 1L;
 
@@ -112,5 +115,20 @@ public class Round {
 
     public void setParticipantsDone(Integer participantsDone) {
         this.participantsDone = participantsDone;
+    }
+    public Integer getBufferTime() {
+        return bufferTime;
+    }
+
+    public void setBufferTime(Integer bufferTime) {
+        this.bufferTime = bufferTime;
+    }
+
+    public Long getLastPhaseChangeTime() {
+        return lastPhaseChangeTime;
+    }
+
+    public void setLastPhaseChangeTime(Long lastPhaseChangeTime) {
+        this.lastPhaseChangeTime = lastPhaseChangeTime;
     }
 }
