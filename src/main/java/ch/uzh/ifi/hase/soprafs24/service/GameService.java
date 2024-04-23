@@ -145,13 +145,13 @@ public class GameService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                List<String> inactiveTokens = game.removeInactiveParticipants(4000);
+                List<String> inactiveTokens = game.removeInactiveParticipants(10000);
                 for (String token : inactiveTokens) {
                     leaveGame(game.getId(), token);
                 }
             }
         };
-        timer.schedule(task, 0, 4000);
+        timer.schedule(task, 5000, 10000);
 
         inactivityTimers.put(game.getId(), timer);
     }
@@ -208,11 +208,11 @@ public class GameService {
         websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
         game.setGameStatus(GameStatus.SUMMARY);
         gameTimers.remove(game.getId());
-        stopInactivityTimer(gameId);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                stopInactivityTimer(gameId);
                 GameRepository.deleteGame(gameId);
                 timer.cancel();
             }
@@ -308,16 +308,16 @@ public class GameService {
 
         currentRound.addSubmission(submission);
 
-        if (Objects.equals(currentRound.getParticipantsDone(), game.getActiveParticipants()) && currentRound.getRemainingSeconds() > 5) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    endTimerPrematurely(currentRound, gameId);
-                    timer.cancel();
-                }
-            }, 3000);
-        }
+//        if (Objects.equals(currentRound.getParticipantsDone(), game.getActiveParticipants()) && currentRound.getRemainingSeconds() > 5) {
+//            Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    endTimerPrematurely(currentRound, gameId);
+//                    timer.cancel();
+//                }
+//            }, 3000);
+//        }
     }
 
     public void leaveGame(Long gameId, String token) {
@@ -380,16 +380,16 @@ public class GameService {
         participant.setHasVoted(true);
         round.setParticipantsDone(round.getParticipantsDone() + 1);
 
-        if (Objects.equals(round.getParticipantsDone(), game.getActiveParticipants()) && round.getRemainingSeconds() > 5) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    endTimerPrematurely(round, gameId);
-                    timer.cancel();
-                }
-            }, 3000);
-        }
+//        if (Objects.equals(round.getParticipantsDone(), game.getActiveParticipants()) && round.getRemainingSeconds() > 5) {
+//            Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    endTimerPrematurely(round, gameId);
+//                    timer.cancel();
+//                }
+//            }, 3000);
+//        }
     }
 
     private static int getSubmissionTime(Participant participant, Round round) {
