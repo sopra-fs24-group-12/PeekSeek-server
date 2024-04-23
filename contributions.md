@@ -204,6 +204,9 @@ We worked together on these Issues on one device most of the time.
 ### Silvan
 - [x] [Bugfix: Username can't enter lobby with username as empty string](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/118)
 
+###Nils
+- [x] [Fixed point awarding logic](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/148)
+
 ### Ece
 - Implement Lobby logic (connect with backend)
     - Adapt Lobby UI: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/53)
