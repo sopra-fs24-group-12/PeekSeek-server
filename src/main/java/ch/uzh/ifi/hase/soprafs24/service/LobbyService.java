@@ -72,7 +72,7 @@ public class LobbyService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                List<String> inactiveTokens = lobby.removeInactiveParticipants(4000);
+                List<String> inactiveTokens = lobby.removeInactiveParticipants(5000);
                 for (String token : inactiveTokens) {
                     leaveLobby(lobby.getId(), token);
                 }
@@ -82,7 +82,7 @@ public class LobbyService {
                 }
             }
         };
-        timer.schedule(task, 0, 4000);
+        timer.schedule(task, 5000, 5000);
 
         lobbyTimers.put(lobby.getId(), timer);
     }

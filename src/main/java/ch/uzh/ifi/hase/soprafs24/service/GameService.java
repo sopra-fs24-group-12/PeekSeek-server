@@ -23,10 +23,6 @@ import java.io.IOException;
 import java.util.*;
 import java.lang.Math;
 
-//TODO: Handle case with less than 3 participants remaining
-//TODO: authorize participants/admin
-//TODO: submit current location of player if not submitted
-
 
 @Service
 @Transactional
@@ -76,7 +72,7 @@ public class GameService {
         authorizeGameParticipant(game, token);
 
         List<Participant> participants = new ArrayList<>(game.getParticipants().values());
-        participants.sort(Comparator.comparing(Participant::getScore).reversed()); //TODO: Check in which  direction it sorts
+        participants.sort(Comparator.comparing(Participant::getScore).reversed());
         return participants;
     }
 
@@ -122,7 +118,7 @@ public class GameService {
 
         startInactivityTimer(createdGame);
 
-        gameTimers.put(createdGame.getId(), new Timer());
+        //gameTimers.put(createdGame.getId(), new Timer());
 
         startNextRound(createdGame.getId());
 
@@ -145,13 +141,13 @@ public class GameService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                List<String> inactiveTokens = game.removeInactiveParticipants(10000);
+                List<String> inactiveTokens = game.removeInactiveParticipants(5000);
                 for (String token : inactiveTokens) {
                     leaveGame(game.getId(), token);
                 }
             }
         };
-        timer.schedule(task, 5000, 10000);
+        timer.schedule(task, 5000, 5000);
 
         inactivityTimers.put(game.getId(), timer);
     }
@@ -206,17 +202,17 @@ public class GameService {
     private void endGame(Game game, Long gameId) {
         Long summaryId = generateSummary(game);
         websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
-        game.setGameStatus(GameStatus.SUMMARY);
-        gameTimers.remove(game.getId());
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                game.setGameStatus(GameStatus.SUMMARY);
+                gameTimers.remove(game.getId());
                 stopInactivityTimer(gameId);
                 GameRepository.deleteGame(gameId);
                 timer.cancel();
             }
-        }, 2000);
+        }, 5000);
     }
 
 
@@ -308,16 +304,16 @@ public class GameService {
 
         currentRound.addSubmission(submission);
 
-//        if (Objects.equals(currentRound.getParticipantsDone(), game.getActiveParticipants()) && currentRound.getRemainingSeconds() > 5) {
-//            Timer timer = new Timer();
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    endTimerPrematurely(currentRound, gameId);
-//                    timer.cancel();
-//                }
-//            }, 3000);
-//        }
+        if (Objects.equals(currentRound.getParticipantsDone(), game.getActiveParticipants()) && currentRound.getRemainingSeconds() > 5) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    endTimerPrematurely(currentRound, gameId);
+                    timer.cancel();
+                }
+            }, 3000);
+        }
     }
 
     public void leaveGame(Long gameId, String token) {
@@ -380,16 +376,16 @@ public class GameService {
         participant.setHasVoted(true);
         round.setParticipantsDone(round.getParticipantsDone() + 1);
 
-//        if (Objects.equals(round.getParticipantsDone(), game.getActiveParticipants()) && round.getRemainingSeconds() > 5) {
-//            Timer timer = new Timer();
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    endTimerPrematurely(round, gameId);
-//                    timer.cancel();
-//                }
-//            }, 3000);
-//        }
+        if (Objects.equals(round.getParticipantsDone(), game.getActiveParticipants()) && round.getRemainingSeconds() > 5) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    endTimerPrematurely(round, gameId);
+                    timer.cancel();
+                }
+            }, 3000);
+        }
     }
 
     private static int getSubmissionTime(Participant participant, Round round) {
@@ -463,54 +459,36 @@ public class GameService {
     }
 
     private void startTimer(Round round, Long gameId) {
-        Timer timer;
-        synchronized (gameTimers) {
-            timer = gameTimers.get(gameId);
-            if (timer == null) {
-                timer = new Timer();
-                gameTimers.put(gameId, timer);
-            }
-        }
+        Timer timer = new Timer();
+        gameTimers.put(gameId, timer);
 
         int timeInCurrentPhase = (round.getRoundStatus() == RoundStatus.SUMMARY) ? round.getSummaryTime() : round.getRoundTime();
+        round.setRemainingSeconds(timeInCurrentPhase);
 
-        Timer finalTimer = timer;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                round.setRemainingSeconds(round.getRoundStatus() == RoundStatus.PLAYING ? round.getRoundTime() : round.getSummaryTime());
-                cancelTimer(finalTimer, round, gameId);
                 handleNextPhase(round, gameId);
+                timer.cancel();
             }
         }, timeInCurrentPhase * 1000L);
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                round.setRemainingSeconds(round.getRemainingSeconds() - 1);
                 websocketService.sendMessage("/topic/games/" + gameId + "/timer",
                         new SecondsRemainingDTO(round.getRemainingSeconds()));
+                round.setRemainingSeconds(round.getRemainingSeconds() - 1);
             }
         }, 0, 1000);
     }
 
     private void endTimerPrematurely(Round round, Long gameId) {
-        Timer timer;
-        synchronized (gameTimers) {
-            timer = gameTimers.get(gameId);
-        }
+        Timer timer = gameTimers.get(gameId);
         if (timer != null) {
-            cancelTimer(timer, round, gameId);
-        }
-    }
-
-    private void cancelTimer(Timer timer, Round round, Long gameId) {
-        synchronized (timer) {
-            round.setRemainingSeconds(round.getRoundStatus() == RoundStatus.PLAYING ? round.getRoundTime() : round.getSummaryTime());
             timer.cancel();
-            gameTimers.remove(gameId);
+            handleNextPhase(round, gameId);
         }
-        handleNextPhase(round, gameId);
     }
 
     private void startVoting(Round round, Long gameId) {
