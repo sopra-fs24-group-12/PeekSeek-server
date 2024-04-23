@@ -7,6 +7,15 @@ public class LeaderboardGetDTO {
     private int streak;
     //private int position;
     private Long id;
+    private int pointsThisRound;
+
+    public int getPointsThisRound() {
+        return pointsThisRound;
+    }
+
+    public void setPointsThisRound(int pointsThisRound) {
+        this.pointsThisRound = pointsThisRound;
+    }
 
     public String getUsername() {
         return username;

@@ -34,12 +34,13 @@ public class LobbyController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
+    public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
                                                    HttpServletResponse response) {
-        Long id = lobbyService.createLobby(lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
-        String token = lobbyService.joinLobby(id, lobbyPostDTO.getUsername(), lobbyPostDTO.getPassword());
+        Lobby lobby = lobbyService.createLobby(lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
+        String token = lobbyService.joinLobby(lobby.getId(), lobbyPostDTO.getUsername(), lobbyPostDTO.getPassword());
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
         response.setHeader("Authorization", token);
+        return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
     }
 
     @GetMapping("/lobbies")
@@ -57,9 +58,12 @@ public class LobbyController {
     @GetMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO getLobby(@PathVariable Long id) {
+    public LobbyGetInformationDTO getLobbyInformation(@PathVariable Long id,
+                                                      @RequestHeader(value = "Authorization", required = false)
+                                                      String token) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
-        return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
+        lobbyService.authorizeLobbyParticipant(lobby, token);
+        return DTOMapper.INSTANCE.convertLobbyToLobbyGetInformationDTO(lobby);
     }
 
     @GetMapping("/lobbies/{id}/participants")
@@ -93,13 +97,7 @@ public class LobbyController {
     @ResponseBody
     public void leaveLobby(@PathVariable Long id,
                            @RequestHeader(value = "Authorization", required = false) String token) {
-        List<String> usernames = lobbyService.leaveLobby(id, token);
-        ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO(usernames.get(0));
-        String newAdmin = usernames.get(1);
-        if (newAdmin != null) {
-            participantLeftDTO.setNewAdmin(newAdmin);
-        }
-        websocketService.sendMessage("/topic/lobby/" + id, participantLeftDTO);
+        lobbyService.leaveLobby(id, token);
     }
 
     @PutMapping("/lobbies/{id}")
@@ -116,10 +114,18 @@ public class LobbyController {
     @PostMapping("/lobbies/{id}/start")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void startGame(@PathVariable Long id,
+    public void startGame(@PathVariable Long id, @RequestBody(required = false) String body,
                           @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
+        lobbyService.authorizeLobbyAdmin(lobby, token);
         Long gameId = gameService.startGame(lobby);
         websocketService.sendMessage("/topic/lobby/" + id, new GameStartedDTO(gameId));
+    }
+
+    @GetMapping("/lobbies/cities")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<String> getExistingCities() {
+        return lobbyService.getExistingCities();
     }
 }

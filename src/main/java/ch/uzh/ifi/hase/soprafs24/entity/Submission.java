@@ -13,7 +13,6 @@ public class Submission {
     private Long id;
     private String token;
     private boolean noSubmission = false; // if the user clicked on "Can`t find that"
-
     private byte[] image;
 
     public Integer getSubmissionTimeSeconds() {
