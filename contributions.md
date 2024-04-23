@@ -201,6 +201,9 @@ We worked together on these Issues on one device most of the time.
 - [x] [Design of Google Maps Simple Maps](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/99)
 - [x] [Add feature to accept noSubmission](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/100)
 
+### Silvan
+- [x] [Bugfix: Username can't enter lobby with username as empty string](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/118)
+
 ### Ece
 - Implement Lobby logic (connect with backend)
     - Adapt Lobby UI: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/53)
