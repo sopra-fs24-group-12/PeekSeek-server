@@ -141,6 +141,9 @@ public class LobbyService {
         if (lobby.getPassword() != null && !lobby.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect password");
         }
+        if (username.equals("")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username can not be empty");
+        }
 
         Participant participant = new Participant();
         participant.setUsername(username);
