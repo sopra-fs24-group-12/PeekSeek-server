@@ -108,8 +108,12 @@ public class GameController {
     public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
         List<LeaderboardGetDTO> leaderboard = new ArrayList<>();
         List<Participant> participants = gameService.getLeaderboard(token, id);
+        int i = 1;
         for (Participant participant : participants) {
-            leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
+            LeaderboardGetDTO lead = DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant);
+            lead.setPosition(i);
+            i++;
+            leaderboard.add(lead);
         }
         return leaderboard;
     }
