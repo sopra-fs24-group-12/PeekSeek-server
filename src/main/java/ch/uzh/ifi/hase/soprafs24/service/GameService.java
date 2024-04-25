@@ -281,6 +281,11 @@ public class GameService {
         }
 
         Round currentRound = game.getRounds().get(game.getCurrentRound());
+        if (currentRound.getRoundStatus() != RoundStatus.PLAYING && !isWithinBufferPeriod(currentRound)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The game is not in the submission phase");
+        }
+
+
         int submissionTime = getSubmissionTime(participant, currentRound);
 
         Submission submission = new Submission();
@@ -350,7 +355,7 @@ public class GameService {
         authorizeGameParticipant(game, token);
 
         Round round = game.getRounds().get(game.getCurrentRound());
-        if (round.getRoundStatus() != RoundStatus.VOTING) {
+        if (round.getRoundStatus() != RoundStatus.VOTING && !isWithinBufferPeriod(round)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the voting phase");
         }
 
@@ -392,14 +397,6 @@ public class GameService {
     private static int getSubmissionTime(Participant participant, Round round) {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
-        }
-
-        if (round.getRoundStatus() != RoundStatus.PLAYING) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the submission phase");
-        }
-
-        if (participant.getHasSubmitted()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You have already submitted this round");
         }
 
         return round.getRoundTime() - round.getRemainingSeconds();
@@ -465,6 +462,8 @@ public class GameService {
 
         int timeInCurrentPhase = (round.getRoundStatus() == RoundStatus.SUMMARY) ? round.getSummaryTime() : round.getRoundTime();
         round.setRemainingSeconds(timeInCurrentPhase);
+
+        round.setLastPhaseChangeTime(System.currentTimeMillis());
 
         timer.schedule(new TimerTask() {
             @Override
@@ -562,5 +561,10 @@ public class GameService {
         if (participant.getLeftGame()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Participant has left the game");
         }
+    }
+
+    private boolean isWithinBufferPeriod(Round round) {
+        long currentTime = System.currentTimeMillis();
+        return (currentTime - round.getLastPhaseChangeTime()) <= round.getBufferTime() * 1000L;
     }
 }
