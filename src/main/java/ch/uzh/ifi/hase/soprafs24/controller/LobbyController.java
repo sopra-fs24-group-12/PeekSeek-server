@@ -97,13 +97,7 @@ public class LobbyController {
     @ResponseBody
     public void leaveLobby(@PathVariable Long id,
                            @RequestHeader(value = "Authorization", required = false) String token) {
-        List<String> usernames = lobbyService.leaveLobby(id, token);
-        ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO(usernames.get(0));
-        String newAdmin = usernames.get(1);
-        if (newAdmin != null) {
-            participantLeftDTO.setNewAdmin(newAdmin);
-        }
-        websocketService.sendMessage("/topic/lobby/" + id, participantLeftDTO);
+        lobbyService.leaveLobby(id, token);
     }
 
     @PutMapping("/lobbies/{id}")
@@ -120,10 +114,18 @@ public class LobbyController {
     @PostMapping("/lobbies/{id}/start")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void startGame(@PathVariable Long id,
+    public void startGame(@PathVariable Long id, @RequestBody(required = false) String body,
                           @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
+        lobbyService.authorizeLobbyAdmin(lobby, token);
         Long gameId = gameService.startGame(lobby);
         websocketService.sendMessage("/topic/lobby/" + id, new GameStartedDTO(gameId));
+    }
+
+    @GetMapping("/lobbies/cities")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<String> getExistingCities() {
+        return lobbyService.getExistingCities();
     }
 }

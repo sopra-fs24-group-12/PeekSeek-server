@@ -11,7 +11,15 @@ public class LobbyGetInformationDTO {
     private String gameLocation;
     private GeoCodingData gameLocationCoordinates;
     private Integer RoundDurationSeconds;
+    private String adminUsername;
 
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
 
     public String getName() {
         return name;

@@ -5,6 +5,7 @@ public class SubmissionPostDTO {
     private String lng;
     private String heading;
     private String pitch;
+    private Boolean noSubmission;
 
     public String getLat() {
         return lat;
@@ -17,7 +18,7 @@ public class SubmissionPostDTO {
     public String getLng() {
         return lng;
     }
-
+    
     public void setLng(String lng) {
         this.lng = lng;
     }
@@ -36,5 +37,13 @@ public class SubmissionPostDTO {
 
     public void setPitch(String pitch) {
         this.pitch = pitch;
+    }
+
+    public Boolean getNoSubmission() {
+        return noSubmission;
+    }
+
+    public void setNoSubmission(Boolean noSubmission) {
+        this.noSubmission = noSubmission;
     }
 }

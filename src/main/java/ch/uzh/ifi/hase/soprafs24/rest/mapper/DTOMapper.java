@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Submission;
+import ch.uzh.ifi.hase.soprafs24.entity.summary.Summary;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.RoundGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
@@ -39,6 +40,7 @@ public interface DTOMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "maxParticipants", target = "maxParticipants")
     @Mapping(source = "joinedParticipants", target = "joinedParticipants")
+    @Mapping(source = "passwordProtected", target = "passwordProtected")
     LobbyGetDTO convertLobbyToLobbyGetDTO(Lobby lobby);
 
     @Mapping(source = "name", target = "name")
@@ -47,6 +49,7 @@ public interface DTOMapper {
     @Mapping(source = "gameLocation", target = "gameLocation")
     @Mapping(source = "gameLocationCoordinates", target = "gameLocationCoordinates")
     @Mapping(source = "roundDurationSeconds", target = "roundDurationSeconds")
+    @Mapping(source = "adminUsername", target = "adminUsername")
     LobbyGetInformationDTO convertLobbyToLobbyGetInformationDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")
@@ -62,6 +65,8 @@ public interface DTOMapper {
     @Mapping(source = "game.numberRounds", target = "numberRounds")
     @Mapping(source = "round.remainingSeconds", target = "remainingSeconds")
     @Mapping(source = "round.roundStatus", target = "roundStatus")
+    @Mapping(source = "round.roundTime", target = "roundTime")
+    @Mapping(source = "round.geoCodingData", target = "geoCodingData")
     RoundGetDTO convertRoundToGameRoundGetDTO(Round round, Game game);
 
     @Mapping(source = "id", target = "id")
@@ -88,4 +93,14 @@ public interface DTOMapper {
     @Mapping(source = "streak", target = "streak")
     //@Mapping(source = "position", target = "position")
     @Mapping(source = "id", target = "id")
-    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);}
+    @Mapping(source = "pointsThisRound", target = "pointsThisRound")
+    LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "cityName", target = "cityName")
+    @Mapping(source = "roundsPlayed", target = "roundsPlayed")
+    @Mapping(source = "quests", target = "quests")
+    SummaryGetDTO convertSummaryToSummaryGetDTO(Summary summary);
+
+}
+

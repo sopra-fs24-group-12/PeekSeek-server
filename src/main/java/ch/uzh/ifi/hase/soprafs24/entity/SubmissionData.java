@@ -8,6 +8,7 @@ public class SubmissionData {
     private String lng;
     private String heading;
     private String pitch;
+    private Boolean noSubmission;
 
     public String getHeading() {
         return heading;
@@ -38,5 +39,13 @@ public class SubmissionData {
 
     public void setPitch(String pitch) {
         this.pitch = pitch;
+    }
+
+    public Boolean getNoSubmission() {
+        return noSubmission;
+    }
+
+    public void setNoSubmission(Boolean noSubmission) {
+        this.noSubmission = noSubmission;
     }
 }

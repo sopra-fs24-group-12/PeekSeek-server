@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity.summary;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,15 +12,23 @@ public class Quest {
 
     @ManyToOne
     @JoinColumn(name = "summary_id", nullable = false)
+    @JsonIgnore
     private Summary summary;
-
     private String description;
-
     private String name;
-
     private String link;
-
     private byte[] image;
+    private Boolean noSubmission;
+    private String lat;
+    private String lng;
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 
     public byte[] getImage() {
         return image;
@@ -66,5 +76,21 @@ public class Quest {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Boolean getNoSubmission() {
+        return noSubmission;
+    }
+
+    public void setNoSubmission(Boolean noSubmission) {
+        this.noSubmission = noSubmission;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 }
