@@ -9,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.GameStartedDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantJoinedDTO;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

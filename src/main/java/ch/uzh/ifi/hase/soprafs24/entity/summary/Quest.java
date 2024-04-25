@@ -17,7 +17,6 @@ public class Quest {
     private String description;
     private String name;
     private String link;
-    private byte[] image;
     private Boolean noSubmission;
     private String lat;
     private String lng;
@@ -28,14 +27,6 @@ public class Quest {
 
     public void setLng(String lng) {
         this.lng = lng;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public Long getId() {

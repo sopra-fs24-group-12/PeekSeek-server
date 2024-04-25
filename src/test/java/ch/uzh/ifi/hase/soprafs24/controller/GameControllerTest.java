@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-
-
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;

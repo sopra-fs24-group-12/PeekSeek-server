@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
-
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
-import ch.uzh.ifi.hase.soprafs24.websocket.dto.GameStartedDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
