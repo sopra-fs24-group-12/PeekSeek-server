@@ -301,6 +301,7 @@ public class GameService {
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
+        submission.setUsername(participant.getUsername());
 
         currentRound.addSubmission(submission);
 
@@ -545,6 +546,7 @@ public class GameService {
                 emptySubmission.setId(Round.submissionCount++);
                 emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
                 emptySubmission.setToken(participant.getToken());
+                emptySubmission.setUsername(participant.getUsername());
                 emptySubmission.setNoSubmission(true);
                 emptySubmission.setSubmittedLocation(submissionData);
                 round.addSubmission(emptySubmission);

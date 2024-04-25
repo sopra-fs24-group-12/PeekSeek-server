@@ -12,6 +12,7 @@ public class Submission {
     private Integer awardedPoints = 0;
     private Long id;
     private String token;
+    private String username;
     private boolean noSubmission = false; // if the user clicked on "Can`t find that"
     private byte[] image;
 
@@ -86,5 +87,13 @@ public class Submission {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
