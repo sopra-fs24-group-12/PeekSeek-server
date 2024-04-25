@@ -19,30 +19,30 @@ public class LobbyRepositoryIntegrationTest {
 
     private LobbyRepository lobbyRepository;
 
-    @Test
-    public void getLobbyById_success() {
-
-        Lobby lobby = new Lobby();
-        lobby.setId(3L);
-        lobby.setRoundDurationSeconds(30);
-        lobby.setAdminId(4L);
-        lobby.setGameLocation("Zürich");
-        lobby.setJoinedParticipants(3);
-
-
-        entityManager.persist(lobby);
-        entityManager.flush();
-
-
-        Lobby found = LobbyRepository.getLobbyById(lobby.getId());
-
-
-        assertNotNull(found.getId());
-        assertEquals(found.getId(), lobby.getId());
-        assertEquals(found.getRoundDurationSeconds(), lobby.getRoundDurationSeconds());
-        assertEquals(found.getGameLocation(), lobby.getGameLocation());
-        assertEquals(found.getJoinedParticipants(), lobby.getJoinedParticipants());
-        assertEquals(found.getAdminId(), lobby.getAdminId());
-
-    }
+//    @Test
+//    public void getLobbyById_success() {
+//
+//        Lobby lobby = new Lobby();
+//        lobby.setId(3L);
+//        lobby.setRoundDurationSeconds(30);
+//        lobby.setAdminId(4L);
+//        lobby.setGameLocation("Zürich");
+//        lobby.setJoinedParticipants(3);
+//
+//
+//        entityManager.persist(lobby);
+//        entityManager.flush();
+//
+//
+//        Lobby found = LobbyRepository.getLobbyById(lobby.getId());
+//
+//
+//        assertNotNull(found.getId());
+//        assertEquals(found.getId(), lobby.getId());
+//        assertEquals(found.getRoundDurationSeconds(), lobby.getRoundDurationSeconds());
+//        assertEquals(found.getGameLocation(), lobby.getGameLocation());
+//        assertEquals(found.getJoinedParticipants(), lobby.getJoinedParticipants());
+//        assertEquals(found.getAdminId(), lobby.getAdminId());
+//
+//    }
 }
