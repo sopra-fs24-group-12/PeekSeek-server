@@ -1,9 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
+
+import java.util.*;
 
 
 public class Lobby {
@@ -30,12 +29,19 @@ public class Lobby {
     }
 
     public void resetLobby() {
-        participants.clear();
-        usernames.clear();
-        lastActivityTimes.clear();
-        setAdminUsername(null);
-        setReUsed(true);
-        setJoinedParticipants(0);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                participants.clear();
+                usernames.clear();
+                lastActivityTimes.clear();
+                setAdminUsername(null);
+                setReUsed(true);
+                setJoinedParticipants(0);
+                timer.cancel();
+            }
+        }, 5000);
     }
 
     public void addParticipant(Participant participant) {

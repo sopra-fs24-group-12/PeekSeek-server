@@ -15,6 +15,11 @@ public class Round {
     private Map<Long, Submission> submissions = new HashMap<>();
     private Submission winningSubmission;
     private Integer summaryTime = 20;
+    private Integer participantsDone = 0;
+    private Integer bufferTime = 1;
+    private Long lastPhaseChangeTime;
+
+
     public static Long submissionCount = 1L;
 
     public void addSubmission(Submission submission) {
@@ -99,5 +104,28 @@ public class Round {
 
     public void setSummaryTime(Integer summaryTime) {
         this.summaryTime = summaryTime;
+    }
+
+    public Integer getParticipantsDone() {
+        return participantsDone;
+    }
+
+    public void setParticipantsDone(Integer participantsDone) {
+        this.participantsDone = participantsDone;
+    }
+    public Integer getBufferTime() {
+        return bufferTime;
+    }
+
+    public void setBufferTime(Integer bufferTime) {
+        this.bufferTime = bufferTime;
+    }
+
+    public Long getLastPhaseChangeTime() {
+        return lastPhaseChangeTime;
+    }
+
+    public void setLastPhaseChangeTime(Long lastPhaseChangeTime) {
+        this.lastPhaseChangeTime = lastPhaseChangeTime;
     }
 }

@@ -11,8 +11,10 @@ public class Participant {
     private Boolean isAdmin = false;
     private Boolean leftGame = false;
     private Boolean hasSubmitted = false;
-    private boolean hasVoted = false;
+    private Boolean hasVoted = false;
     private static Long id_count = 1L;
+    private int pointsThisRound = 0;
+
 
     public Participant() {
         this.id = id_count++;
@@ -102,7 +104,15 @@ public class Participant {
         return hasVoted;
     }
 
-    public void setHasVoted(boolean hasVoted) {
+    public void setHasVoted(Boolean hasVoted) {
         this.hasVoted = hasVoted;
+    }
+
+    public int getPointsThisRound() {
+        return pointsThisRound;
+    }
+
+    public void setPointsThisRound(int pointsThisRound) {
+        this.pointsThisRound = pointsThisRound;
     }
 }
