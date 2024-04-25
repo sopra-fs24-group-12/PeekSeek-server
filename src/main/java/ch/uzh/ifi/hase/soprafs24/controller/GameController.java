@@ -81,7 +81,9 @@ public class GameController {
         Round currentRound = gameService.getRoundInformation(token, id);
         List<Submission> submissions = new ArrayList<>(currentRound.getSubmissions().values());
         for (Submission submission : submissions) {
-            submissionGetDTOs.add(DTOMapper.INSTANCE.convertSubmissionToSubmissionGetDTO(submission));
+            SubmissionGetDTO toAdd = DTOMapper.INSTANCE.convertSubmissionToSubmissionGetDTO(submission);
+            toAdd.setUsername(""); // for now don't return username for API call on voting page
+            submissionGetDTOs.add(toAdd);
         }
         return submissionGetDTOs;
     }
@@ -108,8 +110,11 @@ public class GameController {
     public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
         List<LeaderboardGetDTO> leaderboard = new ArrayList<>();
         List<Participant> participants = gameService.getLeaderboard(token, id);
-        for (Participant participant : participants) {
-            leaderboard.add(DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant));
+        for (int i = 0; i < participants.size(); i++) {
+            Participant participant = participants.get(i);
+            LeaderboardGetDTO toInsert = DTOMapper.INSTANCE.convertParticipantToLeaderboardGetDTO(participant);
+            toInsert.setPosition(i + 1);
+            leaderboard.add(toInsert);
         }
         return leaderboard;
     }
