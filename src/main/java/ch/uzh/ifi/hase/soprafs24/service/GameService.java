@@ -242,7 +242,7 @@ public class GameService {
                         round.getWinningSubmission().getSubmittedLocation().getLng()));
                 quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
                 quest.setSummary(summary);
-                quest.setImage(round.getWinningSubmission().getImage());
+                //quest.setImage(round.getWinningSubmission().getImage());
                 quest.setNoSubmission(round.getWinningSubmission().getNoSubmission());
                 quest.setLat(round.getWinningSubmission().getSubmittedLocation().getLat());
                 quest.setLng(round.getWinningSubmission().getSubmittedLocation().getLng());
@@ -412,6 +412,10 @@ public class GameService {
         int votingPoints = 500;         // basis which is then multiplied with a factor < 1
         Game game = GameRepository.getGameById(gameId);
         Participant participant = game.getParticipants().get(submission.getToken());
+
+        if (participant == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
+        }
 
         if (submission.getNoSubmission()) {   // if the participant clicked "Can`t find that", they get 0 points
             return 0;

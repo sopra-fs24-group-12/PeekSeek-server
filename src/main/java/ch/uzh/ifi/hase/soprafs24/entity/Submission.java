@@ -1,9 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
-
 public class Submission {
     private Integer submissionTimeSeconds;
     private SubmissionData submittedLocation;
@@ -13,7 +9,6 @@ public class Submission {
     private Long id;
     private String token;
     private boolean noSubmission = false; // if the user clicked on "Can`t find that"
-    private byte[] image;
 
     public Integer getSubmissionTimeSeconds() {
         return submissionTimeSeconds;
@@ -78,13 +73,5 @@ public class Submission {
     public void setNoSubmission(boolean noSubmission) {
         this.noSubmission = noSubmission;
 
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 }

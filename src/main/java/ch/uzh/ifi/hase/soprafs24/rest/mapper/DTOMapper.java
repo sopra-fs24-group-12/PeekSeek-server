@@ -16,10 +16,6 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /**
  * DTOMapper
  * This class is responsible for generating classes that will automatically
@@ -85,7 +81,6 @@ public interface DTOMapper {
     @Mapping(source = "numberBanVotes", target = "numberBanVotes")
     @Mapping(source = "awardedPoints", target = "awardedPoints")
     @Mapping(source = "noSubmission", target = "noSubmission")
-    @Mapping(source = "image", target = "image")
     SubmissionGetDTO convertSubmissionToSubmissionGetDTO(Submission submission);
 
     @Mapping(source = "username", target = "username")
