@@ -250,4 +250,18 @@ We worked together on these Issues on one device most of the time.
 ### Nils
 
 ### Youssef
+- Password field is disabled and greyed out 
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/108
+- A dynamic resize of game summary instead of a static one based on the size of the window
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/123
+- Adding a rank to the leaderboard, modifying DTO and Mapper
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/160
+- Throwing errors if username is empty
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/155
+- Checking http status of the whole backend 
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/154
+- adding icons (streak, leadeboard) 
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/102
+- redirect if there's a timeout
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/116
 

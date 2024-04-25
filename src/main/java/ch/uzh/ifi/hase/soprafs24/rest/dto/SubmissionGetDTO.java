@@ -11,7 +11,6 @@ public class SubmissionGetDTO {
     private Integer awardedPoints;
     private Boolean noSubmission;
     private String username;
-    private byte[] image;
 
     public Long getId() {
         return id;
@@ -67,14 +66,6 @@ public class SubmissionGetDTO {
 
     public void setNoSubmission(Boolean noSubmission) {
         this.noSubmission = noSubmission;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public String getUsername() {

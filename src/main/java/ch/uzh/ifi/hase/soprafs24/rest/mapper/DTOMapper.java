@@ -81,7 +81,6 @@ public interface DTOMapper {
     @Mapping(source = "numberBanVotes", target = "numberBanVotes")
     @Mapping(source = "awardedPoints", target = "awardedPoints")
     @Mapping(source = "noSubmission", target = "noSubmission")
-    @Mapping(source = "image", target = "image")
     @Mapping(source = "username", target = "username")
     SubmissionGetDTO convertSubmissionToSubmissionGetDTO(Submission submission);
 
