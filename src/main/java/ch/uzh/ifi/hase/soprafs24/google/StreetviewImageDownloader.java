@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs24.google;
 
 import ch.uzh.ifi.hase.soprafs24.entity.SubmissionData;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

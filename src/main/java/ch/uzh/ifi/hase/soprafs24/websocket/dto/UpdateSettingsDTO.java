@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs24.websocket.dto;
 import java.util.List;
 
 import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
-import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
 
 public class UpdateSettingsDTO {
     private String status = "update";

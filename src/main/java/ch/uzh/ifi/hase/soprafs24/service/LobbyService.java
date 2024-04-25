@@ -8,7 +8,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.GeoCodingGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.ParticipantLeftDTO;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.Part;
 import java.util.*;
 
 import java.io.IOException;
@@ -54,7 +52,7 @@ public class LobbyService {
         }
 
         LobbyRepository.addLobby(createdLobby);
-        startInactivityTimer(createdLobby);
+        startInactivityTimer(createdLobby);     //Comment out for testing
 
         return createdLobby;
     }
@@ -163,7 +161,7 @@ public class LobbyService {
 
         lobby.addParticipant(participant);
 
-        if (lobby.getJoinedParticipants() == 1) {
+        if (lobby.getJoinedParticipants() == 1) {   //Comment out for testing
             startInactivityTimer(lobby);
         }
 
@@ -195,7 +193,7 @@ public class LobbyService {
         }
 
         if (lobby.getJoinedParticipants() == 0 && lobby.getQuests() != null && !lobby.getQuests().isEmpty()) {
-            stopInactivityTimer(lobby.getId());
+            stopInactivityTimer(lobby.getId());    //Comment out for testing
             lobby.resetLobby();
         }
 

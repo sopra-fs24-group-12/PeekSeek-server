@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity.summary;
 
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
-
 import javax.persistence.*;
 import java.util.List;
 
