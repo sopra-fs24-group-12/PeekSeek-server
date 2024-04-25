@@ -1,10 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
-import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +28,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -54,6 +56,10 @@ public class GameControllerTest {
 
     @MockBean
     private GameService gameService;
+
+    @MockBean
+    private DTOMapper dtoMapper;
+
 
     @Test
     public void getRoundInformation_ReturnsRoundInfo() throws Exception {
@@ -189,37 +195,153 @@ public class GameControllerTest {
         assertThat(capturedDTO.getVotes(), hasEntry(102L, "ban"));
     }
 
-//    @Test
-//    public void getWinningSubmissionCurrent_ReturnsWinningSubmission() throws Exception {
-//        Long gameId = 1L;
-//        String token = "mocktoken123";
-//
-//        // Mock setup for the Round and Submission
-//        Round mockRound = new Round();
-//        Submission mockWinningSubmission = new Submission();
-//        mockWinningSubmission.setId(101L);  // Example properties
-//        mockWinningSubmission.setCaption("Winning caption");
-//
-//        when(gameService.getRoundInformation(token, gameId)).thenReturn(mockRound);
-//        when(mockRound.getWinningSubmission()).thenReturn(mockWinningSubmission);
-//
-//        SubmissionGetDTO mockSubmissionDTO = new SubmissionGetDTO();
-//        mockSubmissionDTO.setId(mockWinningSubmission.getId());
-//        mockSubmissionDTO.setCaption(mockWinningSubmission.getCaption());
-//
-//        when(DTOMapper.INSTANCE.convertSubmissionToSubmissionGetDTO(mockWinningSubmission)).thenReturn(mockSubmissionDTO);
-//
-//        // Perform request
-//        MockHttpServletRequestBuilder getRequest = get("/games/{id}/winningSubmission", gameId)
-//                .header("Authorization", token)
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        // Verify the results
-//        mockMvc.perform(getRequest)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id", is(mockSubmissionDTO.getId().intValue())))
-//                .andExpect(jsonPath("$.caption", is(mockSubmissionDTO.getCaption())));
-//    }
+    @Test
+    public void getWinningSubmissionCurrent_ReturnsCorrectSubmission() throws Exception {
+        Long gameId = 1L;
+        String token = "mocktoken123";
+
+        // Mock setup for the Round and Winning Submission
+        Round mockRound = new Round();
+        Submission mockWinningSubmission = new Submission();
+        mockWinningSubmission.setId(101L);
+        mockWinningSubmission.setSubmissionTimeSeconds(120);
+
+        SubmissionGetDTO mockSubmissionDTO = new SubmissionGetDTO();
+        mockSubmissionDTO.setId(mockWinningSubmission.getId());
+        mockSubmissionDTO.setSubmissionTimeSeconds(mockWinningSubmission.getSubmissionTimeSeconds());
+
+        given(gameService.getRoundInformation(token, gameId)).willReturn(mockRound);
+        given(dtoMapper.convertSubmissionToSubmissionGetDTO(mockWinningSubmission)).willReturn(mockSubmissionDTO);
+
+        // Perform request
+        MockHttpServletRequestBuilder getRequest = get("/games/{id}/winningSubmission", gameId)
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Verify the results
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
+
+        // Verify interaction
+        verify(gameService).getRoundInformation(token, gameId);
+    }
+
+    @Test
+    public void getSubmissions_ReturnsListOfSubmissions() throws Exception {
+        Long gameId = 1L;
+        String token = "mocktoken123";
+
+        // Setup domain objects
+        Submission submission1 = new Submission();
+        submission1.setId(1L);
+        submission1.setSubmissionTimeSeconds(120);
+        submission1.setNumberVotes(10);
+        submission1.setNumberBanVotes(2);
+        submission1.setAwardedPoints(50);
+        submission1.setNoSubmission(false);
+
+        Submission submission2 = new Submission();
+        submission2.setId(2L);
+        submission2.setSubmissionTimeSeconds(100);
+        submission2.setNumberVotes(5);
+        submission2.setNumberBanVotes(1);
+        submission2.setAwardedPoints(30);
+        submission2.setNoSubmission(true);
+
+        Round currentRound = new Round();
+        Map<Long, Submission> submissions = new HashMap<>();
+        submissions.put(1L, submission1);
+        submissions.put(2L, submission2);
+        currentRound.setSubmissions(submissions);
+
+        // Setup DTOs
+        SubmissionGetDTO dto1 = new SubmissionGetDTO();
+        dto1.setId(submission1.getId());
+        dto1.setSubmissionTimeSeconds(submission1.getSubmissionTimeSeconds());
+        dto1.setNumberVotes(submission1.getNumberVotes());
+        dto1.setNumberBanVotes(submission1.getNumberBanVotes());
+        dto1.setAwardedPoints(submission1.getAwardedPoints());
+        dto1.setNoSubmission(submission1.getNoSubmission());
+
+        SubmissionGetDTO dto2 = new SubmissionGetDTO();
+        dto2.setId(submission2.getId());
+        dto2.setSubmissionTimeSeconds(submission2.getSubmissionTimeSeconds());
+        dto2.setNumberVotes(submission2.getNumberVotes());
+        dto2.setNumberBanVotes(submission2.getNumberBanVotes());
+        dto2.setAwardedPoints(submission2.getAwardedPoints());
+        dto2.setNoSubmission(submission2.getNoSubmission());
+
+        // Mock service and mapper
+        given(gameService.getRoundInformation(token, gameId)).willReturn(currentRound);
+        given(dtoMapper.convertSubmissionToSubmissionGetDTO(submission1)).willReturn(dto1);
+        given(dtoMapper.convertSubmissionToSubmissionGetDTO(submission2)).willReturn(dto2);
+
+        // Perform request
+        MockHttpServletRequestBuilder getRequest = get("/games/{id}/submissions", gameId)
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Execute and verify
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(dto1.getId().intValue())))
+                .andExpect(jsonPath("$[0].submissionTimeSeconds", is(dto1.getSubmissionTimeSeconds())))
+                .andExpect(jsonPath("$[0].numberVotes", is(dto1.getNumberVotes())))
+                .andExpect(jsonPath("$[0].numberBanVotes", is(dto1.getNumberBanVotes())))
+                .andExpect(jsonPath("$[0].awardedPoints", is(dto1.getAwardedPoints())))
+                .andExpect(jsonPath("$[0].noSubmission", is(dto1.getNoSubmission())))
+                .andExpect(jsonPath("$[1].id", is(dto2.getId().intValue())))
+                .andExpect(jsonPath("$[1].submissionTimeSeconds", is(dto2.getSubmissionTimeSeconds())))
+                .andExpect(jsonPath("$[1].numberVotes", is(dto2.getNumberVotes())))
+                .andExpect(jsonPath("$[1].numberBanVotes", is(dto2.getNumberBanVotes())))
+                .andExpect(jsonPath("$[1].awardedPoints", is(dto2.getAwardedPoints())))
+                .andExpect(jsonPath("$[1].noSubmission", is(dto2.getNoSubmission())));
+    }
+
+    @Test
+    public void getWinningSubmissions_ReturnsCorrectSubmissions() throws Exception {
+        Long gameId = 1L;
+        String token = "mocktoken123";
+
+        // Mock setup for the Game and Rounds
+        Game mockGame = new Game();
+        Round mockRound1 = new Round();
+        Round mockRound2 = new Round();
+        mockGame.setRounds(Arrays.asList(mockRound1, mockRound2));
+
+        Submission mockWinningSubmission1 = new Submission();
+        mockWinningSubmission1.setId(101L);
+        Submission mockWinningSubmission2 = new Submission();
+        mockWinningSubmission2.setId(102L);
+
+        mockRound1.setWinningSubmission(mockWinningSubmission1);
+        mockRound2.setWinningSubmission(mockWinningSubmission2);
+
+        SubmissionGetDTO mockSubmissionDTO1 = new SubmissionGetDTO();
+        mockSubmissionDTO1.setId(mockWinningSubmission1.getId());
+        SubmissionGetDTO mockSubmissionDTO2 = new SubmissionGetDTO();
+        mockSubmissionDTO2.setId(mockWinningSubmission2.getId());
+
+        given(gameService.getGameInformation(token, gameId)).willReturn(mockGame);
+        given(dtoMapper.convertSubmissionToSubmissionGetDTO(mockWinningSubmission1)).willReturn(mockSubmissionDTO1);
+        given(dtoMapper.convertSubmissionToSubmissionGetDTO(mockWinningSubmission2)).willReturn(mockSubmissionDTO2);
+
+        // Perform request
+        MockHttpServletRequestBuilder getRequest = get("/games/{id}/winningSubmissions", gameId)
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // Verify the results
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(mockSubmissionDTO1.getId().intValue())))
+                .andExpect(jsonPath("$[1].id", is(mockSubmissionDTO2.getId().intValue())));
+
+        // Verify interactions
+        verify(gameService).getGameInformation(token, gameId);
+    }
 
     private String asJsonString(final Object object) {
         try {
