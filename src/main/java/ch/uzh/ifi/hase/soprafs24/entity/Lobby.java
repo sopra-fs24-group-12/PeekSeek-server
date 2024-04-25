@@ -1,36 +1,54 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
+import java.util.*;
+
 
 public class Lobby {
     private Long id;
     private String name;
     private String password;
     private Integer roundDurationSeconds = 60;
-    private String gameLocation = "Zürich";
-    private List<String> gameLocationCoordinates;
+    private String gameLocation;
+    private GeoCodingData gameLocationCoordinates;
     private Integer maxParticipants = 6; //TODO: don't hardcode
     private Integer joinedParticipants = 0;
     private List<String> quests;
     private Boolean reUsed = false;
     private Long adminId;
+    private Boolean passwordProtected = false;
+    private String adminUsername;
     private Map<String, Participant> participants = new HashMap<>();
     private List<String> usernames = new ArrayList<>();
     private static Long id_count = 1L;
+    private Map<String, Long> lastActivityTimes = new HashMap<>();
 
     public Lobby() {
         this.id = id_count++;
+    }
+
+    public void resetLobby() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                participants.clear();
+                usernames.clear();
+                lastActivityTimes.clear();
+                setAdminUsername(null);
+                setReUsed(true);
+                setJoinedParticipants(0);
+                timer.cancel();
+            }
+        }, 5000);
     }
 
     public void addParticipant(Participant participant) {
         String token = participant.getToken();
         usernames.add(participant.getUsername());
         participants.put(token, participant);
+        lastActivityTimes.put(token, System.currentTimeMillis());
         joinedParticipants++;
     }
 
@@ -38,7 +56,24 @@ public class Lobby {
         String username = participants.get(token).getUsername();
         participants.remove(token);
         usernames.remove(username);
+        lastActivityTimes.remove(token);
         joinedParticipants--;
+    }
+
+    public void updateActivityTime(String token) {
+        lastActivityTimes.put(token, System.currentTimeMillis());
+    }
+
+    public List<String> removeInactiveParticipants(long timeout) {
+        long currentTime = System.currentTimeMillis();
+        List<String> inactiveParticipants = new ArrayList<>();
+        for (Map.Entry<String, Long> entry : lastActivityTimes.entrySet()) {
+            if (currentTime - entry.getValue() > timeout) {
+                inactiveParticipants.add(entry.getKey());
+            }
+        }
+
+        return inactiveParticipants;
     }
 
     public Participant getParticipantByToken(String token) {
@@ -85,11 +120,11 @@ public class Lobby {
         this.gameLocation = gameLocation;
     }
 
-    public List<String> getGameLocationCoordinates() {
+    public GeoCodingData getGameLocationCoordinates() {
         return gameLocationCoordinates;
     }
 
-    public void setGameLocationCoordinates(List<String> gameLocationCoordinates) {
+    public void setGameLocationCoordinates(GeoCodingData gameLocationCoordinates) {
         this.gameLocationCoordinates = gameLocationCoordinates;
     }
 
@@ -147,5 +182,21 @@ public class Lobby {
 
     public void setUsernames(List<String> usernames) {
         this.usernames = usernames;
+    }
+
+    public String getAdminUsername() {
+        return adminUsername;
+    }
+
+    public void setAdminUsername(String adminUsername) {
+        this.adminUsername = adminUsername;
+    }
+
+    public Boolean getPasswordProtected() {
+        return passwordProtected;
+    }
+
+    public void setPasswordProtected(Boolean passwordProtected) {
+        this.passwordProtected = passwordProtected;
     }
 }

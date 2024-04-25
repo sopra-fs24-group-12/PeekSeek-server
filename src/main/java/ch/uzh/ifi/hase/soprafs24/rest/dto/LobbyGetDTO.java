@@ -13,6 +13,15 @@ public class LobbyGetDTO {
     private Integer RoundDurationSeconds;
     private String gameLocation;
     private List<String> quests;
+    private Boolean passwordProtected;
+
+    public Boolean getPasswordProtected() {
+        return passwordProtected;
+    }
+
+    public void setPasswordProtected(Boolean passwordProtected) {
+        this.passwordProtected = passwordProtected;
+    }
 
     public List<String> getQuests() {
         return quests;
