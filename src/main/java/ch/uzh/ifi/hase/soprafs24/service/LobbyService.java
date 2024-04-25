@@ -55,13 +55,8 @@ public class LobbyService {
     }
 
     public void updateActiveStatus(Long lobbyId, String token) {
-        Lobby lobby = LobbyRepository.getLobbyById(lobbyId);
-        if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
-        }
-
+        Lobby lobby = getSpecificLobby(lobbyId);
         authorizeLobbyParticipant(lobby, token);
-
         lobby.updateActivityTime(token);
     }
 
@@ -101,20 +96,17 @@ public class LobbyService {
         return LobbyRepository.findAll();
     }
 
-    public Map<String, GeoCodingData> getAllLobbyLocationsWithCoordinates() {
-        List<Lobby> lobbies = getAllLobbies();
-        Map<String, GeoCodingData> locationCoordinates = new HashMap<>();
-        for (Lobby lobby : lobbies) {
-            locationCoordinates.put(lobby.getGameLocation(), lobby.getGameLocationCoordinates());
-        }
-        return locationCoordinates;
-    }
+//    public Map<String, GeoCodingData> getAllLobbyLocationsWithCoordinates() {
+//        List<Lobby> lobbies = getAllLobbies();
+//        Map<String, GeoCodingData> locationCoordinates = new HashMap<>();
+//        for (Lobby lobby : lobbies) {
+//            locationCoordinates.put(lobby.getGameLocation(), lobby.getGameLocationCoordinates());
+//        }
+//        return locationCoordinates;
+//    }
 
     public List<Participant> getAllParticipants(Long lobbyId, String token) {
-        Lobby lobby = LobbyRepository.getLobbyById(lobbyId);
-        if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
-        }
+        Lobby lobby = getSpecificLobby(lobbyId);
         authorizeLobbyParticipant(lobby, token);
         return new ArrayList<>(lobby.getParticipants().values());
     }
@@ -128,10 +120,7 @@ public class LobbyService {
     }
 
     public String joinLobby(Long id, String username, String password) {
-        Lobby lobby = LobbyRepository.getLobbyById(id);
-        if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
-        }
+        Lobby lobby = getSpecificLobby(id);
         checkIfUsernameInLobby(username, lobby);
         if (lobby.getJoinedParticipants() >= lobby.getMaxParticipants()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The lobby is full");
@@ -161,10 +150,7 @@ public class LobbyService {
     }
 
     public void leaveLobby(Long id, String token) {
-        Lobby lobby = LobbyRepository.getLobbyById(id);
-        if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
-        }
+        Lobby lobby = getSpecificLobby(id);
         Participant participant = lobby.getParticipantByToken(token);
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A participant with this token does not exist");
@@ -199,10 +185,7 @@ public class LobbyService {
 
     // TODO: no lobbyPutDTO as parameter
     public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) throws IOException {
-        Lobby lobby = LobbyRepository.getLobbyById(id);
-        if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
-        }
+        Lobby lobby = getSpecificLobby(id);
         authorizeLobbyAdmin(lobby, token);
         if (lobbyPutDTO.getGameLocation() != null) {
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());

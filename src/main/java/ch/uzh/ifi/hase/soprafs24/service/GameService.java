@@ -41,10 +41,7 @@ public class GameService {
     }
 
     public Round getRoundInformation(String token, Long gameId) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -52,10 +49,7 @@ public class GameService {
     }
 
     public Game getGameInformation(String token, Long gameId) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -64,10 +58,7 @@ public class GameService {
 
     // TODO: adjust participant class to include distribution of points and adjust DTO
     public List<Participant> getLeaderboard(String token, Long gameId) {  // get a list of all participants sorted by score
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -126,10 +117,7 @@ public class GameService {
     }
 
     public void updateActiveStatus(Long gameId, String token) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -161,10 +149,7 @@ public class GameService {
     }
 
     public void startNextRound(Long gameId) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         if (game.getCurrentRound() != -1) {
             Round previousRound = game.getRounds().get(game.getCurrentRound());
@@ -264,10 +249,7 @@ public class GameService {
     }
 
     public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) throws IOException {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -321,10 +303,7 @@ public class GameService {
     }
 
     public void leaveGame(Long gameId, String token) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -345,10 +324,7 @@ public class GameService {
     }
 
     public void postVoting(Long gameId, String token, VotingPostDTO votingPostDTO) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
 
@@ -527,10 +503,7 @@ public class GameService {
     }
 
     private void handleMissingSubmissions(Round round, Long gameId) {
-        Game game = GameRepository.getGameById(gameId);
-        if (game == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
-        }
+        Game game = getSpecificGame(gameId);
 
         Map<String, Participant> participants = game.getParticipants();
 
@@ -562,6 +535,14 @@ public class GameService {
         if (participant.getLeftGame()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Participant has left the game");
         }
+    }
+
+    private Game getSpecificGame(Long id) {
+        Game game = GameRepository.getGameById(id);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
+        }
+        return game;
     }
 
     private boolean isWithinBufferPeriod(Round round) {
