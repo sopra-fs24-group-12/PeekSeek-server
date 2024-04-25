@@ -1,11 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Submission;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Participant {
     private Long id;
     private String username;

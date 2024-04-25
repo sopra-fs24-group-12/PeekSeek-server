@@ -1,8 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Participant;
-import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
-
 import java.util.List;
 
 public class LobbyGetDTO {
