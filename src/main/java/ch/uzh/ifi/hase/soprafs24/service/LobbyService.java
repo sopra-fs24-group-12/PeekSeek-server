@@ -123,7 +123,7 @@ public class LobbyService {
         String username = participant.getUsername();
         String newAdminUsername = null;
 
-        if (participant.getAdmin()) {
+        if (participant.getAdmin() && lobby.getJoinedParticipants() > 1) {
             lobby.removeParticipant(token);
             Participant newAdmin = lobby.getParticipants().entrySet().iterator().next().getValue();
             lobby.setAdminId(newAdmin.getId());
@@ -131,6 +131,10 @@ public class LobbyService {
             newAdminUsername = newAdmin.getUsername();
         } else {
             lobby.removeParticipant(token);
+        }
+
+        if (lobby.getJoinedParticipants() == 0 && lobby.getQuests() != null && !lobby.getQuests().isEmpty()) {
+            lobby.resetLobby();
         }
 
         List<String> usernames = new ArrayList<>();

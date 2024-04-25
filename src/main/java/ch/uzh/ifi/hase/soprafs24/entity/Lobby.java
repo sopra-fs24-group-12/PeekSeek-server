@@ -11,7 +11,7 @@ public class Lobby {
     private String name;
     private String password;
     private Integer roundDurationSeconds = 60;
-    private String gameLocation = "Zürich";
+    private String gameLocation;
     private GeoCodingData gameLocationCoordinates;
     private Integer maxParticipants = 6; //TODO: don't hardcode
     private Integer joinedParticipants = 0;
