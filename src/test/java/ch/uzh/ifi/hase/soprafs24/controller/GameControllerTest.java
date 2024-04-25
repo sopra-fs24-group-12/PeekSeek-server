@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaderboardGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
@@ -38,11 +39,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -341,6 +341,77 @@ public class GameControllerTest {
 
         // Verify interactions
         verify(gameService).getGameInformation(token, gameId);
+    }
+
+    @Test
+    public void getLeaderboard_ReturnsLeaderboardSuccessfully() throws Exception {
+        Long gameId = 1L;
+        String token = "mocktoken123";
+
+        // Prepare mock data
+        Participant participant1 = new Participant();
+        participant1.setId(1L);
+        participant1.setUsername("playerOne");
+        participant1.setScore(100);
+        participant1.setStreak(5);
+
+        Participant participant2 = new Participant();
+        participant2.setId(2L);
+        participant2.setUsername("playerTwo");
+        participant2.setScore(150);
+        participant2.setStreak(3);
+
+        // Mocking the service layer to return participants
+        given(gameService.getLeaderboard(token, gameId)).willReturn(Arrays.asList(participant1, participant2));
+
+        // Mocking the conversion to DTO
+        LeaderboardGetDTO dto1 = new LeaderboardGetDTO();
+        dto1.setId(participant1.getId());
+        dto1.setUsername(participant1.getUsername());
+        dto1.setScore(participant1.getScore());
+        dto1.setStreak(participant1.getStreak());
+
+        LeaderboardGetDTO dto2 = new LeaderboardGetDTO();
+        dto2.setId(participant2.getId());
+        dto2.setUsername(participant2.getUsername());
+        dto2.setScore(participant2.getScore());
+        dto2.setStreak(participant2.getStreak());
+
+        given(dtoMapper.convertParticipantToLeaderboardGetDTO(participant1)).willReturn(dto1);
+        given(dtoMapper.convertParticipantToLeaderboardGetDTO(participant2)).willReturn(dto2);
+
+        // Perform the GET request
+        mockMvc.perform(get("/games/{id}/leaderboard", gameId)
+                        .header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].username", is(dto1.getUsername())))
+                .andExpect(jsonPath("$[0].score", is(dto1.getScore())))
+                .andExpect(jsonPath("$[0].streak", is(dto1.getStreak())))
+                .andExpect(jsonPath("$[1].username", is(dto2.getUsername())))
+                .andExpect(jsonPath("$[1].score", is(dto2.getScore())))
+                .andExpect(jsonPath("$[1].streak", is(dto2.getStreak())));
+
+        // Verify interactions
+        verify(gameService).getLeaderboard(token, gameId);
+    }
+
+    @Test
+    public void leaveGame_LeavesGameSuccessfully() throws Exception {
+        Long gameId = 1L;
+        String token = "mocktoken123";
+
+        // Setup mocking behavior
+        doNothing().when(gameService).leaveGame(gameId, token);
+
+        // Perform the delete request
+        mockMvc.perform(delete("/games/{id}/leave", gameId)
+                        .header("Authorization", token))
+                .andExpect(status().isNoContent());
+
+        // Verify that the service method was called
+        verify(gameService).leaveGame(gameId, token);
     }
 
     private String asJsonString(final Object object) {
