@@ -167,15 +167,76 @@ Record of contributions made to the project and corresponding tasks
 ## Week 4: [16.04. - 23.04]
 
 ### Georg
+- Connect lobby to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/131
+- Connect voting page to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/132
+- Connect round summary page to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/134
+- Connect game summary page to backend
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/133
+- Implement functionality to detect players leaving the lobby/game by closing tab (backend and frontend)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/135
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/168
+- Restrict the summary time to 20 seconds
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/167
+- End a phase within a round prematurely if everybody is done
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/157
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/156
+- Fixed point awarding logic
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/148
+- Store points gained for each player per round to display the point gain in the leaderboard
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/169
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/153
+- Handle the case where less than 3 players are remaining (end game)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/129
+
+### Nils & Silvan
+We worked together on these Issues on one device most of the time.
+- [x] [Create Game Page Logic](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/94)
+- [x] [Adding Listeners to Simple Map etc, using Google Maps JavaScript API to update current location data](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/95)
+- [x] [Handle Google Maps javaScript API Simple Map calls](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/96)
+- [x] [Handle Google Maps javaScript API Street View calls](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/97)
+- [x] [API calls for submissions](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/98)
+- [x] [Design of Google Maps Simple Maps](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/99)
+- [x] [Add feature to accept noSubmission](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/100)
 
 ### Silvan
-
-### Ece
+- [x] [Bugfix: Username can't enter lobby with username as empty string](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/118)
 
 ### Nils
+- [x] [Fixed point awarding logic](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/148)
+
+### Ece
+- Implement Lobby logic (connect with backend)
+    - Adapt Lobby UI: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/53)
+    - Joined players list: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/120)
+    - API request for destination: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/165)
+- Add time per round component
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/164)
+- Fix re-rendering issue in destination & quest input fields
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/5)
+- Implement admin - player logic: disable input fields and buttons
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/166)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/92)
 
 ### Youssef
-
+- Connect and adjust functionalities of JoinUser page (page where user should enter username and password of lobby)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/71
+- Connect JoinLobby page to backend, added and removed functionalities
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/72
+- Connect CreateLobby page to backend, added and removed functionalities
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/73
+- LobbyTable UI was totally reformatted
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/74
+- Adjust JoinButton, CreateButton, Backbutton UI for extended use
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/75
+- Create new model "Lobby"
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/77
+- Added a new button specifically for creating a lobby
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/76
+- Adjust guards and routers for entering a lobby in different cases
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/78
 ---
 
 ## Week 5: [23.04. - 30.04]

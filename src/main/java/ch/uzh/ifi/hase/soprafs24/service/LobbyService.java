@@ -40,7 +40,10 @@ public class LobbyService {
 
     public Lobby createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
-        // TODO: empty password (no password)
+
+        if (name == null || name.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby name cannot be empty");
+        }
 
         Lobby createdLobby = new Lobby();
         createdLobby.setName(name);
@@ -134,6 +137,11 @@ public class LobbyService {
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A lobby with this ID does not exist");
         }
+
+        if (username == null || username.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Username can not be empty");
+        }
+
         checkIfUsernameInLobby(username, lobby);
         if (lobby.getJoinedParticipants() >= lobby.getMaxParticipants()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The lobby is full");

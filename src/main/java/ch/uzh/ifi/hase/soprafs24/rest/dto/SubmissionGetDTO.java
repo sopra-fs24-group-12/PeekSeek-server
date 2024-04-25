@@ -10,6 +10,7 @@ public class SubmissionGetDTO {
     private Integer numberBanVotes;
     private Integer awardedPoints;
     private Boolean noSubmission;
+    private String username;
     private byte[] image;
 
     public Long getId() {
@@ -74,5 +75,13 @@ public class SubmissionGetDTO {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
