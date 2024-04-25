@@ -242,7 +242,6 @@ public class GameService {
                         round.getWinningSubmission().getSubmittedLocation().getLng()));
                 quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
                 quest.setSummary(summary);
-                //quest.setImage(round.getWinningSubmission().getImage());
                 quest.setNoSubmission(round.getWinningSubmission().getNoSubmission());
                 quest.setLat(round.getWinningSubmission().getSubmittedLocation().getLat());
                 quest.setLng(round.getWinningSubmission().getSubmittedLocation().getLng());
