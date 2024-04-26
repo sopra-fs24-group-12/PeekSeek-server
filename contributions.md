@@ -31,13 +31,13 @@ Record of contributions made to the project and corresponding tasks
   - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/196
 
 ### Silvan
-- [x] Setup NextUI on Client-Template [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0dacd8129b46d9d4e339bc3f94ab6557591cb22a)
-- [x] Create UI for Game Submission Rating [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
-- [x] Create UI for Voting Results [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/87db439b047ae26792263d5e8a5e18a35ac4ba8a)
-- [x] Create UI for Timer [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/87db439b047ae26792263d5e8a5e18a35ac4ba8a)
-- [x] Create UI for Leaderboard [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/ca9cb1bb0a02b245133647f891bfe00adf8138b4)
-- [x] Create UI for Submission Card and Winning Card [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
-- [x] Create Basic Skeleton for Chat [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0d180988a6e24d59a4faa991d81fe741a1426054)
+- [x] [Setup NextUI on Client-Template](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/30)
+- [x] [Create UI for Game Submission Rating](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/39)
+- [x] [Create UI for Voting Results with all UI elements](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/40)
+- [x] [Create UI for Timer](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/55)
+- [x] [Create UI for Leaderboard](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/40)
+- [x] [Create UI for Submission Card](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/39)
+- [x] [Create Basic Skeleton for Chat](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/4)
 
 ### Ece
 - Setup Tailwind.css, NextUI, general design and components (base container, etc.).
@@ -101,10 +101,11 @@ Record of contributions made to the project and corresponding tasks
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/138)
       
 ### Silvan
-- [x] [UI for GameSummary Page](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/18)
-- [x] [UI List of Winning Submissions for GameSummary](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/19)
+- [x] [UI for GameSummary Page](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/41)
+- [x] [UI List of Winning Submissions for GameSummary](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/27)
 - [x] [Website Background Deployment Fix](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/52)
-- [x] [Added Pick and Ban Buttons to Submission Cards](https://github.com/orgs/sopra-fs24-group-12/projects/2/views/1?pane=issue&itemId=56961333)
+- [x] [Added Ban Buttons to Submission Cards](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/60)
+- [x] [Added Pick Buttons to Submission Cards](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/58)
 - [x] [Made Submission Images clickable and added hover effect for UX](https://github.com/orgs/sopra-fs24-group-12/projects/2/views/1?pane=issue&itemId=56961333)
 
 ### Ece
