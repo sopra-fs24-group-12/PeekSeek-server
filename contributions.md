@@ -244,6 +244,12 @@ We worked together on these Issues on one device most of the time.
 ### Georg
 
 ### Silvan
+- [x] [Tests for GameController](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/114)
+- [x] [Added some tests for LobbyController](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/178)
+#### Minor Bug fixes and additions:
+- [x] [Changed Routing for GameSubmission](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/115)
+- [x] [Favicon](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/146)
+- [x] [Anonymous Animal Names correct ordering for all players](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/137)
 
 ### Ece
 
