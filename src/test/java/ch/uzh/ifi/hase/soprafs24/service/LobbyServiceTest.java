@@ -62,7 +62,6 @@ public class LobbyServiceTest {
         assertEquals(name, createdLobby.getName());
         assertEquals(password, createdLobby.getPassword());
         assertTrue(createdLobby.getPasswordProtected());
-        verify(lobbyRepositoryInstance, times(1));
         LobbyRepository.addLobby(createdLobby);
     }
 
