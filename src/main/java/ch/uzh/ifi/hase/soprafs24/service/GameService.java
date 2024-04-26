@@ -227,7 +227,6 @@ public class GameService {
                         round.getWinningSubmission().getSubmittedLocation().getLng()));
                 quest.setName(game.getParticipantByToken(round.getWinningSubmission().getToken()).getUsername());
                 quest.setSummary(summary);
-                //quest.setImage(round.getWinningSubmission().getImage());
                 quest.setNoSubmission(round.getWinningSubmission().getNoSubmission());
                 quest.setLat(round.getWinningSubmission().getSubmittedLocation().getLat());
                 quest.setLng(round.getWinningSubmission().getSubmittedLocation().getLng());
@@ -263,10 +262,10 @@ public class GameService {
         }
 
         Round currentRound = game.getRounds().get(game.getCurrentRound());
-
         if (currentRound.getRoundStatus() != RoundStatus.PLAYING && !isWithinBufferPeriod(currentRound)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The game is not in the submission phase");
         }
+
 
         int submissionTime = getSubmissionTime(participant, currentRound);
 
@@ -287,6 +286,8 @@ public class GameService {
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
+        submission.setUsername(participant.getUsername());
+        submission.setNoSubmission(submissionPostDTO.getNoSubmission());
 
         currentRound.addSubmission(submission);
 
@@ -520,6 +521,7 @@ public class GameService {
                 emptySubmission.setId(Round.submissionCount++);
                 emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
                 emptySubmission.setToken(participant.getToken());
+                emptySubmission.setUsername(participant.getUsername());
                 emptySubmission.setNoSubmission(true);
                 emptySubmission.setSubmittedLocation(submissionData);
                 round.addSubmission(emptySubmission);

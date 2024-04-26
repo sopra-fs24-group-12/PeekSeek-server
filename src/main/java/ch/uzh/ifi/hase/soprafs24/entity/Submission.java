@@ -1,5 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
+
 public class Submission {
     private Integer submissionTimeSeconds;
     private SubmissionData submittedLocation;
@@ -8,6 +12,7 @@ public class Submission {
     private Integer awardedPoints = 0;
     private Long id;
     private String token;
+    private String username;
     private boolean noSubmission = false; // if the user clicked on "Can`t find that"
 
     public Integer getSubmissionTimeSeconds() {
@@ -73,5 +78,13 @@ public class Submission {
     public void setNoSubmission(boolean noSubmission) {
         this.noSubmission = noSubmission;
 
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -10,6 +10,7 @@ public class SubmissionGetDTO {
     private Integer numberBanVotes;
     private Integer awardedPoints;
     private Boolean noSubmission;
+    private String username;
 
     public Long getId() {
         return id;
@@ -65,5 +66,13 @@ public class SubmissionGetDTO {
 
     public void setNoSubmission(Boolean noSubmission) {
         this.noSubmission = noSubmission;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
