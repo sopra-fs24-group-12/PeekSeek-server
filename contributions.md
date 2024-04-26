@@ -63,25 +63,20 @@ Record of contributions made to the project and corresponding tasks
 
 ### Youssef
 - Added Submission
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/00111046ad1aa61645ca1dd6926f6b6ea3759c3c)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/80)
 - Added SubmissionData
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/a9b50ad612288c799d9683b3ff3fd0f03d22b08c)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/81)
 - Added functionality to determine all participants sorted by their scores for leaderboard
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
-- Added get leaderboard as enpoint
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
-- Addded LeaderboardGetDTO
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
-- Assigned these issues to myself and worked on them partly, Nils worked also on these issues but did not see that I assigned them to myself, he finished earlier and pushed his part (voting and winingSubmission endpoint) 
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/34ff3eab93cc2bbb22b7757da55cc482ff898a0e)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/96)
 - Added getLeaderboard, in GameService as well as corresponding endpoint and DTO
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d826d790bb6868abae5a28ce73f058abc643b3af)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/96)
+- Assigned these issues to myself and worked on them partly, Nils worked also on these issues but did not see that I assigned them to myself, he finished earlier and pushed his part (voting and winingSubmission endpoint) 
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/39)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/36)
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/67)
 - Added GameGetDTO
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/38e23e74556503eb327e7b820411abf22a34564b)
-- Main structure of winningSubmission implemented
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/fc473f71a8748548cc5ada37a1049843c651a285)
-
-  
+  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/90)
+ 
 ---
 
 ## Week 3: [09.04. - 16.04]
@@ -270,4 +265,10 @@ We worked together on these Issues on one device most of the time.
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/102
 - redirect if there's a timeout
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/116
+- adding fun facts (we decided afterwards to use an API in backend to generate them instead of hard coding)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/152
+- Voting icons for your own submission should be greyed out
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/120
+
+
 
