@@ -243,6 +243,14 @@ We worked together on these Issues on one device most of the time.
 - [x] [Anonymous Animal Names correct ordering for all players](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/137)
 
 ### Ece
+- Fix quest input field issue
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/111)
+- Modify lobby settings for non-admin
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/114)
+- Bug fixes:
+    - Back navigation functionality: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/109)
+    - Fix background: [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/106)
+    - Make UI responsive. Didn't work- transferred issue to Sprint 2. [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/124)
 
 ### Nils
 - [x] [Added tests for DTOs and DTOMapper](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/179)
