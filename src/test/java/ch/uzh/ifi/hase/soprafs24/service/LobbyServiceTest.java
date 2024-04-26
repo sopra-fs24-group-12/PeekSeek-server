@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,10 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.Lob;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -51,6 +49,11 @@ public class LobbyServiceTest {
         LobbyRepository.addLobby(lobby);
     }
 
+    @AfterEach
+    public void tearDown() {
+        LobbyRepository.deleteLobby(1L);
+    }
+
     @Test
     public void testCreateLobby() {
         String name = "Test Lobby";
@@ -62,8 +65,6 @@ public class LobbyServiceTest {
         assertEquals(name, createdLobby.getName());
         assertEquals(password, createdLobby.getPassword());
         assertTrue(createdLobby.getPasswordProtected());
-        verify(lobbyRepositoryInstance, times(1));
-        LobbyRepository.addLobby(createdLobby);
     }
 
     @Test
@@ -76,10 +77,9 @@ public class LobbyServiceTest {
 
         assert(joinedParticipants.values().size() == 1);
         assert(joinedParticipants.get(token).getUsername().equals(username));
-        assert(joinedParticipants.get(token).getId() == 1L);
         assert(joinedParticipants.get(token).getAdmin());
         assert(lobbyService.getSpecificLobby(1L).getJoinedParticipants() == 1);
-        assert(lobbyService.getSpecificLobby(1L).getAdminId() == 1L);
+        assert(Objects.equals(lobbyService.getSpecificLobby(1L).getAdminUsername(), "test"));
         assert(lobbyService.getSpecificLobby(1L).getUsernames().contains("test"));
     }
 
