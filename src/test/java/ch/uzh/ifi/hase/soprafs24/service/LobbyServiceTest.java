@@ -68,6 +68,7 @@ public class LobbyServiceTest {
         String name = "Test Lobby";
         String password = "password123";
 
+
         Lobby createdLobby = lobbyService.createLobby(name, password);
 
         assertNotNull(createdLobby);
@@ -107,7 +108,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testUpdateLobbySettings() throws IOException {
+    public void testUpdateLobbySettings_success() throws IOException {
         Participant participant = new Participant();
         participant.setId(1L);
         participant.setUsername("test");
