@@ -9,27 +9,26 @@ Record of contributions made to the project and corresponding tasks
 
 ### Georg
 - Basic file setup
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/822d549c800364a12b50eb4da0f124f95125748d)
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/182
 - Basic websocket setup
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/21cfb8c3afb6872fb0336a681977beb5a6555526)
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/183
 - Entity setup for database relations
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/d89a66d8c4649870407565c01184881c1b147ae4)
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/184
 - Lobby controller and service methods for all main functions
-  - [Creating lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/28fe2b268f4fcebc9fde93f145d1975669b21941)
-  - [Get all existing lobbies](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/c30c667b1c91733a2d8bcfc5c9ad7c8e06569a4e)
-  - [Join lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/b8b473c2bd6af270eebbc75b4917d3804f200770)
-  - [Update lobby settings](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/f96f1eef550b617c3a99df46e2369eb44389c9d8)
-  - [Get information about specific lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bdca5239dae7ba3f17f7cdf2215ef59d3097aec7)
-  - [Leave lobby](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/8954e0ed533dfd0276d7251d03ff7f75ee848602)
-  - [Start game](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/215720e1500dbdc0812f09be584d36daa473e0bf)
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/185
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/187
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/186
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/188
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/189
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/190
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/191
 - Reworked the persistence to store the game and lobby objects in a HashMap (in the future the game summary will be persisted in a database)
-  - [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/192
 - Game controller and service methods
-  - [Add a submission](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
-  - [Timer that runs per round to initiate different phases](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
-  - [Start next round](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
-  - [Get information on current round](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/bd17d39f84a3921f63fb988c82461f7a97bb3156)
-  - [Download and store streetview image for each submission](https://github.com/sopra-fs24-group-12/PeekSeek-server/commit/dfb103e1a852077605a9a41bff43849aa29b6786)
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/193
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/194
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/195
+  - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/196
 
 ### Silvan
 - [x] Setup NextUI on Client-Template [Commit](https://github.com/sopra-fs24-group-12/PeekSeek-client/commit/0dacd8129b46d9d4e339bc3f94ab6557591cb22a)
