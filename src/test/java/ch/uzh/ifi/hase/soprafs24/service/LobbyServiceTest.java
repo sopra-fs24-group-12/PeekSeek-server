@@ -1,9 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
+import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
 import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import org.junit.jupiter.api.AfterEach;
@@ -16,9 +19,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.Lob;
+import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 public class LobbyServiceTest {
@@ -35,13 +40,17 @@ public class LobbyServiceTest {
     @Mock
     private LobbyRepository lobbyRepositoryInstance;
 
+
     @InjectMocks
     private LobbyService lobbyService;
+
+    private Lobby lobby;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         Lobby lobby = new Lobby();
+        this.lobby = lobby;
         lobby.setId(1L);
         lobby.setName("lobby");
         lobby.setPassword("test");
@@ -95,6 +104,44 @@ public class LobbyServiceTest {
         assert(joinedParticipants.values().isEmpty());
         assert(lobbyService.getSpecificLobby(1L).getJoinedParticipants() == 0);
         assert(!lobbyService.getSpecificLobby(1L).getUsernames().contains("test"));
+    }
+
+    @Test
+    public void testUpdateLobbySettings() throws IOException {
+        Participant participant = new Participant();
+        participant.setId(1L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+
+        lobby.setAdminId(1L);
+        lobby.setAdminUsername("test");
+        lobby.addParticipant(participant);
+
+        GeoCodingData geoCodingData = new GeoCodingData();
+        geoCodingData.setLocation("zurich");
+        geoCodingData.setLat("47.3768866");
+        geoCodingData.setLng("8.541694");
+        geoCodingData.setResLatNe("47.434665");
+        geoCodingData.setResLngNe("8.625452899999999");
+        geoCodingData.setResLatSw("47.32021839999999");
+        geoCodingData.setResLngSw("8.448018099999999");
+        geoCodingData.setFormAddress("Zürich, Switzerland");
+        given(geoCodingDataRepository.save(any())).willReturn(geoCodingData);
+
+        List<String> quests = new ArrayList<>();
+        quests.add("item 1");
+
+        LobbyPutDTO lobbyPutDTO = new LobbyPutDTO();
+        lobbyPutDTO.setGameLocation("Zurich");
+        lobbyPutDTO.setRoundDurationSeconds(60);
+        lobbyPutDTO.setQuests(quests);
+
+        Lobby lobby1 = lobbyService.updateLobbySettings(1L, lobbyPutDTO, "abc");
+
+        assert(lobby1.getQuests().equals(quests));
+        assert(lobby1.getRoundDurationSeconds() == 60);
+        assert(lobby1.getGameLocation().equals("Zürich, Switzerland"));
     }
 
 }
