@@ -56,14 +56,10 @@ Record of contributions made to the project and corresponding tasks
 
 
 ### Nils
-- Added voting, getLeaderboard endpoint
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/42)
-- Added functionality to determine winningSubmission, calulatePoints, awardPoints
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/41)
-- Added getSubmissions, getWinningSubmissions endpoint, getLeaderboard, postVoting functionality in GameService
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/94)
-- Added SubmissionGetDTO and VotingPostDTO (also in DTOMapper)
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/20)
+- [x] [Added voting, getLeaderboard endpoint](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/42)
+- [x] [Added functionality to determine winningSubmission, calulatePoints, awardPoints](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/41)
+- [x] [Added getSubmissions, getWinningSubmissions endpoint, getLeaderboard, postVoting functionality in GameService](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/94)
+- [x] [Added SubmissionGetDTO and VotingPostDTO (also in DTOMapper)](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/20)
 
 ### Youssef
 - Added Submission
@@ -132,10 +128,10 @@ Record of contributions made to the project and corresponding tasks
 ### Nils
 
 - Added functionality to GeoCoding API calls
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/100)
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/101)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/100)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/101)
 - Stored coordinates etc. reveiced by GeoCoding in DB
-  - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/102)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/102)
 - Implemented functionality for all necessary GoogleMaps API calls in the frontend
   - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/97)
   - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/98)
@@ -254,6 +250,10 @@ We worked together on these Issues on one device most of the time.
 ### Ece
 
 ### Nils
+- [x] [Added tests for DTOs and DTOMapper](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/179)
+- [x] [Added tests for all repositories](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/180)
+- [x] [Added some tests for LobbyController](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/178)
+- [x] [Added some tests for entities](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/181)
 
 ### Youssef
 - Password field is disabled and greyed out 
