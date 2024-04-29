@@ -233,6 +233,15 @@ We worked together on these Issues on one device most of the time.
 ## Week 5: [23.04. - 30.04]
 
 ### Georg
+- new waiting page that now is within same component
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/103
+- cannot use the map/vote if you have submitted on reload
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/127  
+- tests (mainly lobby service)
+- make "empty" submissions submitted by "Can't find it" button work correctly
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/158
+- include username on winning submission page (instead of anonymous name)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/152  
 
 ### Silvan
 - [x] [Tests for GameController](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/114)
