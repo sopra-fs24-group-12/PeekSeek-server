@@ -159,7 +159,7 @@ Record of contributions made to the project and corresponding tasks
 
 ### Georg
 - Connect lobby to backend
-    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/131
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/131 
 - Connect voting page to backend
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/132
 - Connect round summary page to backend
