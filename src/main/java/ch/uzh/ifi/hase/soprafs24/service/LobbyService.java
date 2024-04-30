@@ -191,7 +191,7 @@ public class LobbyService {
             lobby.setGameLocation(lobbyPutDTO.getGameLocation());
         }
 
-        GeoCodingData locationInDatabase = locationIfAlreadyCalled(lobbyPutDTO.getGameLocation());
+        GeoCodingData locationInDatabase = locationIfAlreadyCalled(lobbyPutDTO.getGameLocation().toLowerCase());
         if (locationInDatabase != null) {
             lobby.setGameLocationCoordinates(locationInDatabase);
             lobby.setGameLocation(locationInDatabase.getFormAddress());
