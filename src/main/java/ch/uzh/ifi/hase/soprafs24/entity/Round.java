@@ -2,7 +2,9 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Round {
@@ -13,6 +15,7 @@ public class Round {
     private int remainingSeconds;
     private RoundStatus roundStatus = RoundStatus.PREPARED;
     private Map<Long, Submission> submissions = new HashMap<>();
+    private List<Submission> shuffledSubmissions = new ArrayList<>();
     private Submission winningSubmission;
     private Integer summaryTime = 20;
     private Integer participantsDone = 0;
@@ -80,6 +83,14 @@ public class Round {
 
     public void setSubmissions(Map<Long, Submission> submissions) {
         this.submissions = submissions;
+    }
+
+    public List<Submission> getShuffledSubmissions() {
+        return shuffledSubmissions;
+    }
+
+    public void setShuffledSubmissions(List<Submission> shuffledSubmissions) {
+        this.shuffledSubmissions = shuffledSubmissions;
     }
 
     public Submission getWinningSubmission() {

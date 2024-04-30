@@ -78,7 +78,7 @@ public class GameController {
                                 @RequestHeader(value = "Authorization", required = false) String token) {
         List<SubmissionGetDTO> submissionGetDTOs = new ArrayList<>();
         Round currentRound = gameService.getRoundInformation(token, id);
-        List<Submission> submissions = new ArrayList<>(currentRound.getSubmissions().values());
+        List<Submission> submissions = new ArrayList<>(currentRound.getShuffledSubmissions());
         for (Submission submission : submissions) {
             SubmissionGetDTO toAdd = DTOMapper.INSTANCE.convertSubmissionToSubmissionGetDTO(submission);
             toAdd.setUsername(""); // for now don't return username for API call on voting page

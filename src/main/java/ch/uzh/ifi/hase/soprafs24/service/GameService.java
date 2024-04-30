@@ -472,6 +472,7 @@ public class GameService {
 
     private void startVoting(Round round, Long gameId) {
         handleMissingSubmissions(round, gameId);
+        shuffleSubmissions(round);
         round.setRoundStatus(RoundStatus.VOTING);
         websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
         startTimer(round, gameId);
@@ -527,6 +528,29 @@ public class GameService {
                 round.addSubmission(emptySubmission);
             }
         }
+    }
+
+    private void shuffleSubmissions(Round round) {
+        Collection<Submission> submissions = round.getSubmissions().values();
+
+        List<Submission> validSubmissions = new ArrayList<>();
+        List<Submission> invalidSubmissions = new ArrayList<>();
+
+        for (Submission submission : submissions) {
+            if (submission.getNoSubmission()) {
+                invalidSubmissions.add(submission);
+            } else {
+                validSubmissions.add(submission);
+            }
+        }
+
+        Collections.shuffle(validSubmissions);
+
+        List<Submission> shuffledSubmissions = new ArrayList<>();
+        shuffledSubmissions.addAll(validSubmissions);
+        shuffledSubmissions.addAll(invalidSubmissions);
+
+        round.setShuffledSubmissions(shuffledSubmissions);
     }
 
     private void authorizeGameParticipant(Game game, String token) {
