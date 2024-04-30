@@ -29,9 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -249,10 +247,10 @@ public class GameControllerTest {
         submission2.setNoSubmission(true);
 
         Round currentRound = new Round();
-        Map<Long, Submission> submissions = new HashMap<>();
-        submissions.put(1L, submission1);
-        submissions.put(2L, submission2);
-        currentRound.setSubmissions(submissions);
+        List<Submission> shuffledSubmissions = new ArrayList<>();
+        shuffledSubmissions.add(submission1);
+        shuffledSubmissions.add(submission2);
+        currentRound.setShuffledSubmissions(shuffledSubmissions);
 
         // Setup DTOs
         SubmissionGetDTO dto1 = new SubmissionGetDTO();
