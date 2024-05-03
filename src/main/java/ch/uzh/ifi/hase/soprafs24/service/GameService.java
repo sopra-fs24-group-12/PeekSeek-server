@@ -377,7 +377,7 @@ public class GameService {
         return round.getRoundTime() - round.getRemainingSeconds();
     }
 
-    private void setWinningSubmission(Round round, List<Submission> submissions) {
+    public void setWinningSubmission(Round round, List<Submission> submissions) {
         submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
         round.setWinningSubmission(submissions.get(0));
     }

@@ -122,10 +122,10 @@ public class GameServiceTest {
 
         List<Participant> par = gameService.getLeaderboard("abc", 1L);
 
-        //assert(par.equals(participants));
+        assert(par.equals(participants));
         //assert(participant.getId().equals(par.get(0).getId()));
         //assert(par.get(0).getUsername().equals(participant.getUsername()));
-        assert("m".equals("m"));
+        //assert("m".equals("m"));
     }
  /*
     @Test
@@ -438,6 +438,107 @@ public void testAwardPoints() {
 }
 
      */
+    @Test
+    public void TestSetWinningSubmission(){
+        Round round = new Round();
+        Round round2 = new Round();
+        Submission submission = new Submission();
+        submission.setNumberVotes(3);
+        submission.setSubmissionTimeSeconds(20);
 
+        Submission submission2 = new Submission();
+        submission2.setNumberVotes(0);
+        submission2.setSubmissionTimeSeconds(10);
+
+        Submission submission3 = new Submission();
+        submission3.setNumberVotes(4);
+        submission3.setSubmissionTimeSeconds(15);
+
+        List<Submission> submissions = new ArrayList<>(Arrays.asList(submission, submission2, submission3));
+
+        gameService.setWinningSubmission(round, submissions);
+
+        submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
+        round2.setWinningSubmission(submissions.get(0));
+
+        System.out.println(round.getWinningSubmission().getSubmissionTimeSeconds());
+        System.out.println(round2.getWinningSubmission().getSubmissionTimeSeconds());
+
+
+        assert(round2.getWinningSubmission().getSubmissionTimeSeconds().equals(round.getWinningSubmission().getSubmissionTimeSeconds()));
+
+    }
+/*
+    @Test
+    public void TestHandleMissingSubmission(){
+
+        Round round111 = new Round();
+        Long gameId = 1L;
+
+        Participant participant = new Participant();
+        participant.setId(7L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+        participant.setScore(200);
+
+        Participant participant2 = new Participant();
+        participant2.setId(4L);
+        participant2.setUsername("test2");
+        participant2.setAdmin(false);
+        participant2.setToken("abc2");
+        participant2.setScore(203);
+
+        Participant participant3 = new Participant();
+        participant3.setId(5L);
+        participant3.setUsername("test3");
+        participant3.setAdmin(false);
+        participant3.setToken("abc3");
+        participant3.setScore(20);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("abc", participant);
+        participants1.put("abc2", participant2);
+        participants1.put("abc3", participant3);
+        game.setParticipants(participants1);
+        game.setActiveParticipants(3);
+
+        Round round211 = new Round();
+        Map<String, Participant> participants = game.getParticipants();
+
+        for (Participant participan : participants.values()) {
+            if (!participan.getHasSubmitted() && !participan.getLeftGame()) {
+                SubmissionData submissionData = new SubmissionData();
+                submissionData.setLat("47.3768866");
+                submissionData.setLng("8.541694");
+                submissionData.setPitch("50");
+                submissionData.setHeading("50");
+
+                Submission emptySubmission = new Submission();
+
+                emptySubmission.setId(Round.submissionCount++);
+                emptySubmission.setSubmissionTimeSeconds(round211.getRoundTime());
+                emptySubmission.setToken(participan.getToken());
+                emptySubmission.setUsername(participan.getUsername());
+                emptySubmission.setNoSubmission(true);
+                emptySubmission.setSubmittedLocation(submissionData);
+                round211.addSubmission(emptySubmission);
+            }
+        }
+        //given(gameService.getSpecificGame(1L)).willReturn(game);
+        gameService.handleMissingSubmissions(round111, gameId);
+
+        System.out.println(round111.getSubmissions().get(1).getId());
+        System.out.println(round211.getSubmissions().get(1).getId());
+
+
+
+        assert(round111.getSubmissions().equals(round211.getSubmissions()));
+
+
+    }
+    */
+ 
 
 }
