@@ -201,7 +201,7 @@ public class GameService {
     }
 
 
-    private Long generateSummary(Game game) {
+    public Long generateSummary(Game game) {
         List<Quest> winningSubmissions = new ArrayList<>();
 
         int roundsPlayed = 0;
@@ -241,7 +241,7 @@ public class GameService {
         return summary.getId();
     }
 
-    private String generateSubmissionLink(String lat, String lng) {
+    public String generateSubmissionLink(String lat, String lng) {
         String base = "https://www.google.com/maps/place/";
         base += lat + "," + lng;
         return base;
@@ -369,7 +369,7 @@ public class GameService {
         }
     }
 
-    private static int getSubmissionTime(Participant participant, Round round) {
+    public static int getSubmissionTime(Participant participant, Round round) {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
         }
@@ -462,7 +462,7 @@ public class GameService {
         }, 0, 1000);
     }
 
-    private void endTimerPrematurely(Round round, Long gameId) {
+    public void endTimerPrematurely(Round round, Long gameId) {
         Timer timer = gameTimers.get(gameId);
         if (timer != null) {
             timer.cancel();
