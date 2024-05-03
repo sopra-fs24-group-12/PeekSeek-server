@@ -144,4 +144,39 @@ public class LobbyServiceTest {
         assert(lobby1.getGameLocation().equals("Zürich, Switzerland"));
     }
 
+    @Test
+    public void testGetAllParticipants() throws IOException {
+        Participant participant = new Participant();
+        participant.setId(1L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+
+        lobby.setAdminId(1L);
+        lobby.setAdminUsername("test");
+        lobby.addParticipant(participant);
+
+        //given(lobbyRepositoryInstance.save(any())).willReturn(Lobby);
+
+        lobbyService.authorizeLobbyAdmin(lobby, participant.getToken());
+
+        List<Participant> participants = new ArrayList<>();
+        participants.add(participant);
+
+
+        List<Participant> lobby1 = lobbyService.getAllParticipants(1L, "abc");
+
+        assert(lobby1.equals(participants));
+        assert(lobby1.get(0).getId() == 1L);
+        assert(lobby1.get(0).getUsername().equals("test"));
+        assert(lobby1.get(0).getAdmin().equals(true));
+        assert(lobby1.get(0).getToken().equals("abc"));
+    }
+    public void testCheckIfLobbyNameExists() throws Exception {
+        Boolean free = false;
+        Boolean f = LobbyRepository.lobbyNameFree("lobby");
+        assert(free.equals(f));
+    }
+
+
 }
