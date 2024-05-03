@@ -57,7 +57,7 @@ public class GameService {
     }
 
     // TODO: adjust participant class to include distribution of points and adjust DTO
-    public List<Participant> getLeaderboard(String token, Long gameId) {  // get a list of all participants sorted by score
+    public List<Participant> getLeaderboard(String token, Long gameId) {  //get a list of all participants sorted by score
         Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
@@ -382,7 +382,7 @@ public class GameService {
         round.setWinningSubmission(submissions.get(0));
     }
 
-    private int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
+    public int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
         int totalPoints = 0;
         int timebonusPoints = 250;      // basis which is then multiplied with a factor < 1
         int placementPoints = 250;      // basis which is then multiplied with a factor < 1
@@ -503,7 +503,7 @@ public class GameService {
         }
     }
 
-    private void handleMissingSubmissions(Round round, Long gameId) {
+    public void handleMissingSubmissions(Round round, Long gameId) {
         Game game = getSpecificGame(gameId);
 
         Map<String, Participant> participants = game.getParticipants();
@@ -539,7 +539,7 @@ public class GameService {
         }
     }
 
-    private Game getSpecificGame(Long id) {
+    public Game getSpecificGame(Long id) {
         Game game = GameRepository.getGameById(id);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
