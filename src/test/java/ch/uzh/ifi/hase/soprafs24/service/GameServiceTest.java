@@ -264,12 +264,13 @@ public class GameServiceTest {
         assert (round.getRoundTime() == 60);
         assert(round.getSubmissions().equals(participants));
     }*/
-public void testHandleMissingSubmissions() {
+    /*
+    @Test
+    public void testHandleMissingSubmissions() {
 
     Round round = new Round();
     round.setRoundTime(123);
     Long gameId = 1L;
-    Game game = new Game();
 
     Map<String, Participant> participants = new HashMap<>();
     Participant participantWithMissingSubmission = new Participant();
@@ -291,6 +292,152 @@ public void testHandleMissingSubmissions() {
     //assertTrue(submission.isNoSubmission());
     assertEquals(123, submission.getSubmissionTimeSeconds());
 }
+
+    @Test
+    public void testNoSubmission() {
+        Long gameId = 1L;
+        Round round = new Round();
+        Submission submission = new Submission();
+        submission.setNoSubmission(true);
+        when(gameRepository.getGameById(gameId)).thenReturn(game);
+        int points = gameService.calculatePoints(gameId, round, submission, 1);
+        System.out.println(points);
+        assertEquals(0, points);
+    }
+
+    @Test
+    public void testHalfBanVotes() {
+        Long gameId = 1L;
+        Round round = new Round();
+        round.getSubmissions().put(1L, new Submission());
+        round.getSubmissions().put(2L, new Submission());
+        Submission submission = new Submission();
+        submission.setNumberBanVotes(1);
+
+        Participant participant = new Participant();
+        game.getParticipants().put(submission.getToken(), participant);
+
+
+        when(gameRepository.getGameById(gameId)).thenReturn(game);
+        int points = gameService.calculatePoints(gameId, round, submission, 1);
+
+        assertEquals(0, points);
+    }
+
+
+
+
+    @Test
+    public void testFullPointsNoBonus() {
+        Long gameId = 1L;
+        Round round = new Round();
+        round.setRoundTime(60);
+        round.getSubmissions().put(1L, new Submission());
+        Submission submission = new Submission();
+        submission.setSubmissionTimeSeconds(0);
+        submission.setNumberVotes(2);  // assume 2 other participants voted
+
+        Game game = mock(Game.class);
+        Map<String, Participant> participants = new HashMap<>();
+        Participant participant = new Participant();
+        participant.setToken("participantToken");
+        participants.put(participant.getToken(), participant);
+        game.setParticipants(participants);
+        GameRepository.getGameById = game -> game;  // mock GameRepository
+
+        int points = gameService.calculatePoints(gameId, round, submission, 1);
+
+        assertEquals(775, points);  // 250 (time) + 250 (placement) + 275 (voting)
+    }
+
+    @Test
+    public void testFullPointsWithWinningSubmission() {
+        Long gameId = 1L;
+        Round round = new Round();
+        round.setRoundTime(60);
+        round.getSubmissions().put(1L, new Submission());
+        Submission submission = new Submission();
+        submission.setSubmissionTimeSeconds(0);
+        submission.setNumberVotes(2);  // assume 2 other participants voted
+
+        Game game = mock(Game.class);
+        Map<String, Participant> participants = new HashMap<>();
+        Participant participant = new Participant();
+        participant.setToken("participantToken");
+        participants.put(participant.getToken(), participant);
+        game.setParticipants(participants);
+        GameRepository.getGameById = game -> game;  // mock GameRepository
+
+        int points = gameService.calculatePoints(gameId, round, submission, 1);
+        round.setWinningSubmission(submission);
+
+        assertEquals(1162, points);  // 775 (base points) * 1.5 (winning bonus)
+        assertEquals(1, participant.getWinningSubmissions());
+        assertEquals(1, participant.getStreak());
+    }
+
+    @Test
+    public void testPointsWithStreakBonus() {
+        Long gameId = 1L;
+        Round round = new Round();
+        round.setRoundTime(60);
+        round.getSubmissions().put(1L, new Submission());
+        Submission submission = new Submission();
+        submission.setSubmissionTimeSeconds(0);
+        submission.setNumberVotes(2);  // assume 2 other participants voted
+
+        Game game = mock(Game.class);
+        Map<String, Participant> participants = new HashMap<>();
+        Participant participant = new Participant();
+        participant.setStreak(2);
+        participant.setToken("participantToken");
+        participants.put(participant.getToken(), participant);
+        game.setParticipants(participants);
+        GameRepository.getGameById = game -> game;  // mock GameRepository
+
+        int points = calculatePoints(gameId, round, submission, 1);
+
+        assertTrue(points > 775);  // points should be higher due to streak bonus
+        assertEquals(participant.getStreak(), 0);  // streak should reset if not winning submission
+    }*/
+    /*
+@Test
+public void testAwardPoints() {
+    // Mock data
+    Long gameId = 1L;
+    Round round = new Round();
+    Submission submission1 = new Submission();
+    Submission submission2 = new Submission();
+    submission1.setToken("token1");
+    submission2.setToken("token2");
+    round.getSubmissions().put(1L, submission1);
+    round.getSubmissions().put(2L, submission2);
+
+    // Mock game and participant
+    Game game = new Game();
+    game.setId(gameId);
+    Participant participant1 = new Participant();
+    Participant participant2 = new Participant();
+    game.getParticipants().put(submission1.getToken(), participant1);
+    game.getParticipants().put(submission2.getToken(), participant2);
+
+    // Set up mock behavior
+    when(gameRepository.getGameById(gameId)).thenReturn(game);
+
+    // Mock the calculatePoints method
+    PointsCalculator calculator = spy(new PointsCalculator(gameRepository));
+    doReturn(500).when(calculator).calculatePoints(eq(gameId), any(Round.class), eq(submission1), eq(1));
+    doReturn(750).when(calculator).calculatePoints(eq(gameId), any(Round.class), eq(submission2), eq(2));
+
+    // Call the method
+    calculator.awardPoints(round, gameId);
+
+    // Assertions
+    assertEquals(500, submission1.getAwardedPoints());
+    assertEquals(750, submission2.getAwardedPoints());
+}
+
+     */
 
 
 }
