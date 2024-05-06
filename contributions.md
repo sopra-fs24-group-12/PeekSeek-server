@@ -296,6 +296,12 @@ We worked together on these Issues on one device most of the time.
 - [x] UI Improvements Landing: Fonts, white space, logo resizing [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/168)
 
 ### Ece
+- UI Improvements: Align things in the center in voting and game summary, worked on lobby layout and responsive container (ongoing)
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/156)
+- Limit input field max char, add alert notifications in JoinUser and CreateLobby
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/175)
+- Add how to instructions: general game rules in landing page + page-specific information on every page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/154)
 
 ### Nils
 
