@@ -288,4 +288,17 @@ We worked together on these Issues on one device most of the time.
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/120
 
 
+## Week 6: [31.04. - 07.05]
 
+### Silvan
+- [x] UI Improvements: Icons for Buttons, Button Sizes, Button Locations, Lobby List Scrollable instead of Container, minor routing fix [Issue]([https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/114](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/155)
+- [x] Progress Bar during Game [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/157)
+- [x] UI Improvements Landing: Fonts, white space, logo resizing [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/168)
+
+### Ece
+
+### Nils
+
+### Georg
+
+### Youssef
