@@ -300,5 +300,14 @@ We worked together on these Issues on one device most of the time.
 ### Nils
 
 ### Georg
+- fix issue where two lobbies could not have the same location
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/150
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/197
+- randomize the submission order returned by the backend so that fastest submission is not necessarily in top left on the voting page
+    - https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/159
+- rework notifications to be fancier using a new library
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/164
+- hide a player's own submission on the voting page (s.t. only the other players' submissions are visible and clickable)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/120
 
 ### Youssef
