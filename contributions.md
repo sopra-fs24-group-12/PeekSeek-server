@@ -317,3 +317,9 @@ We worked together on these Issues on one device most of the time.
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/120
 
 ### Youssef
+- [x] [Minor Bugfix: Username can't enter lobby with username as empty string](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/117)
+- [x] [Tests for LobbyService and GameService](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113)
+- [x] [Tests for entities](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/181)
+
+
+
