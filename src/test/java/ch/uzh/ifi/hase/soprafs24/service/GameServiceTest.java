@@ -642,7 +642,7 @@ public void testAwardPoints() {
 
 
     }
-    /*
+
     @Test
     public void TestGenerateSummary() throws IOException{
         List<Quest> winningSubmissions = new ArrayList<Quest>();
@@ -707,6 +707,13 @@ public void testAwardPoints() {
         summary1.setRoundsPlayed(roundsPlayed);
         summary1.setPassword(game.getLobbyPassword());
         System.out.println(summary1.getCityName());
+
+        //when(summaryRepository.save(any())).thenReturn(summary1);
+        given(summaryRepository.save(any())).willReturn(summary1);
+
+
+
+
         summary1 = summaryRepository.save(summary1);
         summaryRepository.flush();
 
@@ -730,7 +737,7 @@ public void testAwardPoints() {
 
         System.out.println(winningSubmissions);
 
-        summary1.setQuests(winningSubmissions); --> error occurs here always
+        summary1.setQuests(winningSubmissions);
         summary1 = summaryRepository.save(summary1);
         summaryRepository.flush();
 
@@ -746,7 +753,7 @@ public void testAwardPoints() {
 
 
     }
-    */
+
 
 
 }
