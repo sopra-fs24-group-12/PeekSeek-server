@@ -304,6 +304,8 @@ We worked together on these Issues on one device most of the time.
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/154)
 
 ### Nils
+- [x] Added new ui StreetViewModal, which includes a streetview panorama for each submission (restricted by options). Included it in current handleImageClick. Still not bug free. [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/176)
+- [x] Added inputfield which autosaves for location using debouncing. Also not bugfree, did not manage to fix yet. [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113)
 
 ### Georg
 - fix issue where two lobbies could not have the same location
