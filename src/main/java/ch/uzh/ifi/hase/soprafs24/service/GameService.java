@@ -57,7 +57,7 @@ public class GameService {
     }
 
     // TODO: adjust participant class to include distribution of points and adjust DTO
-    public List<Participant> getLeaderboard(String token, Long gameId) {  // get a list of all participants sorted by score
+    public List<Participant> getLeaderboard(String token, Long gameId) {  //get a list of all participants sorted by score
         Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
@@ -201,7 +201,7 @@ public class GameService {
     }
 
 
-    private Long generateSummary(Game game) {
+    public Long generateSummary(Game game) {
         List<Quest> winningSubmissions = new ArrayList<>();
 
         int roundsPlayed = 0;
@@ -241,7 +241,7 @@ public class GameService {
         return summary.getId();
     }
 
-    private String generateSubmissionLink(String lat, String lng) {
+    public String generateSubmissionLink(String lat, String lng) {
         String base = "https://www.google.com/maps/place/";
         base += lat + "," + lng;
         return base;
@@ -369,7 +369,7 @@ public class GameService {
         }
     }
 
-    private static int getSubmissionTime(Participant participant, Round round) {
+    public static int getSubmissionTime(Participant participant, Round round) {
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token");
         }
@@ -377,12 +377,12 @@ public class GameService {
         return round.getRoundTime() - round.getRemainingSeconds();
     }
 
-    private void setWinningSubmission(Round round, List<Submission> submissions) {
+    public void setWinningSubmission(Round round, List<Submission> submissions) {
         submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
         round.setWinningSubmission(submissions.get(0));
     }
 
-    private int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
+    public int calculatePoints(Long gameId, Round round, Submission submission, int placement) {
         int totalPoints = 0;
         int timebonusPoints = 250;      // basis which is then multiplied with a factor < 1
         int placementPoints = 250;      // basis which is then multiplied with a factor < 1
@@ -462,7 +462,7 @@ public class GameService {
         }, 0, 1000);
     }
 
-    private void endTimerPrematurely(Round round, Long gameId) {
+    public void endTimerPrematurely(Round round, Long gameId) {
         Timer timer = gameTimers.get(gameId);
         if (timer != null) {
             timer.cancel();
@@ -504,7 +504,7 @@ public class GameService {
         }
     }
 
-    private void handleMissingSubmissions(Round round, Long gameId) {
+    public void handleMissingSubmissions(Round round, Long gameId) {
         Game game = getSpecificGame(gameId);
 
         Map<String, Participant> participants = game.getParticipants();
@@ -563,7 +563,7 @@ public class GameService {
         }
     }
 
-    private Game getSpecificGame(Long id) {
+    public Game getSpecificGame(Long id) {
         Game game = GameRepository.getGameById(id);
         if (game == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "A game with this ID does not exist");
