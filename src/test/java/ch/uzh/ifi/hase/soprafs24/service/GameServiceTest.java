@@ -71,21 +71,13 @@ public class GameServiceTest {
         game.setId(1L);
         game.setLobbyPassword("test");
         GameRepository.addGame(game);
-        /*
-        MockitoAnnotations.openMocks(this);
-        Lobby lobby = new Lobby();
-        this.lobby = lobby;
-        lobby.setId(2L);
-        lobby.setName("lobby");
-        lobby.setPassword("test");
-        lobby.setPasswordProtected(true);
-        LobbyRepository.addLobby(lobby);*/
+
     }
 
     @AfterEach
     public void tearDown() {
         GameRepository.deleteGame(1L);
-        //LobbyRepository.deleteLobby(2L);
+
     }
 
     @Test
@@ -343,7 +335,7 @@ public class GameServiceTest {
         round.getSubmissions().put(1L, new Submission());
         Submission submission = new Submission();
         submission.setSubmissionTimeSeconds(0);
-        submission.setNumberVotes(2);  // assume 2 other participants voted
+        submission.setNumberVotes(2);
 
         Game game = mock(Game.class);
         Map<String, Participant> participants = new HashMap<>();
@@ -351,7 +343,7 @@ public class GameServiceTest {
         participant.setToken("participantToken");
         participants.put(participant.getToken(), participant);
         game.setParticipants(participants);
-        GameRepository.getGameById = game -> game;  // mock GameRepository
+        GameRepository.getGameById = game -> game;
 
         int points = gameService.calculatePoints(gameId, round, submission, 1);
 
@@ -706,6 +698,7 @@ public void testAwardPoints() {
         summary1.setCityName(game.getGameLocation());
         summary1.setRoundsPlayed(roundsPlayed);
         summary1.setPassword(game.getLobbyPassword());
+        summary1.setId(game.getId());
         System.out.println(summary1.getCityName());
 
         //when(summaryRepository.save(any())).thenReturn(summary1);
