@@ -180,7 +180,7 @@ public class LobbyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.adminUsername", is(mockLobbyGetDTO1.getAdminUsername())))
                 .andExpect(jsonPath("$.name", is(mockLobbyGetDTO1.getName())))
-                //.andExpect(jsonPath("$[1].usernames", is(mockLobbyGetDTO1.getParticipants())))
+
                 .andExpect(jsonPath("$.roundDurationSeconds", is(mockLobbyGetDTO1.getRoundDurationSeconds())))
                 .andExpect(jsonPath("$.gameLocation", is(mockLobbyGetDTO1.getGameLocation())));
 
@@ -189,7 +189,6 @@ public class LobbyControllerTest {
 
 
         verify(lobbyService).getSpecificLobby(mockLobby1.getId());
-
     }
 
     @Test
@@ -323,8 +322,8 @@ public class LobbyControllerTest {
 
         verify(lobbyService).leaveLobby(lobbyId, token);
     }
-
- /*   @Test
+    /*
+    @Test
     public void testUpdateLobbySettings() throws Exception {
         // Given
         Long lobbyId = 1L;
@@ -332,12 +331,15 @@ public class LobbyControllerTest {
         LobbyPutDTO lobbyPutDTO = new LobbyPutDTO();
         lobbyPutDTO.setGameLocation("Zurich");
         lobbyPutDTO.setRoundDurationSeconds(30);
+
         Lobby mockLobby = new Lobby();
         mockLobby.setGameLocation("Zurich");
         mockLobby.setRoundDurationSeconds(30);
 
 
-        when(lobbyService.updateLobbySettings(lobbyId, lobbyPutDTO, token)).thenReturn(mockLobby);
+        //when(lobbyService.getSpecificLobby(lobbyId)).thenReturn(mockLobby);
+        when(lobbyService.updateLobbySettings(eq(lobbyId), eq(lobbyPutDTO), eq(token))).thenReturn(mockLobby);
+
 
 
         mockMvc.perform(put("/lobbies/{id}", lobbyId, lobbyPutDTO)
@@ -352,6 +354,7 @@ public class LobbyControllerTest {
 
     }
     */
+
     @Test
     public void testStartGame() throws Exception {
         // Given
