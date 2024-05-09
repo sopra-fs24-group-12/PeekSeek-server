@@ -113,9 +113,7 @@ public class GameServiceTest {
 
         List<Participant> participants = new ArrayList<>(game.getParticipants().values());
         participants.sort(Comparator.comparing(Participant::getScore).reversed());
-        //when(mock.gameRepository.getGameById(anyLong())).thenReturn(game);
-        //given(gameRepository.getGameById(game.getId())).willReturn(game);
-        //when(gameService.getSpecificGame(1L)).thenReturn(game);
+
 
 
         List<Participant> par = gameService.getLeaderboard("abc", 1L);
@@ -428,6 +426,314 @@ public class GameServiceTest {
 
 
     }
+
+    @Test
+    public void testStartNextRound_Success() {
+        // Given
+        Long gameId = 1L;
+        Game game = new Game();
+        game.setId(gameId);
+        game.setCurrentRound(0);
+        game.setNumberRounds(3);
+
+        Round round1 = new Round();
+        round1.setId(1L);
+        round1.setRoundStatus(RoundStatus.FINISHED);
+        round1.setBufferTime(1000000);
+        round1.setQuest("Nonononon");
+
+
+        Round round = new Round();
+        round.setRoundStatus(RoundStatus.FINISHED);
+
+        List<Round> r = new ArrayList<>();
+        r.add(round);
+        r.add(round1);
+
+        game.setRounds(r);
+
+        Map<String, Participant> participants = new HashMap<>();
+        participants.put("participant1", new Participant());
+        participants.put("participant2", new Participant());
+
+        game.setParticipants(participants);
+
+        for (Participant participant : participants.values()) {
+            participant.setHasSubmitted(false);
+            participant.setHasVoted(false);
+            participant.setPointsThisRound(0);
+        }
+
+        gameRepository.addGame(game);
+        gameService.startNextRound(gameId);
+
+
+        assertEquals(1, game.getCurrentRound());
+        assertEquals(RoundStatus.VOTING, game.getRounds().get(1).getRoundStatus());
+        assertTrue(game.getParticipants().values().stream().allMatch(participant ->
+                !participant.getHasSubmitted() && !participant.getHasVoted() && participant.getPointsThisRound() == 0));
+
+    }
+
+    @Test
+    public void testStartNextRound_Fail() {
+        // Given
+        Long gameId = 1L;
+        Game game = new Game();
+        game.setId(gameId);
+        game.setCurrentRound(0);
+        game.setNumberRounds(3);
+
+        Round round1 = new Round();
+        round1.setId(1L);
+        round1.setRoundStatus(RoundStatus.PLAYING);
+        round1.setBufferTime(1000000);
+        round1.setQuest("Nonononon");
+
+
+        Round round = new Round();
+        round.setRoundStatus(RoundStatus.PLAYING);
+
+        List<Round> r = new ArrayList<>();
+        r.add(round);
+        r.add(round1);
+
+        game.setRounds(r);
+
+        Map<String, Participant> participants = new HashMap<>();
+        participants.put("participant1", new Participant());
+        participants.put("participant2", new Participant());
+
+        game.setParticipants(participants);
+
+        for (Participant participant : participants.values()) {
+            participant.setHasSubmitted(false);
+            participant.setHasVoted(false);
+            participant.setPointsThisRound(0);
+        }
+
+        gameRepository.addGame(game);
+
+        assertThrows(ResponseStatusException.class, () -> gameService.startNextRound(gameId));
+    }
+
+
+    @Test
+    public void testStartGame_Success() {
+        List<String> q = new ArrayList<>();
+        q.add("abc");
+        q.add("def");
+        q.add("ghi");
+
+        Participant participant = new Participant();
+        participant.setId(7L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+        participant.setScore(200);
+        participant.setHasSubmitted(Boolean.FALSE);
+        participant.setLeftGame(Boolean.FALSE);
+
+        Participant participant2 = new Participant();
+        participant2.setId(4L);
+        participant2.setUsername("test2");
+        participant2.setAdmin(false);
+        participant2.setToken("abc2");
+        participant2.setScore(203);
+        participant2.setHasSubmitted(Boolean.FALSE);
+        participant2.setLeftGame(Boolean.FALSE);
+
+        Participant participant3 = new Participant();
+        participant3.setId(5L);
+        participant3.setUsername("test3");
+        participant3.setAdmin(false);
+        participant3.setToken("abc3");
+        participant3.setScore(20);
+        participant3.setHasSubmitted(Boolean.FALSE);
+        participant3.setLeftGame(Boolean.FALSE);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("abc", participant);
+        participants1.put("abc2", participant2);
+        participants1.put("abc3", participant3);
+        game.setParticipants(participants1);
+        game.setActiveParticipants(3);
+
+        Lobby l = new Lobby();
+        l.setQuests(q);
+        l.setAdminId(7L);
+        l.setParticipants(participants1);
+        l.setId(1L);
+        l.setRoundDurationSeconds(30);
+        l.setJoinedParticipants(3);
+
+        Game createdGame1 = new Game();
+        List<Round> rounds = new ArrayList<>(q.size());
+        for (String quest : q) {
+            Round round = new Round();
+            round.setId(Game.rounds_count++);
+            round.setQuest(quest);
+            round.setRoundTime(l.getRoundDurationSeconds());
+            round.setRemainingSeconds(l.getRoundDurationSeconds());
+            round.setGeoCodingData(l.getGameLocationCoordinates());
+            rounds.add(round);
+        }
+        createdGame1.setRounds(rounds);
+        createdGame1.setRoundDurationSeconds(l.getRoundDurationSeconds());
+        createdGame1.setAdminId(l.getAdminId());
+        createdGame1.setGameLocation(l.getGameLocation());
+        createdGame1.setNumberRounds(rounds.size());
+        createdGame1.setLobbyPassword(l.getPassword());
+        createdGame1.setId(gameService.startGame(l));
+
+        Long lon = gameService.startGame(l);
+
+        assertEquals(lon, createdGame1.getId()+1L);
+    }
+
+    @Test
+    public void testStartGame_Fail1() {
+        List<String> q = new ArrayList<>();
+        q.add("abc");
+        q.add("def");
+        q.add("ghi");
+
+        Participant participant = new Participant();
+        participant.setId(7L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+        participant.setScore(200);
+        participant.setHasSubmitted(Boolean.FALSE);
+        participant.setLeftGame(Boolean.FALSE);
+
+        Participant participant2 = new Participant();
+        participant2.setId(4L);
+        participant2.setUsername("test2");
+        participant2.setAdmin(false);
+        participant2.setToken("abc2");
+        participant2.setScore(203);
+        participant2.setHasSubmitted(Boolean.FALSE);
+        participant2.setLeftGame(Boolean.FALSE);
+
+        Participant participant3 = new Participant();
+        participant3.setId(5L);
+        participant3.setUsername("test3");
+        participant3.setAdmin(false);
+        participant3.setToken("abc3");
+        participant3.setScore(20);
+        participant3.setHasSubmitted(Boolean.FALSE);
+        participant3.setLeftGame(Boolean.FALSE);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("abc", participant);
+        participants1.put("abc2", participant2);
+        participants1.put("abc3", participant3);
+        game.setParticipants(participants1);
+        game.setActiveParticipants(1);
+
+        Lobby l = new Lobby();
+        l.setQuests(q);
+        l.setAdminId(7L);
+        l.setParticipants(participants1);
+        l.setId(1L);
+        l.setRoundDurationSeconds(30);
+        l.setJoinedParticipants(1);
+
+        Game createdGame1 = new Game();
+        List<Round> rounds = new ArrayList<>(q.size());
+        for (String quest : q) {
+            Round round = new Round();
+            round.setId(Game.rounds_count++);
+            round.setQuest(quest);
+            round.setRoundTime(l.getRoundDurationSeconds());
+            round.setRemainingSeconds(l.getRoundDurationSeconds());
+            round.setGeoCodingData(l.getGameLocationCoordinates());
+            rounds.add(round);
+        }
+        createdGame1.setRounds(rounds);
+        createdGame1.setRoundDurationSeconds(l.getRoundDurationSeconds());
+        createdGame1.setAdminId(l.getAdminId());
+        createdGame1.setGameLocation(l.getGameLocation());
+        createdGame1.setNumberRounds(rounds.size());
+        createdGame1.setLobbyPassword(l.getPassword());
+
+
+        assertThrows(ResponseStatusException.class, () -> gameService.startGame(l));
+    }
+    @Test
+    public void testStartGame_Fail2() {
+        List<String> q = new ArrayList<>();
+        q.add("abc");
+        q.add("def");
+        q.add("ghi");
+
+        Participant participant = new Participant();
+        participant.setId(7L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+        participant.setScore(200);
+        participant.setHasSubmitted(Boolean.FALSE);
+        participant.setLeftGame(Boolean.FALSE);
+
+        Participant participant2 = new Participant();
+        participant2.setId(4L);
+        participant2.setUsername("test2");
+        participant2.setAdmin(false);
+        participant2.setToken("abc2");
+        participant2.setScore(203);
+        participant2.setHasSubmitted(Boolean.FALSE);
+        participant2.setLeftGame(Boolean.FALSE);
+
+        Participant participant3 = new Participant();
+        participant3.setId(5L);
+        participant3.setUsername("test3");
+        participant3.setAdmin(false);
+        participant3.setToken("abc3");
+        participant3.setScore(20);
+        participant3.setHasSubmitted(Boolean.FALSE);
+        participant3.setLeftGame(Boolean.FALSE);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("abc", participant);
+        participants1.put("abc2", participant2);
+        participants1.put("abc3", participant3);
+        game.setParticipants(participants1);
+        game.setActiveParticipants(3);
+
+        Lobby l = new Lobby();
+        l.setAdminId(7L);
+        l.setParticipants(participants1);
+        l.setId(1L);
+        l.setRoundDurationSeconds(30);
+        l.setJoinedParticipants(3);
+
+        Game createdGame1 = new Game();
+        List<Round> rounds = new ArrayList<>(q.size());
+        for (String quest : q) {
+            Round round = new Round();
+            round.setId(Game.rounds_count++);
+            round.setQuest(quest);
+            round.setRoundTime(l.getRoundDurationSeconds());
+            round.setRemainingSeconds(l.getRoundDurationSeconds());
+            round.setGeoCodingData(l.getGameLocationCoordinates());
+            rounds.add(round);
+        }
+        createdGame1.setRounds(rounds);
+        createdGame1.setRoundDurationSeconds(l.getRoundDurationSeconds());
+        createdGame1.setAdminId(l.getAdminId());
+        createdGame1.setGameLocation(l.getGameLocation());
+        createdGame1.setNumberRounds(rounds.size());
+        createdGame1.setLobbyPassword(l.getPassword());
+
+
+        assertThrows(ResponseStatusException.class, () -> gameService.startGame(l));
+    }
+
 
 
 
