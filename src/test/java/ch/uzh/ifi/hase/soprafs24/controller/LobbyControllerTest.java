@@ -126,8 +126,6 @@ public class LobbyControllerTest {
 //                .andExpect(jsonPath("$[1].name", is("LobbyTwo")));
 
         verify(lobbyService).getAllLobbies();
-//        verify(DTOMapper.INSTANCE).convertLobbyToLobbyGetDTO(mockLobby1);
-//        verify(DTOMapper.INSTANCE).convertLobbyToLobbyGetDTO(mockLobby2);
     }
 
     @Test
@@ -174,9 +172,7 @@ public class LobbyControllerTest {
         when(lobbyService.getSpecificLobby(mockLobby1.getId())).thenReturn(mockLobby1);
         when(dtoMapper.convertLobbyToLobbyGetInformationDTO(mockLobby1)).thenReturn(mockLobbyGetDTO1);
 
-        // When
-        //MockHttpServletRequestBuilder getRequest = get("/lobbies/{id}", )
-        //        .accept(MediaType.APPLICATION_JSON);
+
 
         mockMvc.perform(get("/lobbies/{id}", mockLobby1.getId())
                         .header("Authorization", token)
@@ -193,8 +189,7 @@ public class LobbyControllerTest {
 
 
         verify(lobbyService).getSpecificLobby(mockLobby1.getId());
-//        verify(DTOMapper.INSTANCE).convertLobbyToLobbyGetDTO(mockLobby1);
-//        verify(DTOMapper.INSTANCE).convertLobbyToLobbyGetDTO(mockLobby2);
+
     }
 
     @Test
@@ -253,26 +248,21 @@ public class LobbyControllerTest {
 
 
         when(lobbyService.getAllParticipants(mockLobby1.getId(), token)).thenReturn(participants1);
-        //when(dtoMapper.convertParticipantToParticipantGetDTO(p)).thenReturn(p3);
-        //when(dtoMapper.convertParticipantToParticipantGetDTO(p2)).thenReturn(p4);
 
         when(dtoMapper.convertParticipantToParticipantGetDTO(any(Participant.class)))
                 .thenAnswer(invocation -> {
                     Participant participant = invocation.getArgument(0);
-                    // Implement your desired behavior here based on the participant
+
                     if (participant.getUsername().equals("K")) {
                         return p3;
                     } else if (participant.getUsername().equals("M")) {
                         return p4;
                     } else {
-                        // Handle other cases if needed
+
                         return null;
                     }
                 });
 
-        // When
-        //MockHttpServletRequestBuilder getRequest = get("/lobbies/{id}", )
-        //        .accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(get("/lobbies/{id}/participants", mockLobby1.getId())
                         .header("Authorization", token)
@@ -293,8 +283,7 @@ public class LobbyControllerTest {
 
 
         verify(lobbyService).getAllParticipants(mockLobby1.getId(), token);
-//        verify(DTOMapper.INSTANCE).convertLobbyToLobbyGetDTO(mockLobby1);
-//        verify(DTOMapper.INSTANCE).convertLobbyToLobbyGetDTO(mockLobby2);
+
     }
 
     @Test
@@ -321,17 +310,17 @@ public class LobbyControllerTest {
 
     @Test
     public void testLeaveLobby() throws Exception {
-        // Given
+
         Long lobbyId = 1L;
         String token = "mockToken";
 
-        // When
+
         mockMvc.perform(delete("/lobbies/{id}/leave", lobbyId)
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        // Then
+
         verify(lobbyService).leaveLobby(lobbyId, token);
     }
 
@@ -350,19 +339,17 @@ public class LobbyControllerTest {
 
         when(lobbyService.updateLobbySettings(lobbyId, lobbyPutDTO, token)).thenReturn(mockLobby);
 
-        // When
+
         mockMvc.perform(put("/lobbies/{id}", lobbyId, lobbyPutDTO)
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(lobbyPutDTO)))
                 .andExpect(status().isNoContent());
 
-        // Then
+
         verify(lobbyService).updateLobbySettings(lobbyId, lobbyPutDTO, token);
 
-        // Verify that websocketService.sendMessage is called with the correct arguments
-        //verify(websocketService).sendMessage("/topic/lobby/" + lobbyId,
-                //new UpdateSettingsDTO());
+
     }
     */
     @Test
@@ -395,14 +382,14 @@ public class LobbyControllerTest {
         mockLobby.setParticipants(m);
         when(lobbyService.getSpecificLobby(lobbyId)).thenReturn(mockLobby);
 
-        // When
+
         mockMvc.perform(post("/lobbies/{id}/start", lobbyId)
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("")) // Add request body if needed
                 .andExpect(status().isNoContent());
 
-        // Then
+
         verify(lobbyService).getSpecificLobby(lobbyId);
         verify(lobbyService).authorizeLobbyAdmin(mockLobby, token);
         verify(gameService).startGame(mockLobby);
@@ -410,11 +397,10 @@ public class LobbyControllerTest {
     }
     @Test
     public void testGetExistingCities() throws Exception {
-        // Given
+
         List<String> cities = Arrays.asList("City1", "City2", "City3");
         when(lobbyService.getExistingCities()).thenReturn(cities);
 
-        // When/Then
         mockMvc.perform(get("/lobbies/cities")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -422,8 +408,7 @@ public class LobbyControllerTest {
                 .andExpect(jsonPath("$[0]").value("City1"))
                 .andExpect(jsonPath("$[1]").value("City2"))
                 .andExpect(jsonPath("$[2]").value("City3"));
-
-        // Verify that lobbyService.getExistingCities() is called
+        
         verify(lobbyService).getExistingCities();
     }
 
