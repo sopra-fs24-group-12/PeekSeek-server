@@ -39,7 +39,7 @@ public class LobbyTest {
 
         assertEquals("Test Lobby", lobby.getName());
         assertEquals("secret", lobby.getPassword());
-        assertEquals(120, lobby.getRoundDurationSeconds());
+        assertEquals(122, lobby.getRoundDurationSeconds());
         assertEquals("Zurich", lobby.getGameLocation());
         assertEquals(10, lobby.getMaxParticipants());
         assertEquals(2, lobby.getQuests().size());
