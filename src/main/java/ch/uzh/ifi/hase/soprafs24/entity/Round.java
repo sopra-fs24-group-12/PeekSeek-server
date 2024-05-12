@@ -17,7 +17,7 @@ public class Round {
     private Map<Long, Submission> submissions = new HashMap<>();
     private List<Submission> shuffledSubmissions = new ArrayList<>();
     private Submission winningSubmission;
-    private Integer summaryTime = 20;
+    private Integer summaryTime = 22;
     private Integer participantsDone = 0;
     private Integer bufferTime = 1;
     private Long lastPhaseChangeTime;

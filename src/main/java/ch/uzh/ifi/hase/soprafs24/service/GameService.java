@@ -56,8 +56,7 @@ public class GameService {
         return game;
     }
 
-    // TODO: adjust participant class to include distribution of points and adjust DTO
-    public List<Participant> getLeaderboard(String token, Long gameId) {  //get a list of all participants sorted by score
+    public List<Participant> getLeaderboard(String token, Long gameId) {  // get a list of all participants sorted by score
         Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
@@ -108,8 +107,6 @@ public class GameService {
         GameRepository.addGame(createdGame);
 
         startInactivityTimer(createdGame);
-
-        //gameTimers.put(createdGame.getId(), new Timer());
 
         startNextRound(createdGame.getId());
 
@@ -175,9 +172,10 @@ public class GameService {
         }
 
         game.setCurrentRound(currentRoundIdx + 1);
-        game.getRounds().get(game.getCurrentRound()).setRoundStatus(RoundStatus.PLAYING);
 
         Round round = game.getRounds().get(game.getCurrentRound());
+
+        round.setRoundStatus(RoundStatus.PLAYING);
 
         websocketService.sendMessage("/topic/games/" + gameId, new NextRoundDTO());
 

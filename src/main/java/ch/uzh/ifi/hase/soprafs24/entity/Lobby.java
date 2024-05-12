@@ -12,7 +12,7 @@ public class Lobby {
     private Integer roundDurationSeconds = 60;
     private String gameLocation;
     private GeoCodingData gameLocationCoordinates;
-    private Integer maxParticipants = 6; //TODO: don't hardcode
+    private Integer maxParticipants = 6;
     private Integer joinedParticipants = 0;
     private List<String> quests;
     private Boolean reUsed = false;
@@ -109,7 +109,7 @@ public class Lobby {
     }
 
     public void setRoundDurationSeconds(Integer roundDurationSeconds) {
-        this.roundDurationSeconds = roundDurationSeconds;
+        this.roundDurationSeconds = roundDurationSeconds + 2;
     }
 
     public String getGameLocation() {
