@@ -323,5 +323,8 @@ We worked together on these Issues on one device most of the time.
 - [x] [Tests for LobbyService and GameService](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113)
 - [x] [Tests for entities](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/181)
 
+## Week 7: [08.05. - 14.05]
 
+### Silvan
+- [x] Timer UI and Animations for Game, Voting and Votingresults [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/122)
 
