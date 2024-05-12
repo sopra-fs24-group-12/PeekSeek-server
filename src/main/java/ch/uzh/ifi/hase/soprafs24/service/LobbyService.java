@@ -1,8 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-//TODO: Websocket for checking if user left game/lobby
-//TODO: Protect websockets?
-
 import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;

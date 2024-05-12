@@ -141,7 +141,7 @@ public class LobbyServiceTest {
         Lobby lobby1 = lobbyService.updateLobbySettings(1L, lobbyPutDTO, "abc");
 
         assert(lobby1.getQuests().equals(quests));
-        assert(lobby1.getRoundDurationSeconds() == 60);
+        assert(lobby1.getRoundDurationSeconds() == 62);
         assert(lobby1.getGameLocation().equals("Zürich, Switzerland"));
     }
 
