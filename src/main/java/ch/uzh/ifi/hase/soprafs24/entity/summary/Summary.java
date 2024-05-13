@@ -13,6 +13,12 @@ public class Summary {
     @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
     private List<Quest> quests;
     private String password;
+    private String resLatNe;
+    private String resLngNe;
+    private String resLatSw;
+    private String resLngSw;
+    private String lat;
+    private String lng;
 
     public Long getId() {
         return id;
@@ -52,5 +58,53 @@ public class Summary {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getResLatNe() {
+        return resLatNe;
+    }
+
+    public void setResLatNe(String resLatNe) {
+        this.resLatNe = resLatNe;
+    }
+
+    public String getResLngNe() {
+        return resLngNe;
+    }
+
+    public void setResLngNe(String resLngNe) {
+        this.resLngNe = resLngNe;
+    }
+
+    public String getResLatSw() {
+        return resLatSw;
+    }
+
+    public void setResLatSw(String resLatSw) {
+        this.resLatSw = resLatSw;
+    }
+
+    public String getResLngSw() {
+        return resLngSw;
+    }
+
+    public void setResLngSw(String resLngSw) {
+        this.resLngSw = resLngSw;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }

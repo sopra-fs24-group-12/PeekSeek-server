@@ -67,7 +67,7 @@ public class GameService {
     }
 
     public Long startGame(Lobby lobby) {
-        if (lobby.getJoinedParticipants() < 3) {
+        if (lobby.getJoinedParticipants() < 1) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "You need at least 3 participants to start the game");
         }
@@ -232,6 +232,12 @@ public class GameService {
             }
         }
 
+        summary.setResLatNe(game.getRounds().get(0).getGeoCodingData().getResLatNe());
+        summary.setResLngNe(game.getRounds().get(0).getGeoCodingData().getResLngNe());
+        summary.setResLatSw(game.getRounds().get(0).getGeoCodingData().getResLatSw());
+        summary.setResLngSw(game.getRounds().get(0).getGeoCodingData().getResLngSw());
+        summary.setLat(game.getRounds().get(0).getGeoCodingData().getLat());
+        summary.setLng(game.getRounds().get(0).getGeoCodingData().getLng());
         summary.setQuests(winningSubmissions);
         summary = summaryRepository.save(summary);
         summaryRepository.flush();

@@ -96,6 +96,8 @@ public interface DTOMapper {
     @Mapping(source = "cityName", target = "cityName")
     @Mapping(source = "roundsPlayed", target = "roundsPlayed")
     @Mapping(source = "quests", target = "quests")
+    @Mapping(source = "lat", target = "lat")
+    @Mapping(source = "lng", target = "lng")
     SummaryGetDTO convertSummaryToSummaryGetDTO(Summary summary);
 
 }

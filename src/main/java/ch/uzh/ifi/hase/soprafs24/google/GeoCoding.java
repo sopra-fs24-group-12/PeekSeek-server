@@ -96,6 +96,6 @@ public class GeoCoding {
         coordinateData.setResLngNe("8.625452899999999");
         coordinateData.setResLatSw("47.32021839999999");
         coordinateData.setResLngSw("8.448018099999999");
-        coordinateData.setFormAddress("Zürich, Switzerland");
+        coordinateData.setFormAddress("Zurich");
     }
 }
