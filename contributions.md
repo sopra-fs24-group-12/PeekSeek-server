@@ -327,4 +327,6 @@ We worked together on these Issues on one device most of the time.
 
 ### Silvan
 - [x] Timer UI and Animations for Game, Voting and Votingresults [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/122)
+- [x] Router Guards, handle Routes to non-Existent pages with created modal [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/182)
+- [x] Format Error Messages coming from backend with created Modal in several pages [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/163)
 
