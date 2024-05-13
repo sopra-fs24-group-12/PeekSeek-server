@@ -343,3 +343,13 @@ We worked together on these Issues on one device most of the time.
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/179
 - Redirect user to correct game page when trying to enter a page corresponding to a state the game is not in currently
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/184
+
+### Ece
+- Made containers responsive
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/153)
+- Reviewed all views' components to be responsive as well
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/187)
+- Added animation on landing page
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/161)
+- Added slider component to time per round
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/162)
