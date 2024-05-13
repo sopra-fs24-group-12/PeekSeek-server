@@ -330,3 +330,16 @@ We worked together on these Issues on one device most of the time.
 - [x] Router Guards, handle Routes to non-Existent pages with created modal [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/182)
 - [x] Format Error Messages coming from backend with created Modal in several pages [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/163)
 
+### Georg
+- Add icons (current pointLeader, streak etc.)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/102
+- Pre-fetch elements before showing submissions and show skeleton
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/158
+- Rework notifications during the game to use react-toastify
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/166
+- hide a player's own submission on the voting page (s.t. only the other players' submissions are visible and clickable)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/178
+- Add a delay when transferring between different pages (loading symbol/animation)
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/179
+- Redirect user to correct game page when trying to enter a page corresponding to a state the game is not in currently
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/184
