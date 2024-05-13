@@ -337,7 +337,7 @@ We worked together on these Issues on one device most of the time.
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/158
 - Rework notifications during the game to use react-toastify
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/166
-- hide a player's own submission on the voting page (s.t. only the other players' submissions are visible and clickable)
+- Change activity ping timing and cancel on navigation to new page to avoid being kicked in rare cases
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/178
 - Add a delay when transferring between different pages (loading symbol/animation)
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/179
