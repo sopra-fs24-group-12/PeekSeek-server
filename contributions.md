@@ -353,3 +353,8 @@ We worked together on these Issues on one device most of the time.
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/161)
 - Added slider component to time per round
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/162)
+ 
+### Nils
+- [x] Voting Page now has clickable images that then open up to Google Maps Streetview Panoramas, where you can even move around [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/176)
+- [x] Clicking images no longer redirects to a blank page [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/125)
+- [x] Add real GoogleMaps map to summary instead of static image (still minor bug open regarding data fetching) [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/126)
