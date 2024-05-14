@@ -343,6 +343,8 @@ We worked together on these Issues on one device most of the time.
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/179
 - Redirect user to correct game page when trying to enter a page corresponding to a state the game is not in currently
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/184
+- One save button instead of one for each part of settings
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113  
 
 ### Ece
 - Made containers responsive
