@@ -351,6 +351,8 @@ We worked together on these Issues on one device most of the time.
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/153)
 - Reviewed all views' components to be responsive as well
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/187)
+- Fixed lobby map to be responsive
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/112)
 - Added animation on landing page
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/161)
 - Added slider component to time per round
