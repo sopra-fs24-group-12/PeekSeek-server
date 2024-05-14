@@ -358,3 +358,8 @@ We worked together on these Issues on one device most of the time.
 - [x] Voting Page now has clickable images that then open up to Google Maps Streetview Panoramas, where you can even move around [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/176)
 - [x] Clicking images no longer redirects to a blank page [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/125)
 - [x] Add real GoogleMaps map to summary instead of static image (still minor bug open regarding data fetching) [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/126)
+
+### Youssef
+- [x] [Tests for LobbyService and GameService, mainly GameService](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113)
+- [x] [Tests for LobbyController](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/178)
+- [x] [Tests for SummaryController (WebsocketController too, but it has been removed)](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/200)
