@@ -9,7 +9,7 @@ public class Lobby {
     private Long id;
     private String name;
     private String password;
-    private Integer roundDurationSeconds = 60;
+    private Integer roundDurationSeconds = 62;
     private String gameLocation;
     private GeoCodingData gameLocationCoordinates;
     private Integer maxParticipants = 6;
