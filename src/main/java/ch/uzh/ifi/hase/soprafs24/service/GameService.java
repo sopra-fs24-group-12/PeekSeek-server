@@ -122,6 +122,7 @@ public class GameService {
     }
 
     private void startInactivityTimer(Game game) {
+        game.initializeActivityTime();
         Timer timer = new Timer(true);
         TimerTask task = new TimerTask() {
             @Override
@@ -132,7 +133,7 @@ public class GameService {
                 }
             }
         };
-        timer.schedule(task, 5000, 5000);
+        timer.schedule(task, 2000, 5000);
 
         inactivityTimers.put(game.getId(), timer);
     }
@@ -185,19 +186,23 @@ public class GameService {
     private void endGame(Game game, Long gameId) {
         Long summaryId = generateSummary(game);
         websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        game.setGameStatus(GameStatus.SUMMARY);
+        Timer timer = gameTimers.get(gameId);
+        if (timer != null) {
+            timer.cancel();
+        }
+        gameTimers.remove(game.getId());
+
+        Timer timer1 = new Timer();
+        timer1.schedule(new TimerTask() {
             @Override
             public void run() {
-                game.setGameStatus(GameStatus.SUMMARY);
-                gameTimers.remove(game.getId());
                 stopInactivityTimer(gameId);
                 GameRepository.deleteGame(gameId);
-                timer.cancel();
             }
-        }, 5000);
-    }
+        }, 2000);
 
+    }
 
     public Long generateSummary(Game game) {
         List<Quest> winningSubmissions = new ArrayList<>();

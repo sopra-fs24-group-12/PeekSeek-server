@@ -28,6 +28,12 @@ public class Game {
         this.id = id_count++;
     }
 
+    public void initializeActivityTime() {
+        for (Participant p : participants.values()) {
+            lastActivityTimes.put(p.getToken(), System.currentTimeMillis());
+        }
+    }
+
     public void updateActivityTime(String token) {
         lastActivityTimes.put(token, System.currentTimeMillis());
     }
@@ -36,7 +42,7 @@ public class Game {
         long currentTime = System.currentTimeMillis();
         List<String> inactiveParticipants = new ArrayList<>();
         for (Map.Entry<String, Long> entry : lastActivityTimes.entrySet()) {
-            if (currentTime - entry.getValue() > timeout) {
+            if (!participants.get(entry.getKey()).getLeftGame() && currentTime - entry.getValue() > timeout) {
                 inactiveParticipants.add(entry.getKey());
             }
         }
