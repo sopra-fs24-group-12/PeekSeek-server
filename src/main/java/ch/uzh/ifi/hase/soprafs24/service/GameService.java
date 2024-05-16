@@ -237,6 +237,12 @@ public class GameService {
             }
         }
 
+        summary.setResLatNe(game.getRounds().get(0).getGeoCodingData().getResLatNe());
+        summary.setResLngNe(game.getRounds().get(0).getGeoCodingData().getResLngNe());
+        summary.setResLatSw(game.getRounds().get(0).getGeoCodingData().getResLatSw());
+        summary.setResLngSw(game.getRounds().get(0).getGeoCodingData().getResLngSw());
+        summary.setLat(game.getRounds().get(0).getGeoCodingData().getLat());
+        summary.setLng(game.getRounds().get(0).getGeoCodingData().getLng());
         summary.setQuests(winningSubmissions);
         summary = summaryRepository.save(summary);
         summaryRepository.flush();
