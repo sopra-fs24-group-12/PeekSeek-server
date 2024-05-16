@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.SummaryRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import org.junit.jupiter.api.AfterEach;
@@ -1033,7 +1034,61 @@ public class GameServiceTest {
         //verify(gameRepository, times(1)).save(game);
         //verify(websocketService, times(1)).sendMessage(eq("/topic/games/" + gameId), any(ParticipantLeftDTO.class));
     }
+    @Test
+    public void testPostVoting_Successful() {
 
+        Long gameId = 1L;
+        String token = "participantToken";
+        VotingPostDTO votingPostDTO = new VotingPostDTO();
+        HashMap<Long, String> votes = new HashMap<>();
+        votes.put(1L, "winner");
+        votingPostDTO.setVotes(votes);
+
+        game.setCurrentRound(0);
+        game.setId(gameId);
+        game.setActiveParticipants(3);
+        Round round = new Round();
+        round.setRoundStatus(RoundStatus.VOTING);
+        round.setRemainingSeconds(10);
+        Participant participant = new Participant();
+        participant.setToken(token);
+        participant.setLeftGame(false);
+        participant.setUsername("TestUser");
+        participant.setHasVoted(false);
+
+        Participant participant1 = new Participant();
+        participant1.setToken("participantToken1");
+        participant1.setLeftGame(false);
+        participant1.setUsername("TestUser1");
+
+        Participant participant2 = new Participant();
+        participant2.setToken("participantToken2");
+        participant2.setLeftGame(false);
+        participant2.setUsername("TestUser2");
+
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("participantToken", participant);
+        participants1.put("participantToken1", participant1);
+        participants1.put("participantToken2", participant2);
+
+        game.setParticipants(participants1);
+
+        Submission submission = new Submission();
+        submission.setId(1L);
+        submission.setToken("otherParticipantToken");
+        round.addSubmission(submission);
+        List<Round> r = new ArrayList<>();
+        r.add(round);
+        game.setRounds(r);
+
+
+        gameService.postVoting(gameId, token, votingPostDTO);
+
+        Assertions.assertTrue(participant.getHasVoted());
+        Assertions.assertEquals(1, round.getParticipantsDone());
+        Assertions.assertEquals(1, submission.getNumberVotes());
+
+    }
 
 
 
