@@ -67,7 +67,7 @@ public class GameService {
     }
 
     public Long startGame(Lobby lobby) {
-        if (lobby.getJoinedParticipants() < 1) {
+        if (lobby.getJoinedParticipants() < 3) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "You need at least 3 participants to start the game");
         }
