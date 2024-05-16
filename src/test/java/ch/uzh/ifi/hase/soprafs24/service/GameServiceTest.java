@@ -343,6 +343,15 @@ public class GameServiceTest {
         submission.setUsername(participant.getUsername());
         submission.setNoSubmission(Boolean.FALSE);
 
+        GeoCodingData gcd = new GeoCodingData();
+        gcd.setId(2L);
+        gcd.setResLatNe("72563");
+        gcd.setResLngNe("98829");
+        gcd.setResLatSw("87362");
+        gcd.setResLngSw("92866");
+        gcd.setLng("65243");
+        gcd.setLat("092762");
+
         Round round1 = new Round();
         round1.setId(1L);
         round1.setRoundStatus(RoundStatus.FINISHED);
@@ -350,6 +359,7 @@ public class GameServiceTest {
         round1.addSubmission(submission);
         round1.setWinningSubmission(submission);
         round1.setQuest("Nonononon");
+        round1.setGeoCodingData(gcd);
 
         Long gameId = 1L;
 
@@ -384,7 +394,7 @@ public class GameServiceTest {
         //when(summaryRepository.save(any())).thenReturn(summary1);
         given(summaryRepository.save(any())).willReturn(summary1);
 
-
+        //Round
 
 
         summary1 = summaryRepository.save(summary1);
