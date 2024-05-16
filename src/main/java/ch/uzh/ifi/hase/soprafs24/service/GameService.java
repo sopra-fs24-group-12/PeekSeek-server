@@ -561,7 +561,7 @@ public class GameService {
         round.setShuffledSubmissions(shuffledSubmissions);
     }
 
-    private void authorizeGameParticipant(Game game, String token) {
+    public void authorizeGameParticipant(Game game, String token) {
         Participant participant = game.getParticipantByToken(token);
         if (participant == null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bad authorization token");

@@ -14,6 +14,7 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -742,6 +743,295 @@ public class GameServiceTest {
 
 
         assertThrows(ResponseStatusException.class, () -> gameService.startGame(l));
+    }
+
+    @Test
+    public void TestPostSubmission_fail() throws IOException{
+
+        Round round111 = new Round();
+        round111.setId(1L);
+        round111.setRoundStatus(RoundStatus.PLAYING);
+        round111.setBufferTime(1000000);
+        Long gameId = 1L;
+
+        SubmissionPostDTO submissionPostDTO = new SubmissionPostDTO();
+        submissionPostDTO.setNoSubmission(Boolean.FALSE);
+        submissionPostDTO.setHeading("009");
+        submissionPostDTO.setPitch("50");
+        submissionPostDTO.setLat("09090");
+        submissionPostDTO.setLng("888");
+
+        Participant participant = new Participant();
+        participant.setId(7L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+        participant.setScore(200);
+        participant.setHasSubmitted(Boolean.TRUE);
+        participant.setLeftGame(Boolean.FALSE);
+
+        List<Round> r = new ArrayList<>();
+        r.add(round111);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("abc", participant);
+        game.setParticipants(participants1);
+        game.setActiveParticipants(1);
+        game.setRounds(r);
+        game.setCurrentRound(0);
+
+
+        Round cRound = game.getRounds().get(game.getCurrentRound());
+        int submissionTime = gameService.getSubmissionTime(participant, cRound);
+
+        Submission submission = new Submission();
+        participant.setHasSubmitted(true);
+
+        cRound.setParticipantsDone(cRound.getParticipantsDone() + 1);
+
+        SubmissionData submissionData = new SubmissionData();
+        submissionData.setLat(submissionPostDTO.getLat());
+        submissionData.setLng(submissionPostDTO.getLng());
+        submissionData.setHeading(submissionPostDTO.getHeading());
+        submissionData.setPitch(submissionPostDTO.getPitch());
+        submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
+
+
+        submission.setId(Round.submissionCount++);
+        submission.setSubmissionTimeSeconds(submissionTime);
+        submission.setSubmittedLocation(submissionData);
+        submission.setToken(participant.getToken());
+        submission.setUsername(participant.getUsername());
+        submission.setNoSubmission(submissionPostDTO.getNoSubmission());
+
+        cRound.addSubmission(submission);
+
+        if (Objects.equals(cRound.getParticipantsDone(), game.getActiveParticipants()) && cRound.getRemainingSeconds() > 5) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    gameService.endTimerPrematurely(cRound, gameId);
+                    timer.cancel();
+                }
+            }, 3000);
+        }
+
+        Round currentRound = game.getRounds().get(game.getCurrentRound());
+        System.out.println(cRound.getSubmissions().values());
+        participant.setHasSubmitted(Boolean.TRUE);
+
+
+
+
+
+
+        assertThrows(ResponseStatusException.class, ()-> gameService.postSubmission(1L, "abc", submissionPostDTO));
+
+
+    }
+
+    @Test
+    public void TestPostSubmission_fail_2() throws IOException{
+
+        Round round111 = new Round();
+        round111.setId(1L);
+        round111.setRoundStatus(RoundStatus.PLAYING);
+        round111.setBufferTime(1000000);
+        Long gameId = 1L;
+
+        SubmissionPostDTO submissionPostDTO = new SubmissionPostDTO();
+        submissionPostDTO.setNoSubmission(Boolean.FALSE);
+        submissionPostDTO.setHeading("009");
+        submissionPostDTO.setPitch("50");
+        submissionPostDTO.setLat("09090");
+        submissionPostDTO.setLng("888");
+
+
+
+        List<Round> r = new ArrayList<>();
+        r.add(round111);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+
+        game.setParticipants(participants1);
+        game.setActiveParticipants(1);
+        game.setRounds(r);
+        game.setCurrentRound(0);
+
+
+        Round cRound = game.getRounds().get(game.getCurrentRound());
+
+
+        Submission submission = new Submission();
+
+
+        cRound.setParticipantsDone(cRound.getParticipantsDone() + 1);
+
+        SubmissionData submissionData = new SubmissionData();
+        submissionData.setLat(submissionPostDTO.getLat());
+        submissionData.setLng(submissionPostDTO.getLng());
+        submissionData.setHeading(submissionPostDTO.getHeading());
+        submissionData.setPitch(submissionPostDTO.getPitch());
+        submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
+
+
+        submission.setId(Round.submissionCount++);
+
+        submission.setNoSubmission(submissionPostDTO.getNoSubmission());
+
+        cRound.addSubmission(submission);
+
+        if (Objects.equals(cRound.getParticipantsDone(), game.getActiveParticipants()) && cRound.getRemainingSeconds() > 5) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    gameService.endTimerPrematurely(cRound, gameId);
+                    timer.cancel();
+                }
+            }, 3000);
+        }
+
+        Round currentRound = game.getRounds().get(game.getCurrentRound());
+        System.out.println(cRound.getSubmissions().values());
+
+
+
+
+
+
+
+        assertThrows(ResponseStatusException.class, ()-> gameService.postSubmission(1L, "abc", submissionPostDTO));
+
+
+    }
+
+    @Test
+    public void TestPostSubmission_fail_3() throws IOException{
+
+        Round round111 = new Round();
+        round111.setId(1L);
+        round111.setRoundStatus(RoundStatus.FINISHED);
+        round111.setBufferTime(1000000);
+        Long gameId = 1L;
+
+        SubmissionPostDTO submissionPostDTO = new SubmissionPostDTO();
+        submissionPostDTO.setNoSubmission(Boolean.FALSE);
+        submissionPostDTO.setHeading("09271");
+        submissionPostDTO.setPitch("63554");
+        submissionPostDTO.setLat("52441");
+        submissionPostDTO.setLng("8276");
+
+        Participant participant = new Participant();
+        participant.setId(7L);
+        participant.setUsername("test");
+        participant.setAdmin(true);
+        participant.setToken("abc");
+        participant.setScore(200);
+        participant.setHasSubmitted(Boolean.FALSE);
+        participant.setLeftGame(Boolean.FALSE);
+
+        List<Round> r = new ArrayList<>();
+        r.add(round111);
+
+        game.setAdminId(7L);
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("abc", participant);
+        game.setParticipants(participants1);
+        game.setActiveParticipants(1);
+        game.setRounds(r);
+        game.setCurrentRound(0);
+
+
+        Round cRound = game.getRounds().get(game.getCurrentRound());
+        int submissionTime = gameService.getSubmissionTime(participant, cRound);
+
+        Submission submission = new Submission();
+        participant.setHasSubmitted(true);
+
+        cRound.setParticipantsDone(cRound.getParticipantsDone() + 1);
+
+        SubmissionData submissionData = new SubmissionData();
+        submissionData.setLat(submissionPostDTO.getLat());
+        submissionData.setLng(submissionPostDTO.getLng());
+        submissionData.setHeading(submissionPostDTO.getHeading());
+        submissionData.setPitch(submissionPostDTO.getPitch());
+        submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
+
+
+        submission.setId(Round.submissionCount++);
+        submission.setSubmissionTimeSeconds(submissionTime);
+        submission.setSubmittedLocation(submissionData);
+        submission.setToken(participant.getToken());
+        submission.setUsername(participant.getUsername());
+        submission.setNoSubmission(submissionPostDTO.getNoSubmission());
+
+        cRound.addSubmission(submission);
+
+        if (Objects.equals(cRound.getParticipantsDone(), game.getActiveParticipants()) && cRound.getRemainingSeconds() > 5) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    gameService.endTimerPrematurely(cRound, gameId);
+                    timer.cancel();
+                }
+            }, 3000);
+        }
+
+        Round currentRound = game.getRounds().get(game.getCurrentRound());
+        System.out.println(cRound.getSubmissions().values());
+
+
+        assertThrows(ResponseStatusException.class, ()-> gameService.postSubmission(1L, "abc", submissionPostDTO));
+
+
+    }
+    @Test
+    public void testLeaveGame_Successful() {
+        // Arrange
+        Long gameId = 1L;
+        String token = "participantToken";
+        //Game game = new Game();
+        game.setId(gameId);
+        game.setActiveParticipants(3);
+
+        Participant participant = new Participant();
+        participant.setToken(token);
+        participant.setLeftGame(false);
+        participant.setUsername("TestUser");
+
+        Participant participant1 = new Participant();
+        participant.setToken("participantToken1");
+        participant.setLeftGame(false);
+        participant.setUsername("TestUser1");
+
+        Participant participant2 = new Participant();
+        participant.setToken("participantToken2");
+        participant.setLeftGame(false);
+        participant.setUsername("TestUser2");
+
+        Map<String, Participant> participants1 = new HashMap<>();
+        participants1.put("participantToken", participant);
+        participants1.put("participantToken1", participant1);
+        participants1.put("participantToken2", participant2);
+
+        game.setParticipants(participants1);
+        //when(gameRepository.getGameById(gameId)).thenReturn(game);
+        //when(game.getParticipantByToken(token)).thenReturn(participant);
+
+        // Act
+        //gameService.leaveGame(gameId, token);
+        assertThrows(IndexOutOfBoundsException.class, ()-> gameService.leaveGame(gameId, token));
+        // Assert
+        Assertions.assertTrue(participant.getLeftGame());
+        Assertions.assertEquals(2, game.getActiveParticipants());
+        //verify(gameRepository, times(1)).findById(gameId);
+        //verify(gameRepository, times(1)).save(game);
+        //verify(websocketService, times(1)).sendMessage(eq("/topic/games/" + gameId), any(ParticipantLeftDTO.class));
     }
 
 
