@@ -190,9 +190,8 @@ public class GameService {
         Timer timer = gameTimers.get(gameId);
         if (timer != null) {
             timer.cancel();
+            gameTimers.remove(game.getId());
         }
-        gameTimers.remove(game.getId());
-
         Timer timer1 = new Timer();
         timer1.schedule(new TimerTask() {
             @Override
