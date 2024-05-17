@@ -12,12 +12,12 @@ public class Participant {
     private Boolean leftGame = false;
     private Boolean hasSubmitted = false;
     private Boolean hasVoted = false;
-    private static Long id_count = 1L;
+    private static Long idCount = 1L;
     private int pointsThisRound = 0;
 
 
     public Participant() {
-        this.id = id_count++;
+        this.id = idCount++;
     }
 
     public Long getId() {

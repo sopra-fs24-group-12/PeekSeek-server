@@ -13,7 +13,6 @@ import ch.uzh.ifi.hase.soprafs24.websocket.dto.UpdateSettingsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,8 @@ public class LobbyController {
     private final WebsocketService websocketService;
     private final LobbyService lobbyService;
     private final GameService gameService;
+    private static final String authorizationField = "Authorization";
+    private static final String websocketTopicAddress = "/topic/lobby/";
 
     LobbyController(LobbyService lobbyService, WebsocketService websocketService, GameService gameService) {
         this.lobbyService = lobbyService;
@@ -32,19 +33,17 @@ public class LobbyController {
 
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO,
                                                    HttpServletResponse response) {
         Lobby lobby = lobbyService.createLobby(lobbyPostDTO.getName(), lobbyPostDTO.getPassword());
         String token = lobbyService.joinLobby(lobby.getId(), lobbyPostDTO.getUsername(), lobbyPostDTO.getPassword());
-        response.setHeader("Access-Control-Expose-Headers", "Authorization");
-        response.setHeader("Authorization", token);
+        response.setHeader("Access-Control-Expose-Headers", authorizationField);
+        response.setHeader(authorizationField, token);
         return DTOMapper.INSTANCE.convertLobbyToLobbyGetDTO(lobby);
     }
 
     @GetMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<LobbyGetDTO> getLobbies() {
         List<LobbyGetDTO> lobbyGetDTOs = new ArrayList<>();
         List<Lobby> lobbies = lobbyService.getAllLobbies();
@@ -56,7 +55,6 @@ public class LobbyController {
 
     @GetMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public LobbyGetInformationDTO getLobbyInformation(@PathVariable Long id,
                                                       @RequestHeader(value = "Authorization", required = false)
                                                       String token) {
@@ -67,7 +65,6 @@ public class LobbyController {
 
     @GetMapping("/lobbies/{id}/participants")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<ParticipantGetDTO> getLobbyParticipants(@PathVariable Long id,
                                                         @RequestHeader(value = "Authorization", required = false)
                                                         String token) {
@@ -81,19 +78,17 @@ public class LobbyController {
 
     @PutMapping("/lobbies/{id}/join")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
     public void joinLobby(@PathVariable Long id, @RequestBody LobbyJoinPutDTO joinPutDTO,
                                       HttpServletResponse response) {
         String token = lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
-        websocketService.sendMessage("/topic/lobby/" + id,
+        websocketService.sendMessage(websocketTopicAddress + id,
                 new ParticipantJoinedDTO(joinPutDTO.getUsername()));
-        response.setHeader("Access-Control-Expose-Headers", "Authorization");
-        response.setHeader("Authorization", token);
+        response.setHeader("Access-Control-Expose-Headers", authorizationField);
+        response.setHeader(authorizationField, token);
     }
 
     @DeleteMapping("/lobbies/{id}/leave")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
     public void leaveLobby(@PathVariable Long id,
                            @RequestHeader(value = "Authorization", required = false) String token) {
         lobbyService.leaveLobby(id, token);
@@ -101,29 +96,26 @@ public class LobbyController {
 
     @PutMapping("/lobbies/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
     public void updateLobbySettings(@PathVariable Long id, @RequestBody LobbyPutDTO lobbyPutDTO,
-                                    @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
+                                    @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.updateLobbySettings(id, lobbyPutDTO, token);
-        websocketService.sendMessage("/topic/lobby/" + id,
+        websocketService.sendMessage(websocketTopicAddress + id,
                 new UpdateSettingsDTO(lobby.getGameLocation(), lobby.getRoundDurationSeconds(),
                         lobby.getGameLocationCoordinates(), lobby.getQuests()));
     }
 
     @PostMapping("/lobbies/{id}/start")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
     public void startGame(@PathVariable Long id, @RequestBody(required = false) String body,
                           @RequestHeader(value = "Authorization", required = false) String token) {
         Lobby lobby = lobbyService.getSpecificLobby(id);
         lobbyService.authorizeLobbyAdmin(lobby, token);
         Long gameId = gameService.startGame(lobby);
-        websocketService.sendMessage("/topic/lobby/" + id, new GameStartedDTO(gameId));
+        websocketService.sendMessage(websocketTopicAddress + id, new GameStartedDTO(gameId));
     }
 
     @GetMapping("/lobbies/cities")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<String> getExistingCities() {
         return lobbyService.getExistingCities();
     }

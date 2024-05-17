@@ -10,9 +10,9 @@ import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LobbyTest {
+class LobbyTest {
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         Lobby lobby = new Lobby();
         lobby.setId(1L);
         assertEquals(1L, lobby.getId());
@@ -21,7 +21,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testGetterSetters() {
+    void testGetterSetters() {
         Lobby lobby = new Lobby();
         List<String> l = new ArrayList<>();
         l.add("1");
@@ -50,7 +50,7 @@ public class LobbyTest {
 
 
     @Test
-    public void testAddParticipant() {
+    void testAddParticipant() {
         Lobby lobby = new Lobby();
         Participant participant = new Participant();
         participant.setToken("testToken");
@@ -65,7 +65,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testRemoveParticipant() {
+    void testRemoveParticipant() {
         Lobby lobby = new Lobby();
         Participant participant = new Participant();
         participant.setToken("testToken");
@@ -79,47 +79,9 @@ public class LobbyTest {
         assertFalse(lobby.getUsernames().contains("testUser"));
         assertEquals(0, lobby.getJoinedParticipants());
     }
-    /*
-    @Test
-    public void testUpdateActivityTime() {
-        Lobby lobby = new Lobby();
-        Participant participant = new Participant();
-        participant.setToken("testToken");
-
-        lobby.addParticipant(participant);
-        long beforeTime = System.currentTimeMillis();
-        lobby.updateActivityTime("testToken");
-        long afterTime = System.currentTimeMillis();
-
-        assertTrue(lobby.getLastActivityTimes().get("testToken") >= beforeTime);
-        assertTrue(lobby.getLastActivityTimes().get("testToken") <= afterTime);
-    }
 
     @Test
-    public void testRemoveInactiveParticipants() {
-        Lobby lobby = new Lobby();
-        Participant participant1 = new Participant();
-        participant1.setToken("token1");
-        Participant participant2 = new Participant();
-        participant2.setToken("token2");
-
-        lobby.addParticipant(participant1);
-        lobby.addParticipant(participant2);
-        lobby.updateActivityTime("token1");  // Simulate activity for participant1
-
-        // Set timeout to a low value to ensure participant2 is detected as inactive
-        List<String> inactiveParticipants = lobby.removeInactiveParticipants(100);
-
-        assertEquals(1, lobby.getParticipants().size());
-        assertTrue(lobby.getParticipants().containsKey("token1"));
-        assertFalse(lobby.getParticipants().containsKey("token2"));
-        assertEquals(1, lobby.getJoinedParticipants());
-        assertEquals(1, inactiveParticipants.size());
-        assertTrue(inactiveParticipants.contains("token2"));
-    }
-    */
-    @Test
-    public void testResetLobby() throws InterruptedException {
+    void testResetLobby() throws InterruptedException {
         Lobby lobby = new Lobby();
         Participant participant = new Participant();
         participant.setToken("testToken");

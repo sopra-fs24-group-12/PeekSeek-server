@@ -10,7 +10,7 @@ public class LobbyGetInformationDTO {
     private List<String> participants;
     private String gameLocation;
     private GeoCodingData gameLocationCoordinates;
-    private Integer RoundDurationSeconds;
+    private Integer roundDurationSeconds;
     private String adminUsername;
 
     public String getAdminUsername() {
@@ -62,10 +62,10 @@ public class LobbyGetInformationDTO {
     }
 
     public Integer getRoundDurationSeconds() {
-        return RoundDurationSeconds;
+        return roundDurationSeconds;
     }
 
     public void setRoundDurationSeconds(Integer roundDurationSeconds) {
-        RoundDurationSeconds = roundDurationSeconds;
+        this.roundDurationSeconds = roundDurationSeconds;
     }
 }

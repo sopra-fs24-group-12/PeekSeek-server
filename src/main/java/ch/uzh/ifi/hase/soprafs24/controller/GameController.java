@@ -28,7 +28,6 @@ public class GameController {
 
     @GetMapping("/games/{id}/round")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public RoundGetDTO getRoundInformation(@PathVariable Long id,
                                            @RequestHeader(value = "Authorization", required = false) String token) {
         Round currentRound = gameService.getRoundInformation(token, id);
@@ -38,7 +37,6 @@ public class GameController {
 
     @PostMapping("/games/{id}/nextRound")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public void startNextRound(@PathVariable Long id,
                                @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.startNextRound(id);
@@ -46,7 +44,6 @@ public class GameController {
 
     @PostMapping("/games/{id}/submission")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public void postSubmission(@PathVariable Long id, @RequestBody SubmissionPostDTO submissionPostDTO,
                                @RequestHeader(value = "Authorization", required = false)
                                String token) throws IOException {
@@ -55,7 +52,6 @@ public class GameController {
     
     @PostMapping("/games/{id}/voting")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public void postVoting(@PathVariable Long id, @RequestBody VotingPostDTO votingPostDTO,
                                @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.postVoting(id, token, votingPostDTO);
@@ -63,7 +59,6 @@ public class GameController {
 
     @GetMapping("/games/{id}/winningSubmission")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public SubmissionGetDTO getWinningSubmissionCurrent(@PathVariable Long id,
                                 @RequestHeader(value = "Authorization", required = false) String token) {
         Round currentRound = gameService.getRoundInformation(token, id);
@@ -73,7 +68,6 @@ public class GameController {
 
     @GetMapping("/games/{id}/submissions")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<SubmissionGetDTO> getSubmissions(@PathVariable Long id,
                                 @RequestHeader(value = "Authorization", required = false) String token) {
         List<SubmissionGetDTO> submissionGetDTOs = new ArrayList<>();
@@ -88,7 +82,6 @@ public class GameController {
 
     @GetMapping("/games/{id}/winningSubmissions")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<SubmissionGetDTO> getWinningSubmissions(@PathVariable Long id,
                                 @RequestHeader(value = "Authorization", required = false) String token) {
         List<SubmissionGetDTO> submissionGetDTOs = new ArrayList<>();
@@ -101,10 +94,8 @@ public class GameController {
         return submissionGetDTOs;
     }
 
-    // TODO: rename LeaderboardGetDTO to make it more intuitive to store in list ("don't have a list of leaderboards")
     @GetMapping("/games/{id}/leaderboard")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public List<LeaderboardGetDTO> getLeaderboard(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
         List<LeaderboardGetDTO> leaderboard = new ArrayList<>();
         List<Participant> participants = gameService.getLeaderboard(token, id);
@@ -119,7 +110,6 @@ public class GameController {
 
     @DeleteMapping("/games/{id}/leave")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ResponseBody
     public void leaveGame(@PathVariable Long id,
                            @RequestHeader(value = "Authorization", required = false) String token) {
         gameService.leaveGame(id, token);

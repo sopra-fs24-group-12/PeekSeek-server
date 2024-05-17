@@ -9,7 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LobbyGetInformationDTOTest {
+class LobbyGetInformationDTOTest {
 
     private LobbyGetInformationDTO lobbyGetInformationDTO;
     private GeoCodingData mockGeoCodingData;
@@ -21,7 +21,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getName_setAndReturnCorrectValue() {
+    void getName_setAndReturnCorrectValue() {
         String name = "Adventure Quest";
         lobbyGetInformationDTO.setName(name);
         
@@ -29,7 +29,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getQuests_setAndReturnCorrectList() {
+    void getQuests_setAndReturnCorrectList() {
         List<String> quests = Arrays.asList("Quest A", "Quest B");
         lobbyGetInformationDTO.setQuests(quests);
         
@@ -37,7 +37,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getParticipants_setAndReturnCorrectList() {
+    void getParticipants_setAndReturnCorrectList() {
         List<String> participants = Arrays.asList("User1", "User2");
         lobbyGetInformationDTO.setParticipants(participants);
         
@@ -45,7 +45,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getGameLocation_setAndReturnCorrectValue() {
+    void getGameLocation_setAndReturnCorrectValue() {
         String gameLocation = "Berlin";
         lobbyGetInformationDTO.setGameLocation(gameLocation);
         
@@ -53,7 +53,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getGameLocationCoordinates_setAndReturnCorrectObject() {
+    void getGameLocationCoordinates_setAndReturnCorrectObject() {
         lobbyGetInformationDTO.setGameLocationCoordinates(mockGeoCodingData);
         
         assertNotNull(lobbyGetInformationDTO.getGameLocationCoordinates());
@@ -61,7 +61,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getRoundDurationSeconds_setAndReturnCorrectValue() {
+    void getRoundDurationSeconds_setAndReturnCorrectValue() {
         Integer roundDurationSeconds = 90;
         lobbyGetInformationDTO.setRoundDurationSeconds(roundDurationSeconds);
         
@@ -69,7 +69,7 @@ public class LobbyGetInformationDTOTest {
     }
 
     @Test
-    public void getAdminUsername_setAndReturnCorrectValue() {
+    void getAdminUsername_setAndReturnCorrectValue() {
         String adminUsername = "Admin123";
         lobbyGetInformationDTO.setAdminUsername(adminUsername);
         

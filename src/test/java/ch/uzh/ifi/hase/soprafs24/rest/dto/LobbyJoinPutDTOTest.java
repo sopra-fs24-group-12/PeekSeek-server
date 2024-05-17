@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LobbyJoinPutDTOTest {
+class LobbyJoinPutDTOTest {
 
     private LobbyJoinPutDTO lobbyJoinPutDTO;
 
@@ -15,7 +15,7 @@ public class LobbyJoinPutDTOTest {
     }
 
     @Test
-    public void getUsername_setAndReturnCorrectValue() {
+    void getUsername_setAndReturnCorrectValue() {
         String expectedUsername = "Player1";
         lobbyJoinPutDTO.setUsername(expectedUsername);
         
@@ -23,7 +23,7 @@ public class LobbyJoinPutDTOTest {
     }
 
     @Test
-    public void getLobbyPassword_setAndReturnCorrectValue() {
+    void getLobbyPassword_setAndReturnCorrectValue() {
         String expectedLobbyPassword = "SecretPass123";
         lobbyJoinPutDTO.setLobbyPassword(expectedLobbyPassword);
         

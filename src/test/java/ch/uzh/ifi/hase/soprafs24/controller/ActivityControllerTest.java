@@ -42,7 +42,7 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void setActiveLobby_ShouldUpdateActiveStatus() throws Exception {
+    void setActiveLobby_ShouldUpdateActiveStatus() throws Exception {
         doNothing().when(lobbyService).updateActiveStatus(anyLong(), anyString());
         
         mockMvc.perform(put("/lobbies/{id}/active", 1L)
@@ -52,7 +52,7 @@ public class ActivityControllerTest {
     }
 
     @Test
-    public void setActiveGame_ShouldUpdateActiveStatus() throws Exception {
+    void setActiveGame_ShouldUpdateActiveStatus() throws Exception {
         doNothing().when(gameService).updateActiveStatus(anyLong(), anyString());
         
         mockMvc.perform(put("/games/{id}/active", 1L)

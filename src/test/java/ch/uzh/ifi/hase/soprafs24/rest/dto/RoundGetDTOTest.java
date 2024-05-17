@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RoundGetDTOTest {
+class RoundGetDTOTest {
 
     private RoundGetDTO roundGetDTO;
 
@@ -16,15 +16,15 @@ public class RoundGetDTOTest {
     }
 
     @Test
-    public void getCurrentRound_setCurrentRound_returnsCorrectValuePlusOne() {
-        Integer currentRound = 2;
+    void getCurrentRound_setCurrentRound_returnsCorrectValuePlusOne() {
+        int currentRound = 2;
         roundGetDTO.setCurrentRound(currentRound);
         
         assertEquals(Integer.valueOf(currentRound + 1), roundGetDTO.getCurrentRound(), "The current round should be 1 more than the set value.");
     }
 
     @Test
-    public void getNumberRounds_setNumberRounds_returnsCorrectValue() {
+    void getNumberRounds_setNumberRounds_returnsCorrectValue() {
         Integer numberRounds = 10;
         roundGetDTO.setNumberRounds(numberRounds);
         
@@ -32,7 +32,7 @@ public class RoundGetDTOTest {
     }
 
     @Test
-    public void getQuest_setQuest_returnsCorrectValue() {
+    void getQuest_setQuest_returnsCorrectValue() {
         String quest = "Fountain";
         roundGetDTO.setQuest(quest);
         
@@ -40,7 +40,7 @@ public class RoundGetDTOTest {
     }
 
     @Test
-    public void getRoundStatus_setRoundStatus_returnsCorrectValue() {
+    void getRoundStatus_setRoundStatus_returnsCorrectValue() {
         RoundStatus roundStatus = RoundStatus.PLAYING;
         roundGetDTO.setRoundStatus(roundStatus);
         
@@ -48,7 +48,7 @@ public class RoundGetDTOTest {
     }
 
     @Test
-    public void getRoundTime_setRoundTime_returnsCorrectValue() {
+    void getRoundTime_setRoundTime_returnsCorrectValue() {
         Integer roundTime = 60;
         roundGetDTO.setRoundTime(roundTime);
         
@@ -56,7 +56,7 @@ public class RoundGetDTOTest {
     }
 
     @Test
-    public void getRemainingSeconds_setRemainingSeconds_returnsCorrectValue() {
+    void getRemainingSeconds_setRemainingSeconds_returnsCorrectValue() {
         Integer remainingSeconds = 30;
         roundGetDTO.setRemainingSeconds(remainingSeconds);
         
@@ -64,7 +64,7 @@ public class RoundGetDTOTest {
     }
 
     @Test
-    public void getGeoCodingData_setGeoCodingData_returnsCorrectValue() {
+    void getGeoCodingData_setGeoCodingData_returnsCorrectValue() {
         GeoCodingData geoCodingData = new GeoCodingData();
         geoCodingData.setLocation("Berlin");
         roundGetDTO.setGeoCodingData(geoCodingData);

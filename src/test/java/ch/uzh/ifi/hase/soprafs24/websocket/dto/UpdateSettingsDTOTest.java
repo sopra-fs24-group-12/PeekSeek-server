@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UpdateSettingsDTOTest {
+class UpdateSettingsDTOTest {
 
     private UpdateSettingsDTO updateSettingsDTO;
     private String expectedGameLocation;
@@ -33,7 +33,7 @@ public class UpdateSettingsDTOTest {
     }
 
     @Test
-    public void constructor_shouldCorrectlySetFields() {
+    void constructor_shouldCorrectlySetFields() {
         assertEquals(expectedGameLocation, updateSettingsDTO.getGameLocation());
         assertEquals(expectedRoundDurationSeconds, updateSettingsDTO.getRoundDurationSeconds());
         assertEquals(expectedGameLocationCoordinates, updateSettingsDTO.getGameLocationCoordinates());
@@ -42,7 +42,7 @@ public class UpdateSettingsDTOTest {
     }
 
     @Test
-    public void setStatus_shouldUpdateStatusField() {
+    void setStatus_shouldUpdateStatusField() {
         String newStatus = "active";
         
         updateSettingsDTO.setStatus(newStatus);
@@ -51,7 +51,7 @@ public class UpdateSettingsDTOTest {
     }
 
     @Test
-    public void setGameLocation_shouldUpdateGameLocationField() {
+    void setGameLocation_shouldUpdateGameLocationField() {
         String newGameLocation = "Bern";
 
         updateSettingsDTO.setGameLocation(newGameLocation);
@@ -60,7 +60,7 @@ public class UpdateSettingsDTOTest {
     }
 
     @Test
-    public void setRoundDurationSeconds_shouldUpdateRoundDurationSecondsField() {
+    void setRoundDurationSeconds_shouldUpdateRoundDurationSecondsField() {
         Integer newRoundDurationSeconds = 600;
 
         updateSettingsDTO.setRoundDurationSeconds(newRoundDurationSeconds);
@@ -69,7 +69,7 @@ public class UpdateSettingsDTOTest {
     }
 
     @Test
-    public void setGameLocationCoordinates_shouldUpdateGameLocationCoordinatesField() {
+    void setGameLocationCoordinates_shouldUpdateGameLocationCoordinatesField() {
         GeoCodingData newGameLocationCoordinates = new GeoCodingData(); // Again, assuming proper implementation
 
         updateSettingsDTO.setGameLocationCoordinates(newGameLocationCoordinates);
@@ -78,7 +78,7 @@ public class UpdateSettingsDTOTest {
     }
 
     @Test
-    public void setQuests_shouldUpdateQuestsField() {
+    void setQuests_shouldUpdateQuestsField() {
         List<String> newQuests = Arrays.asList("Visit the old town", "Explore the lake");
 
         updateSettingsDTO.setQuests(newQuests);

@@ -4,27 +4,21 @@ import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.entity.summary.Quest;
 import ch.uzh.ifi.hase.soprafs24.entity.summary.Summary;
-import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
 import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.SummaryRepository;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
-import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.Lob;
 import java.io.IOException;
 import java.util.*;
 
@@ -33,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 
-public class GameServiceTest {
+class GameServiceTest {
 
     @Mock
     private GameRepository gameRepository;
@@ -83,7 +77,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void testGetLeaderboard(){
+    void testGetLeaderboard(){
         Participant participant = new Participant();
         participant.setId(7L);
         participant.setUsername("test");
@@ -121,13 +115,10 @@ public class GameServiceTest {
         List<Participant> par = gameService.getLeaderboard("abc", 1L);
 
         assert(par.equals(participants));
-        //assert(participant.getId().equals(par.get(0).getId()));
-        //assert(par.get(0).getUsername().equals(participant.getUsername()));
-        //assert("m".equals("m"));
     }
 
     @Test
-    public void TestSetWinningSubmission(){
+    void TestSetWinningSubmission(){
         Round round = new Round();
         Round round2 = new Round();
         Submission submission = new Submission();
@@ -156,7 +147,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void TestHandleMissingSubmission(){
+    void TestHandleMissingSubmission(){
 
         Round round111 = new Round();
         Long gameId = 1L;
@@ -209,7 +200,8 @@ public class GameServiceTest {
 
                 Submission emptySubmission = new Submission();
 
-                emptySubmission.setId(Round.submissionCount++);
+                emptySubmission.setId(Round.getSubmissionCount() + 1);
+                Round.setSubmissionCount(Round.getSubmissionCount() + 1);
                 emptySubmission.setSubmissionTimeSeconds(round211.getRoundTime());
                 emptySubmission.setToken(participan.getToken());
                 emptySubmission.setUsername(participan.getUsername());
@@ -229,8 +221,9 @@ public class GameServiceTest {
 
 
     }
+
     @Test
-    public void TestPostSubmission() throws IOException{
+    void TestPostSubmission()  {
 
         Round round111 = new Round();
         round111.setId(1L);
@@ -282,7 +275,8 @@ public class GameServiceTest {
         submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
 
 
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
@@ -308,17 +302,13 @@ public class GameServiceTest {
         gameService.postSubmission(1L, "abc", submissionPostDTO);
 
 
-
-
-
-
         assert(cRound.getSubmissions().values().equals(currentRound.getSubmissions().values()));
 
 
     }
 
     @Test
-    public void TestGenerateSummary() throws IOException{
+    void TestGenerateSummary() {
         List<Quest> winningSubmissions = new ArrayList<Quest>();
 
         SubmissionData submissionData = new SubmissionData();
@@ -338,7 +328,8 @@ public class GameServiceTest {
         participant.setLeftGame(Boolean.FALSE);
 
         Submission submission = new Submission();
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
         submission.setSubmissionTimeSeconds(10);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
@@ -393,10 +384,7 @@ public class GameServiceTest {
         summary1.setId(game.getId());
         System.out.println(summary1.getCityName());
 
-        //when(summaryRepository.save(any())).thenReturn(summary1);
         given(summaryRepository.save(any())).willReturn(summary1);
-
-        //Round
 
 
         summary1 = summaryRepository.save(summary1);
@@ -440,7 +428,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void testStartNextRound_Success() {
+    void testStartNextRound_Success() {
         // Given
         Long gameId = 1L;
         Game game = new Game();
@@ -488,7 +476,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void testStartNextRound_Fail() {
+    void testStartNextRound_Fail() {
         // Given
         Long gameId = 1L;
         Game game = new Game();
@@ -531,7 +519,7 @@ public class GameServiceTest {
 
 
     @Test
-    public void testStartGame_Success() {
+    void testStartGame_Success() {
         List<String> q = new ArrayList<>();
         q.add("abc");
         q.add("def");
@@ -584,7 +572,8 @@ public class GameServiceTest {
         List<Round> rounds = new ArrayList<>(q.size());
         for (String quest : q) {
             Round round = new Round();
-            round.setId(Game.rounds_count++);
+            round.setId(Game.getRoundsCount() + 1);
+            Game.setRoundsCount(Game.getRoundsCount() + 1);
             round.setQuest(quest);
             round.setRoundTime(l.getRoundDurationSeconds());
             round.setRemainingSeconds(l.getRoundDurationSeconds());
@@ -605,7 +594,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void testStartGame_Fail1() {
+    void testStartGame_Fail1() {
         List<String> q = new ArrayList<>();
         q.add("abc");
         q.add("def");
@@ -658,7 +647,8 @@ public class GameServiceTest {
         List<Round> rounds = new ArrayList<>(q.size());
         for (String quest : q) {
             Round round = new Round();
-            round.setId(Game.rounds_count++);
+            round.setId(Game.getRoundsCount() + 1);
+            Game.setRoundsCount(Game.getRoundsCount() + 1);
             round.setQuest(quest);
             round.setRoundTime(l.getRoundDurationSeconds());
             round.setRemainingSeconds(l.getRoundDurationSeconds());
@@ -676,7 +666,7 @@ public class GameServiceTest {
         assertThrows(ResponseStatusException.class, () -> gameService.startGame(l));
     }
     @Test
-    public void testStartGame_Fail2() {
+    void testStartGame_Fail2() {
         List<String> q = new ArrayList<>();
         q.add("abc");
         q.add("def");
@@ -728,7 +718,8 @@ public class GameServiceTest {
         List<Round> rounds = new ArrayList<>(q.size());
         for (String quest : q) {
             Round round = new Round();
-            round.setId(Game.rounds_count++);
+            round.setId(Game.getRoundsCount() + 1);
+            Game.setRoundsCount(Game.getRoundsCount() + 1);
             round.setQuest(quest);
             round.setRoundTime(l.getRoundDurationSeconds());
             round.setRemainingSeconds(l.getRoundDurationSeconds());
@@ -747,7 +738,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void TestPostSubmission_fail() throws IOException{
+    void TestPostSubmission_fail() throws IOException{
 
         Round round111 = new Round();
         round111.setId(1L);
@@ -799,7 +790,8 @@ public class GameServiceTest {
         submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
 
 
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
@@ -824,17 +816,13 @@ public class GameServiceTest {
         participant.setHasSubmitted(Boolean.TRUE);
 
 
-
-
-
-
         assertThrows(ResponseStatusException.class, ()-> gameService.postSubmission(1L, "abc", submissionPostDTO));
 
 
     }
 
     @Test
-    public void TestPostSubmission_fail_2() throws IOException{
+    void TestPostSubmission_fail_2() throws IOException{
 
         Round round111 = new Round();
         round111.setId(1L);
@@ -879,7 +867,8 @@ public class GameServiceTest {
         submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
 
 
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
 
         submission.setNoSubmission(submissionPostDTO.getNoSubmission());
 
@@ -900,18 +889,12 @@ public class GameServiceTest {
         System.out.println(cRound.getSubmissions().values());
 
 
-
-
-
-
-
         assertThrows(ResponseStatusException.class, ()-> gameService.postSubmission(1L, "abc", submissionPostDTO));
-
 
     }
 
     @Test
-    public void TestPostSubmission_fail_3() throws IOException{
+    void TestPostSubmission_fail_3() {
 
         Round round111 = new Round();
         round111.setId(1L);
@@ -963,7 +946,8 @@ public class GameServiceTest {
         submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
 
 
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
@@ -992,7 +976,7 @@ public class GameServiceTest {
 
     }
     @Test
-    public void testLeaveGame_Successful() {
+    void testLeaveGame_Successful() {
         // Arrange
         Long gameId = 1L;
         String token = "participantToken";
@@ -1021,21 +1005,13 @@ public class GameServiceTest {
         participants1.put("participantToken2", participant2);
 
         game.setParticipants(participants1);
-        //when(gameRepository.getGameById(gameId)).thenReturn(game);
-        //when(game.getParticipantByToken(token)).thenReturn(participant);
 
-        // Act
-        //gameService.leaveGame(gameId, token);
         assertThrows(IndexOutOfBoundsException.class, ()-> gameService.leaveGame(gameId, token));
-        // Assert
         Assertions.assertTrue(participant.getLeftGame());
         Assertions.assertEquals(2, game.getActiveParticipants());
-        //verify(gameRepository, times(1)).findById(gameId);
-        //verify(gameRepository, times(1)).save(game);
-        //verify(websocketService, times(1)).sendMessage(eq("/topic/games/" + gameId), any(ParticipantLeftDTO.class));
     }
     @Test
-    public void testPostVoting_Successful() {
+    void testPostVoting_Successful() {
 
         Long gameId = 1L;
         String token = "participantToken";

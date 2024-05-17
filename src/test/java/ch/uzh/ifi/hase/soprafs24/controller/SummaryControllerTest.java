@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -55,7 +53,7 @@ public class SummaryControllerTest {
         summaryGetDTO.setId(summary.getId());
 
 
-        when(summaryService.getSummary(summaryId, "replace with password")).thenReturn(summary);
+        when(summaryService.getSummary(summaryId)).thenReturn(summary);
         when(dtoMapper.convertSummaryToSummaryGetDTO(summary)).thenReturn(summaryGetDTO);
 
 
@@ -65,7 +63,7 @@ public class SummaryControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(summaryGetDTO.getId()));
 
-        verify(summaryService).getSummary(summaryId, "replace with password");
+        verify(summaryService).getSummary(summaryId);
 
     }
 }

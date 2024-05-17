@@ -3,9 +3,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.uzh.ifi.hase.soprafs24.constant.RoundStatus;
-import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
-import ch.uzh.ifi.hase.soprafs24.entity.Submission;
 
 public class RoundTest {
 
@@ -46,7 +43,8 @@ public class RoundTest {
     public void testAddSubmission() {
         Round round = new Round();
         Submission submission = new Submission();
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
 
         round.addSubmission(submission);
 
@@ -67,7 +65,8 @@ public class RoundTest {
     public void testSetWinningSubmission() {
         Round round = new Round();
         Submission submission = new Submission();
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
 
         round.addSubmission(submission);
         round.setWinningSubmission(submission);

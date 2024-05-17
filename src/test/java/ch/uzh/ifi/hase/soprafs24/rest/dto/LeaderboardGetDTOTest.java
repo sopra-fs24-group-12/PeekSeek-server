@@ -14,21 +14,21 @@ class LeaderboardGetDTOTest {
     }
 
     @Test
-    public void getUsernameShouldReturnCorrectUsername() {
+    void getUsernameShouldReturnCorrectUsername() {
         String username = "testUser";
         leaderboardGetDTO.setUsername(username);
         assertEquals(username, leaderboardGetDTO.getUsername(), "getUsername should return the correct username.");
     }
 
     @Test
-    public void getScoreShouldReturnCorrectScore() {
+    void getScoreShouldReturnCorrectScore() {
         int score = 100;
         leaderboardGetDTO.setScore(score);
         assertEquals(score, leaderboardGetDTO.getScore(), "getScore should return the correct score.");
     }
 
     @Test
-    public void getStreakShouldReturnCorrectStreak() {
+    void getStreakShouldReturnCorrectStreak() {
         int streak = 5;
         leaderboardGetDTO.setStreak(streak);
         assertEquals(streak, leaderboardGetDTO.getStreak(), "getStreak should return the correct streak.");
@@ -42,14 +42,14 @@ class LeaderboardGetDTOTest {
     //}
 
     @Test
-    public void getIdShouldReturnCorrectId() {
+    void getIdShouldReturnCorrectId() {
         Long id = 10L;
         leaderboardGetDTO.setId(id);
         assertEquals(id, leaderboardGetDTO.getId(), "getId should return the correct ID.");
     }
 
     @Test
-    public void getPointsThisRoundShouldReturnCorrectPoints() {
+    void getPointsThisRoundShouldReturnCorrectPoints() {
         int pointsThisRound = 20;
         leaderboardGetDTO.setPointsThisRound(pointsThisRound);
         assertEquals(pointsThisRound, leaderboardGetDTO.getPointsThisRound(), "getPointsThisRound should return the correct points for this round.");

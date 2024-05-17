@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class SummaryRepositoryTest {
+class SummaryRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -24,7 +24,7 @@ public class SummaryRepositoryTest {
     }
 
     @Test
-    public void whenFindById_thenReturnSummary() {
+    void whenFindById_thenReturnSummary() {
         // Arrange
         Summary newSummary = new Summary();
         newSummary.setCityName("Zurich");

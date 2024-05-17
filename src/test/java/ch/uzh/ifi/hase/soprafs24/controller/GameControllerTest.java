@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(GameController.class)
-public class GameControllerTest {
+class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,7 +60,7 @@ public class GameControllerTest {
 
 
     @Test
-    public void getRoundInformation_ReturnsRoundInfo() throws Exception {
+    void getRoundInformation_ReturnsRoundInfo() throws Exception {
 
         //given
         Long gameId = 1L;
@@ -97,7 +97,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void startNextRound_StartsRoundSuccessfully() throws Exception {
+    void startNextRound_StartsRoundSuccessfully() throws Exception {
         Long gameId = 1L;
         Game game = new Game();
         game.setId(gameId);
@@ -125,7 +125,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void postSubmission_WithValidInput_SubmissionAccepted() throws Exception {
+    void postSubmission_WithValidInput_SubmissionAccepted() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 
@@ -157,7 +157,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void postVoting_WithValidInput_VotingProcessedSuccessfully() throws Exception {
+    void postVoting_WithValidInput_VotingProcessedSuccessfully() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 
@@ -194,7 +194,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void getWinningSubmissionCurrent_ReturnsCorrectSubmission() throws Exception {
+    void getWinningSubmissionCurrent_ReturnsCorrectSubmission() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 
@@ -225,7 +225,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void getSubmissions_ReturnsListOfSubmissions() throws Exception {
+    void getSubmissions_ReturnsListOfSubmissions() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 
@@ -298,7 +298,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void getWinningSubmissions_ReturnsCorrectSubmissions() throws Exception {
+    void getWinningSubmissions_ReturnsCorrectSubmissions() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 
@@ -342,7 +342,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void getLeaderboard_ReturnsLeaderboardSuccessfully() throws Exception {
+    void getLeaderboard_ReturnsLeaderboardSuccessfully() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 
@@ -396,7 +396,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void leaveGame_LeavesGameSuccessfully() throws Exception {
+    void leaveGame_LeavesGameSuccessfully() throws Exception {
         Long gameId = 1L;
         String token = "mocktoken123";
 

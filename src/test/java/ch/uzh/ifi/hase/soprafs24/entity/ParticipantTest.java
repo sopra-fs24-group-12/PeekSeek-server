@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ParticipantTest {
+class ParticipantTest {
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         Participant participant = new Participant();
         participant.setId(1L);
         assertEquals(1L, participant.getId());
     }
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         Participant participant = new Participant();
 
         participant.setUsername("testUser");

@@ -15,7 +15,7 @@ class GeoCodingDataTest {
   }
 
   @Test
-  public void testGivenId_whenSetId_thenCorrectIdIsSet() {
+  void testGivenId_whenSetId_thenCorrectIdIsSet() {
     // Arrange
     Long expectedId = 123L;
 
@@ -28,7 +28,7 @@ class GeoCodingDataTest {
   }
 
   @Test
-  public void testGivenLocation_whenSetLocation_thenCorrectLocationIsSet() {
+  void testGivenLocation_whenSetLocation_thenCorrectLocationIsSet() {
     // Arrange
     String expectedLocation = "Bern";
 
@@ -41,7 +41,7 @@ class GeoCodingDataTest {
 }
   
   @Test
-  public void testGivenLat_whenSetLat_thenCorrectLatIsSet() {
+  void testGivenLat_whenSetLat_thenCorrectLatIsSet() {
     String expectedLat = "47.3769";
     geoCodingData.setLat(expectedLat);
     String actualLat = geoCodingData.getLat();
@@ -49,7 +49,7 @@ class GeoCodingDataTest {
   }
   
   @Test
-  public void testGivenLng_whenSetLng_thenCorrectLngIsSet() {
+  void testGivenLng_whenSetLng_thenCorrectLngIsSet() {
     String expectedLng = "8.5417";
     geoCodingData.setLng(expectedLng);
     String actualLng = geoCodingData.getLng();
@@ -57,7 +57,7 @@ class GeoCodingDataTest {
   }
   
   @Test
-  public void testGivenResLatNe_whenSetResLatNe_thenCorrectResLatNeIsSet() {
+  void testGivenResLatNe_whenSetResLatNe_thenCorrectResLatNeIsSet() {
     String expectedResLatNe = "47.4000";
     geoCodingData.setResLatNe(expectedResLatNe);
     String actualResLatNe = geoCodingData.getResLatNe();
@@ -65,7 +65,7 @@ class GeoCodingDataTest {
   }
 
   @Test
-  public void testGivenResLngNe_whenSetResLngNe_thenCorrectResLngNeIsSet() {
+  void testGivenResLngNe_whenSetResLngNe_thenCorrectResLngNeIsSet() {
     String expectedResLngNe = "8.6000";
     geoCodingData.setResLngNe(expectedResLngNe);
     String actualResLngNe = geoCodingData.getResLngNe();
@@ -73,7 +73,7 @@ class GeoCodingDataTest {
   }
 
   @Test
-  public void testGivenResLatSw_whenSetResLatSw_thenCorrectResLatSwIsSet() {
+  void testGivenResLatSw_whenSetResLatSw_thenCorrectResLatSwIsSet() {
     String expectedResLatSw = "47.3500";
     geoCodingData.setResLatSw(expectedResLatSw);
     String actualResLatSw = geoCodingData.getResLatSw();
@@ -81,7 +81,7 @@ class GeoCodingDataTest {
   }
 
   @Test
-  public void testGivenResLngSw_whenSetResLngSw_thenCorrectResLngSwIsSet() {
+  void testGivenResLngSw_whenSetResLngSw_thenCorrectResLngSwIsSet() {
     String expectedResLngSw = "8.5000";
     geoCodingData.setResLngSw(expectedResLngSw);
     String actualResLngSw = geoCodingData.getResLngSw();
@@ -89,7 +89,7 @@ class GeoCodingDataTest {
   }
 
   @Test
-  public void testGivenFormAddress_whenSetFormAddress_thenCorrectFormAddressIsSet() {
+  void testGivenFormAddress_whenSetFormAddress_thenCorrectFormAddressIsSet() {
     String expectedFormAddress = "Bern, Switzerland";
     geoCodingData.setFormAddress(expectedFormAddress);
     String actualFormAddress = geoCodingData.getFormAddress();

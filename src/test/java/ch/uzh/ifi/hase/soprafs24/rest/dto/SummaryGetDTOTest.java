@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SummaryGetDTOTest {
+class SummaryGetDTOTest {
 
     private SummaryGetDTO summaryGetDTO;
 
@@ -17,7 +17,7 @@ public class SummaryGetDTOTest {
     }
 
     @Test
-    public void getId_setId_returnsCorrectValue() {
+    void getId_setId_returnsCorrectValue() {
         Long id = 42L;
         summaryGetDTO.setId(id);
         
@@ -25,7 +25,7 @@ public class SummaryGetDTOTest {
     }
 
     @Test
-    public void getCityName_setCityName_returnsCorrectValue() {
+    void getCityName_setCityName_returnsCorrectValue() {
         String cityName = "Gotham";
         summaryGetDTO.setCityName(cityName);
         
@@ -33,7 +33,7 @@ public class SummaryGetDTOTest {
     }
 
     @Test
-    public void getRoundsPlayed_setRoundsPlayed_returnsCorrectValue() {
+    void getRoundsPlayed_setRoundsPlayed_returnsCorrectValue() {
         int roundsPlayed = 100;
         summaryGetDTO.setRoundsPlayed(roundsPlayed);
         
@@ -41,7 +41,7 @@ public class SummaryGetDTOTest {
     }
 
     @Test
-    public void getQuests_setQuests_returnsCorrectValue() {
+    void getQuests_setQuests_returnsCorrectValue() {
         Quest quest1 = new Quest();
         Quest quest2 = new Quest();
         quest1.setName("Quest 1");

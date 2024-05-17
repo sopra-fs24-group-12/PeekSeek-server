@@ -7,7 +7,7 @@ public class LobbyGetDTO {
     private String name;
     private Integer maxParticipants;
     private Integer joinedParticipants;
-    private Integer RoundDurationSeconds;
+    private Integer roundDurationSeconds;
     private String gameLocation;
     private List<String> quests;
     private Boolean passwordProtected;
@@ -29,11 +29,11 @@ public class LobbyGetDTO {
     }
 
     public Integer getRoundDurationSeconds() {
-        return RoundDurationSeconds;
+        return roundDurationSeconds;
     }
 
     public void setRoundDurationSeconds(Integer roundDurationSeconds) {
-        RoundDurationSeconds = roundDurationSeconds;
+        this.roundDurationSeconds = roundDurationSeconds;
     }
 
     public String getGameLocation() {

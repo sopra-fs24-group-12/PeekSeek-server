@@ -18,7 +18,7 @@ class GameRepositoryTest {
     }
 
     @Test
-    public void testAddGameAndGetGameById() {
+    void testAddGameAndGetGameById() {
         // Add the game to the repository
         GameRepository.addGame(game);
         
@@ -32,7 +32,7 @@ class GameRepositoryTest {
 
 
     @Test
-    public void testGetGameByIdNonExistent() {
+    void testGetGameByIdNonExistent() {
         // Try to get a game that does not exist in the repository
         long nonExistentGameId = 2L; // Assuming 1L is used in setUp method
         Game found = GameRepository.getGameById(nonExistentGameId);
@@ -42,7 +42,7 @@ class GameRepositoryTest {
     }
 
     @Test
-    public void testDeleteGame() {
+    void testDeleteGame() {
         // First, add a game to ensure it is in the repository
         GameRepository.addGame(game);
 

@@ -25,7 +25,7 @@ public class GeoCoding {
     private static String apiKey;
 
     @Value("${api.key}")
-    public void setApiKey(String apiKey) {
+    public static void setApiKey(String apiKey) {
         GeoCoding.apiKey = apiKey;
     }
 
@@ -80,7 +80,6 @@ public class GeoCoding {
             else {
                 setDefaultLocation();
                 return coordinateData;
-                //throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to retrieve coordinates. HTTP error code: " + connection.getResponseCode());
             }
         } catch (IOException e) {
             setDefaultLocation();

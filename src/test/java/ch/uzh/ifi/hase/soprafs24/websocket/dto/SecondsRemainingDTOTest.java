@@ -3,10 +3,10 @@ package ch.uzh.ifi.hase.soprafs24.websocket.dto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class SecondsRemainingDTOTest {
+class SecondsRemainingDTOTest {
 
     @Test
-    public void whenInstantiated_thenSecondsRemainingIsSetCorrectly() {
+    void whenInstantiated_thenSecondsRemainingIsSetCorrectly() {
         // Arrange & Act
         SecondsRemainingDTO secondsRemainingDTO = new SecondsRemainingDTO(30);
 
@@ -15,7 +15,7 @@ public class SecondsRemainingDTOTest {
     }
 
     @Test
-    public void whenSettingSecondsRemaining_thenValueShouldBeUpdated() {
+    void whenSettingSecondsRemaining_thenValueShouldBeUpdated() {
         // Arrange
         SecondsRemainingDTO secondsRemainingDTO = new SecondsRemainingDTO(30);
 

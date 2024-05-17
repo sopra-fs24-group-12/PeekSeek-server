@@ -18,16 +18,11 @@ public class SummaryService {
         this.summaryRepository = summaryRepository;
     }
 
-    public Summary getSummary(Long id, String password) {
+    public Summary getSummary(Long id) {
         Summary summary = summaryRepository.findSummaryById(id);
         if (summary == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Summary with this id does not exist");
         }
-
-//        if (!password.equals(summary.getPassword())) {
-//            //System.out.println(password + " " + summary.getPassword());
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
-//        }
 
         return summary;
     }

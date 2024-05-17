@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LobbyPutDTOTest {
+class LobbyPutDTOTest {
 
     private LobbyPutDTO lobbyPutDTO;
 
@@ -16,7 +16,7 @@ public class LobbyPutDTOTest {
     }
 
     @Test
-    public void getRoundDurationSeconds_setRoundDurationSeconds_returnsCorrectValue() {
+    void getRoundDurationSeconds_setRoundDurationSeconds_returnsCorrectValue() {
         Integer expectedDuration = 120;
         lobbyPutDTO.setRoundDurationSeconds(expectedDuration);
         
@@ -24,7 +24,7 @@ public class LobbyPutDTOTest {
     }
 
     @Test
-    public void getQuests_setQuests_returnsCorrectList() {
+    void getQuests_setQuests_returnsCorrectList() {
         List<String> expectedQuests = Arrays.asList("Quest1", "Quest2", "Quest3");
         lobbyPutDTO.setQuests(expectedQuests);
         
@@ -32,7 +32,7 @@ public class LobbyPutDTOTest {
     }
 
     @Test
-    public void getGameLocation_setGameLocation_returnsCorrectValue() {
+    void getGameLocation_setGameLocation_returnsCorrectValue() {
         String expectedLocation = "Berlin";
         lobbyPutDTO.setGameLocation(expectedLocation);
         

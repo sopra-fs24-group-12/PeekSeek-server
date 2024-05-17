@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ParticipantGetDTOTest {
+class ParticipantGetDTOTest {
 
     private ParticipantGetDTO participantGetDTO;
 
@@ -14,7 +14,7 @@ public class ParticipantGetDTOTest {
     }
 
     @Test
-    public void getUsername_setUsername_returnsCorrectValue() {
+    void getUsername_setUsername_returnsCorrectValue() {
         String expectedUsername = "player1";
         participantGetDTO.setUsername(expectedUsername);
         
@@ -22,7 +22,7 @@ public class ParticipantGetDTOTest {
     }
 
     @Test
-    public void getScore_setScore_returnsCorrectValue() {
+    void getScore_setScore_returnsCorrectValue() {
         int expectedScore = 1000;
         participantGetDTO.setScore(expectedScore);
         
@@ -30,7 +30,7 @@ public class ParticipantGetDTOTest {
     }
 
     @Test
-    public void getStreak_setStreak_returnsCorrectValue() {
+    void getStreak_setStreak_returnsCorrectValue() {
         int expectedStreak = 5;
         participantGetDTO.setStreak(expectedStreak);
         
@@ -38,7 +38,7 @@ public class ParticipantGetDTOTest {
     }
 
     @Test
-    public void getAdmin_setAdmin_returnsCorrectValue() {
+    void getAdmin_setAdmin_returnsCorrectValue() {
         Boolean expectedAdminStatus = true;
         participantGetDTO.setAdmin(expectedAdminStatus);
         
@@ -46,7 +46,7 @@ public class ParticipantGetDTOTest {
     }
 
     @Test
-    public void getLeftGame_setLeftGame_returnsCorrectValue() {
+    void getLeftGame_setLeftGame_returnsCorrectValue() {
         Boolean expectedLeftGameStatus = true;
         participantGetDTO.setLeftGame(expectedLeftGameStatus);
         
@@ -54,7 +54,7 @@ public class ParticipantGetDTOTest {
     }
 
     @Test
-    public void getId_setId_returnsCorrectValue() {
+    void getId_setId_returnsCorrectValue() {
         Long expectedId = 10L;
         participantGetDTO.setId(expectedId);
         

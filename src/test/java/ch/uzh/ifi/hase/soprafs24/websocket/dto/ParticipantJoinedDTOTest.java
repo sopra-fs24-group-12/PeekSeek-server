@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ParticipantJoinedDTOTest {
+class ParticipantJoinedDTOTest {
 
     private ParticipantJoinedDTO participantJoined;
 
@@ -15,19 +15,19 @@ public class ParticipantJoinedDTOTest {
     }
 
     @Test
-    public void whenInstantiated_thenDefaultStatusIsJoined() {
+    void whenInstantiated_thenDefaultStatusIsJoined() {
         // Assert that the default status is "joined"
         assertEquals("joined", participantJoined.getStatus());
     }
 
     @Test
-    public void whenInstantiated_thenUsernameIsSetCorrectly() {
+    void whenInstantiated_thenUsernameIsSetCorrectly() {
         // Assert that the provided username is set correctly
         assertEquals("SampleUser", participantJoined.getUsername());
     }
 
     @Test
-    public void whenSettingStatus_thenStatusShouldBeUpdated() {
+    void whenSettingStatus_thenStatusShouldBeUpdated() {
         // Set a new status
         participantJoined.setStatus("left");
         // Assert that the status is updated correctly
@@ -35,7 +35,7 @@ public class ParticipantJoinedDTOTest {
     }
 
     @Test
-    public void whenSettingUsername_thenUsernameShouldBeUpdated() {
+    void whenSettingUsername_thenUsernameShouldBeUpdated() {
         // Set a new username
         participantJoined.setUsername("NewUser");
         // Assert that the username is updated correctly

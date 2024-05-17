@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
-
 import java.util.*;
 
 
@@ -21,11 +19,11 @@ public class Lobby {
     private String adminUsername;
     private Map<String, Participant> participants = new HashMap<>();
     private List<String> usernames = new ArrayList<>();
-    private static Long id_count = 1L;
+    private static Long idCount = 1L;
     private Map<String, Long> lastActivityTimes = new HashMap<>();
 
     public Lobby() {
-        this.id = id_count++;
+        this.id = idCount++;
     }
 
     public void resetLobby() {

@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LobbyGetDTOTest {
+class LobbyGetDTOTest {
 
     private LobbyGetDTO lobbyGetDTO;
 
@@ -18,7 +18,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getId_setAndReturnCorrectValue() {
+    void getId_setAndReturnCorrectValue() {
         Long id = 1L;
         lobbyGetDTO.setId(id);
         
@@ -26,7 +26,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getName_setAndReturnCorrectValue() {
+    void getName_setAndReturnCorrectValue() {
         String name = "Game Room";
         lobbyGetDTO.setName(name);
         
@@ -34,7 +34,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getMaxParticipants_setAndReturnCorrectValue() {
+    void getMaxParticipants_setAndReturnCorrectValue() {
         Integer maxParticipants = 10;
         lobbyGetDTO.setMaxParticipants(maxParticipants);
         
@@ -42,7 +42,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getJoinedParticipants_setAndReturnCorrectValue() {
+    void getJoinedParticipants_setAndReturnCorrectValue() {
         Integer joinedParticipants = 5;
         lobbyGetDTO.setJoinedParticipants(joinedParticipants);
         
@@ -50,7 +50,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getRoundDurationSeconds_setAndReturnCorrectValue() {
+    void getRoundDurationSeconds_setAndReturnCorrectValue() {
         Integer roundDurationSeconds = 120;
         lobbyGetDTO.setRoundDurationSeconds(roundDurationSeconds);
         
@@ -58,7 +58,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getGameLocation_setAndReturnCorrectValue() {
+    void getGameLocation_setAndReturnCorrectValue() {
         String gameLocation = "Zurich";
         lobbyGetDTO.setGameLocation(gameLocation);
         
@@ -66,7 +66,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getQuests_setAndReturnCorrectList() {
+    void getQuests_setAndReturnCorrectList() {
         List<String> quests = Arrays.asList("Find the ring", "Destroy the ring");
         lobbyGetDTO.setQuests(quests);
         
@@ -74,7 +74,7 @@ public class LobbyGetDTOTest {
     }
 
     @Test
-    public void getPasswordProtected_setAndReturnCorrectValue() {
+    void getPasswordProtected_setAndReturnCorrectValue() {
         Boolean passwordProtected = true;
         lobbyGetDTO.setPasswordProtected(passwordProtected);
         

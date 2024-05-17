@@ -21,9 +21,7 @@ public class Round {
     private Integer participantsDone = 0;
     private Integer bufferTime = 1;
     private Long lastPhaseChangeTime;
-
-
-    public static Long submissionCount = 1L;
+    private static Long submissionCount = 1L;
 
     public void addSubmission(Submission submission) {
         submissions.put(submission.getId(), submission);

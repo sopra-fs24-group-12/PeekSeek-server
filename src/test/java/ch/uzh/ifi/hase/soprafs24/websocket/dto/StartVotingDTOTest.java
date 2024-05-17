@@ -3,10 +3,10 @@ package ch.uzh.ifi.hase.soprafs24.websocket.dto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class StartVotingDTOTest {
+class StartVotingDTOTest {
 
     @Test
-    public void onInstantiation_StatusShouldBeVoting() {
+    void onInstantiation_StatusShouldBeVoting() {
         // Arrange & Act
         StartVotingDTO startVotingDTO = new StartVotingDTO();
 
@@ -15,7 +15,7 @@ public class StartVotingDTOTest {
     }
 
     @Test
-    public void whenStatusIsSet_thenStatusValueShouldBeUpdated() {
+    void whenStatusIsSet_thenStatusValueShouldBeUpdated() {
         // Arrange
         StartVotingDTO startVotingDTO = new StartVotingDTO();
 

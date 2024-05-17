@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LobbyPostDTOTest {
+class LobbyPostDTOTest {
 
     private LobbyPostDTO lobbyPostDTO;
 
@@ -14,7 +14,7 @@ public class LobbyPostDTOTest {
     }
 
     @Test
-    public void getUsername_setUsername_returnsCorrectValue() {
+    void getUsername_setUsername_returnsCorrectValue() {
         String expectedUsername = "Player2";
         lobbyPostDTO.setUsername(expectedUsername);
         
@@ -22,7 +22,7 @@ public class LobbyPostDTOTest {
     }
 
     @Test
-    public void getName_setName_returnsCorrectValue() {
+    void getName_setName_returnsCorrectValue() {
         String expectedName = "GameRoom1";
         lobbyPostDTO.setName(expectedName);
         
@@ -30,7 +30,7 @@ public class LobbyPostDTOTest {
     }
 
     @Test
-    public void getPassword_setPassword_returnsCorrectValue() {
+    void getPassword_setPassword_returnsCorrectValue() {
         String expectedPassword = "SecurePassword456";
         lobbyPostDTO.setPassword(expectedPassword);
         

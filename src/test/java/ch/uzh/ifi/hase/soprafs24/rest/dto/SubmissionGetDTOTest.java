@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SubmissionGetDTOTest {
+class SubmissionGetDTOTest {
 
     private SubmissionGetDTO submissionGetDTO;
 
@@ -15,7 +15,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getId_setId_returnsCorrectValue() {
+    void getId_setId_returnsCorrectValue() {
         Long id = 42L;
         submissionGetDTO.setId(id);
         
@@ -23,7 +23,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getSubmissionTimeSeconds_setSubmissionTimeSeconds_returnsCorrectValue() {
+    void getSubmissionTimeSeconds_setSubmissionTimeSeconds_returnsCorrectValue() {
         Integer submissionTimeSeconds = 120;
         submissionGetDTO.setSubmissionTimeSeconds(submissionTimeSeconds);
         
@@ -31,7 +31,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getSubmittedLocation_setSubmittedLocation_returnsCorrectValue() {
+    void getSubmittedLocation_setSubmittedLocation_returnsCorrectValue() {
         SubmissionData submittedLocation = new SubmissionData();
         submittedLocation.setLat("47.36667");
         submittedLocation.setLng("8.55");
@@ -41,7 +41,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getNumberVotes_setNumberVotes_returnsCorrectValue() {
+    void getNumberVotes_setNumberVotes_returnsCorrectValue() {
         Integer numberVotes = 10;
         submissionGetDTO.setNumberVotes(numberVotes);
         
@@ -49,7 +49,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getNumberBanVotes_setNumberBanVotes_returnsCorrectValue() {
+    void getNumberBanVotes_setNumberBanVotes_returnsCorrectValue() {
         Integer numberBanVotes = 2;
         submissionGetDTO.setNumberBanVotes(numberBanVotes);
         
@@ -57,7 +57,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getAwardedPoints_setAwardedPoints_returnsCorrectValue() {
+    void getAwardedPoints_setAwardedPoints_returnsCorrectValue() {
         Integer awardedPoints = 15;
         submissionGetDTO.setAwardedPoints(awardedPoints);
         
@@ -65,7 +65,7 @@ public class SubmissionGetDTOTest {
     }
 
     @Test
-    public void getNoSubmission_setNoSubmission_returnsCorrectValue() {
+    void getNoSubmission_setNoSubmission_returnsCorrectValue() {
         Boolean noSubmission = true;
         submissionGetDTO.setNoSubmission(noSubmission);
         

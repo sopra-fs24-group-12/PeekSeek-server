@@ -11,7 +11,7 @@ public class LobbyRepository {
     private final Map<Long, Lobby> lobbyRepositoryById;
     private final List<String> lobbyNames;
 
-    private static LobbyRepository INSTANCE = new LobbyRepository();
+    private static final LobbyRepository INSTANCE = new LobbyRepository();
 
     private LobbyRepository() {
         lobbyRepositoryById = new HashMap<>();

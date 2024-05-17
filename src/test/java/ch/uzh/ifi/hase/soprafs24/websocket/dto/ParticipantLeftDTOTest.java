@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
-public class ParticipantLeftDTOTest {
+class ParticipantLeftDTOTest {
 
     @Test
-    public void whenInstantiated_thenUsernameIsSetCorrectly() {
+    void whenInstantiated_thenUsernameIsSetCorrectly() {
         // Arrange & Act
         String testUsername = "testUser";
         ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO(testUsername);
@@ -17,7 +17,7 @@ public class ParticipantLeftDTOTest {
     }
 
     @Test
-    public void onInstantiation_StatusShouldBeLeft() {
+    void onInstantiation_StatusShouldBeLeft() {
         // Arrange & Act
         ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO("testUser");
 
@@ -26,7 +26,7 @@ public class ParticipantLeftDTOTest {
     }
 
     @Test
-    public void whenChangingStatus_thenStatusValueShouldBeUpdated() {
+    void whenChangingStatus_thenStatusValueShouldBeUpdated() {
         // Arrange
         ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO("testUser");
 
@@ -39,7 +39,7 @@ public class ParticipantLeftDTOTest {
     }
 
     @Test
-    public void whenChangingUsername_thenUsernameShouldBeUpdated() {
+    void whenChangingUsername_thenUsernameShouldBeUpdated() {
         // Arrange
         ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO("testUser");
 
@@ -52,7 +52,7 @@ public class ParticipantLeftDTOTest {
     }
 
     @Test
-    public void whenSettingNewAdmin_thenNewAdminShouldBeSet() {
+    void whenSettingNewAdmin_thenNewAdminShouldBeSet() {
         // Arrange
         ParticipantLeftDTO participantLeftDTO = new ParticipantLeftDTO("testUser");
 

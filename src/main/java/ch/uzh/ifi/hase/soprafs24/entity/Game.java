@@ -18,14 +18,22 @@ public class Game {
     private GameStatus gameStatus = GameStatus.RUNNING;
     private List<Round> rounds = new ArrayList<>();
     private Map<String, Participant> participants = new HashMap<>();
-    private static Long id_count = 1L;
-    public static Long rounds_count = 1L;
+    private static Long idCount = 1L;
+    private static Long roundsCount = 1L;
     private String lobbyPassword;
     private Map<String, Long> lastActivityTimes = new HashMap<>();
     private Integer activeParticipants;
 
     public Game() {
-        this.id = id_count++;
+        this.id = idCount++;
+    }
+
+    public static Long getRoundsCount() {
+        return roundsCount;
+    }
+
+    public static void setRoundsCount(Long roundsCount) {
+        Game.roundsCount = roundsCount;
     }
 
     public void initializeActivityTime() {

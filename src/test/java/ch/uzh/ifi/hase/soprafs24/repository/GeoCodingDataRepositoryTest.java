@@ -12,7 +12,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class GeoCodingDataRepositoryTest {
+class GeoCodingDataRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -37,7 +37,7 @@ public class GeoCodingDataRepositoryTest {
     }
 
     @Test
-    public void whenFindByLocation_thenReturnGeoCodingData() {
+    void whenFindByLocation_thenReturnGeoCodingData() {
         // When
         GeoCodingData found = geoCodingDataRepository.findGeoCodingDataByLocation("Zurich");
 
@@ -46,7 +46,7 @@ public class GeoCodingDataRepositoryTest {
     }
 
     @Test
-    public void whenFindAllCityNames_thenReturnListOfCityNames() {
+    void whenFindAllCityNames_thenReturnListOfCityNames() {
         // When
         List<String> cityNames = geoCodingDataRepository.findAllCityNames();
 

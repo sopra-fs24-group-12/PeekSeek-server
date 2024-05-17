@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-public class QuestTest {
+class QuestTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -30,7 +30,7 @@ public class QuestTest {
     }
 
     @Test
-    public void whenCreateQuest_thenPersistQuest() {
+    void whenCreateQuest_thenPersistQuest() {
         // Arrange
         Quest quest = new Quest();
         quest.setDescription("Save the princess!");

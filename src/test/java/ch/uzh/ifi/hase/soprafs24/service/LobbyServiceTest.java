@@ -3,22 +3,16 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import ch.uzh.ifi.hase.soprafs24.entity.GeoCodingData;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Participant;
-import ch.uzh.ifi.hase.soprafs24.google.GeoCoding;
 import ch.uzh.ifi.hase.soprafs24.repository.GeoCodingDataRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
-import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs24.service.WebsocketService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.Lob;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-public class LobbyServiceTest {
+class LobbyServiceTest {
 
     @Mock
     private LobbyRepository lobbyRepository;
@@ -64,7 +58,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testCreateLobby() {
+    void testCreateLobby() {
         String name = "Test Lobby";
         String password = "password123";
 
@@ -78,7 +72,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testJoinLobby() {
+    void testJoinLobby() {
         String username = "test";
         String password = "test";
         String token = lobbyService.joinLobby(1L, username, password);
@@ -94,7 +88,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testLeaveLobby() {
+    void testLeaveLobby() {
         String username = "test";
         String password = "test";
         String token = lobbyService.joinLobby(1L, username, password);
@@ -108,7 +102,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testUpdateLobbySettings_success() throws IOException {
+    void testUpdateLobbySettings_success() throws IOException {
         Participant participant = new Participant();
         participant.setId(1L);
         participant.setUsername("test");
@@ -146,7 +140,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testGetAllParticipants() throws IOException {
+    void testGetAllParticipants() throws IOException {
         Participant participant = new Participant();
         participant.setId(1L);
         participant.setUsername("test");
@@ -173,7 +167,9 @@ public class LobbyServiceTest {
         assert(lobby1.get(0).getAdmin().equals(true));
         assert(lobby1.get(0).getToken().equals("abc"));
     }
-    public void testCheckIfLobbyNameExists() throws Exception {
+
+    @Test
+    void testCheckIfLobbyNameExists() {
         Boolean free = false;
         Boolean f = LobbyRepository.lobbyNameFree("lobby");
         assert(free.equals(f));

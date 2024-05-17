@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameTest {
+class GameTest {
 
     private Game game;
 
@@ -23,7 +23,7 @@ public class GameTest {
     }
 
     @Test
-    public void testAddParticipant() {
+    void testAddParticipant() {
         // Create participant
         Participant participant = new Participant();
         String token = "token123";
@@ -38,7 +38,7 @@ public class GameTest {
 
 
     @Test
-    public void testNumberOfRounds() {
+    void testNumberOfRounds() {
         game.getRounds().add(new Round());
         game.getRounds().add(new Round());
         game.getRounds().add(new Round());
@@ -48,7 +48,7 @@ public class GameTest {
     }
 
     @Test
-    public void testGameStatus() {
+    void testGameStatus() {
         game.setGameStatus(GameStatus.SUMMARY);
 
 
@@ -56,35 +56,35 @@ public class GameTest {
     }
 
     @Test
-    public void testSetAndGetRoundDurationSeconds() {
+    void testSetAndGetRoundDurationSeconds() {
         Integer roundDurationSeconds = 60;
         game.setRoundDurationSeconds(roundDurationSeconds);
         assertEquals(roundDurationSeconds, game.getRoundDurationSeconds());
     }
 
     @Test
-    public void testSetAndGetGameLocation() {
+    void testSetAndGetGameLocation() {
         String gameLocation = "Location XYZ";
         game.setGameLocation(gameLocation);
         assertEquals(gameLocation, game.getGameLocation());
     }
 
     @Test
-    public void testSetAndGetCurrentRound() {
+    void testSetAndGetCurrentRound() {
         Integer currentRound = 1;
         game.setCurrentRound(currentRound);
         assertEquals(currentRound, game.getCurrentRound());
     }
 
     @Test
-    public void testSetAndGetNumberRounds() {
+    void testSetAndGetNumberRounds() {
         Integer numberRounds = 5;
         game.setNumberRounds(numberRounds);
         assertEquals(numberRounds, game.getNumberRounds());
     }
 
     @Test
-    public void testSetAndGetAdminId() {
+    void testSetAndGetAdminId() {
         Long adminId = 456L;
         game.setAdminId(adminId);
         assertEquals(adminId, game.getAdminId());
@@ -93,7 +93,7 @@ public class GameTest {
 
 
     @Test
-    public void testSetAndGetRounds() {
+    void testSetAndGetRounds() {
         List<Round> rounds = new ArrayList<>();
         rounds.add(new Round());
         game.setRounds(rounds);
@@ -101,7 +101,7 @@ public class GameTest {
     }
 
     @Test
-    public void testSetAndGetParticipants() {
+    void testSetAndGetParticipants() {
         Map<String, Participant> participants = new HashMap<>();
         participants.put("token123", new Participant());
         game.setParticipants(participants);
@@ -109,14 +109,14 @@ public class GameTest {
     }
 
     @Test
-    public void testSetAndGetLobbyPassword() {
+    void testSetAndGetLobbyPassword() {
         String lobbyPassword = "password123";
         game.setLobbyPassword(lobbyPassword);
         assertEquals(lobbyPassword, game.getLobbyPassword());
     }
 
     @Test
-    public void testSetAndGetActiveParticipants() {
+    void testSetAndGetActiveParticipants() {
         Integer activeParticipants = 5;
         game.setActiveParticipants(activeParticipants);
         assertEquals(activeParticipants, game.getActiveParticipants());

@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SummaryTest {
+class SummaryTest {
 
     private Summary summary;
 
@@ -20,28 +20,28 @@ public class SummaryTest {
     }
 
     @Test
-    public void testSetAndGetId() {
+    void testSetAndGetId() {
         Long id = 123L;
         summary.setId(id);
         assertEquals(id, summary.getId());
     }
 
     @Test
-    public void testSetAndGetCityName() {
+    void testSetAndGetCityName() {
         String cityName = "Zurich";
         summary.setCityName(cityName);
         assertEquals(cityName, summary.getCityName());
     }
 
     @Test
-    public void testSetAndGetRoundsPlayed() {
+    void testSetAndGetRoundsPlayed() {
         int roundsPlayed = 5;
         summary.setRoundsPlayed(roundsPlayed);
         assertEquals(roundsPlayed, summary.getRoundsPlayed());
     }
 
     @Test
-    public void testSetAndGetQuests() {
+    void testSetAndGetQuests() {
         List<Quest> quests = new ArrayList<>();
         quests.add(new Quest());
         summary.setQuests(quests);
@@ -49,7 +49,7 @@ public class SummaryTest {
     }
 
     @Test
-    public void testSetAndGetPassword() {
+    void testSetAndGetPassword() {
         String password = "password123";
         summary.setPassword(password);
         assertEquals(password, summary.getPassword());

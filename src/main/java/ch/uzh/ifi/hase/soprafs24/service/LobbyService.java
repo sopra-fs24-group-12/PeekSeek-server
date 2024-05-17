@@ -17,8 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
-import java.io.IOException;
-
 @Service
 @Transactional
 public class LobbyService {
@@ -35,7 +33,6 @@ public class LobbyService {
 
     public Lobby createLobby(String name, String password) {
         checkIfLobbyNameExists(name);
-        // TODO: empty password (no password)
 
         Lobby createdLobby = new Lobby();
         createdLobby.setName(name);
@@ -92,15 +89,6 @@ public class LobbyService {
     public List<Lobby> getAllLobbies() {
         return LobbyRepository.findAll();
     }
-
-//    public Map<String, GeoCodingData> getAllLobbyLocationsWithCoordinates() {
-//        List<Lobby> lobbies = getAllLobbies();
-//        Map<String, GeoCodingData> locationCoordinates = new HashMap<>();
-//        for (Lobby lobby : lobbies) {
-//            locationCoordinates.put(lobby.getGameLocation(), lobby.getGameLocationCoordinates());
-//        }
-//        return locationCoordinates;
-//    }
 
     public List<Participant> getAllParticipants(Long lobbyId, String token) {
         Lobby lobby = getSpecificLobby(lobbyId);
@@ -180,8 +168,7 @@ public class LobbyService {
         websocketService.sendMessage("/topic/lobby/" + id, participantLeftDTO);
     }
 
-    // TODO: no lobbyPutDTO as parameter
-    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) throws IOException {
+    public Lobby updateLobbySettings(Long id, LobbyPutDTO lobbyPutDTO, String token) {
         Lobby lobby = getSpecificLobby(id);
         authorizeLobbyAdmin(lobby, token);
         if (lobbyPutDTO.getGameLocation() != null) {
@@ -217,7 +204,6 @@ public class LobbyService {
             lobby.setRoundDurationSeconds(lobbyPutDTO.getRoundDurationSeconds());
         }
 
-        // TODO: return list instead of object (in case it is more efficient)
         return lobby;
     }
 

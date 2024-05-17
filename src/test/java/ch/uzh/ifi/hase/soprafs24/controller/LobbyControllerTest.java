@@ -35,7 +35,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import java.util.*;
 
 @ExtendWith(SpringExtension.class)
-public class LobbyControllerTest {
+class LobbyControllerTest {
 
     private MockMvc mockMvc;
 
@@ -61,7 +61,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void testCreateLobby() throws Exception {
+    void testCreateLobby() throws Exception {
         // Given
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setName("testLobby");
@@ -87,7 +87,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void testGetLobbies() throws Exception {
+    void testGetLobbies() throws Exception {
         // Given
         Lobby mockLobby1 = new Lobby();
         mockLobby1.setId(1L);
@@ -120,16 +120,11 @@ public class LobbyControllerTest {
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
-//                .andExpect(jsonPath("$[0].id", is(1)))
-//                .andExpect(jsonPath("$[0].name", is("LobbyOne")))
-//                .andExpect(jsonPath("$[1].id", is(2)))
-//                .andExpect(jsonPath("$[1].name", is("LobbyTwo")));
-
         verify(lobbyService).getAllLobbies();
     }
 
     @Test
-    public void testGetLobbyInformation() throws Exception {
+    void testGetLobbyInformation() throws Exception {
         String token = "mocktoken123";
         String token2 = "mocktoken1234";
         // Given
@@ -192,7 +187,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void testGetLobbyParticipants() throws Exception {
+    void testGetLobbyParticipants() throws Exception {
         String token = "mocktoken123";
         String token2 = "mocktoken1234";
         // Given
@@ -267,18 +262,6 @@ public class LobbyControllerTest {
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-                /*.andExpect((ResultMatcher) hasSize(2))
-                .andExpect(jsonPath("$[0].id", is(p3.getId())))
-                .andExpect(jsonPath("$[0].username", is(p3.getUsername())))
-                .andExpect(jsonPath("$[0].admin", is(p3.getAdmin())))
-                .andExpect(jsonPath("$[0].score", is(p3.getScore())))
-                .andExpect(jsonPath("$[1].id", is(p4.getId())))
-                .andExpect(jsonPath("$[1].username", is(p4.getUsername())))
-                .andExpect(jsonPath("$[1].admin", is(p4.getAdmin())))
-                .andExpect(jsonPath("$[1].score", is(p4.getScore())));*/
-
-
-
 
 
         verify(lobbyService).getAllParticipants(mockLobby1.getId(), token);
@@ -286,7 +269,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void testJoinLobby() throws Exception {
+    void testJoinLobby() throws Exception {
         LobbyJoinPutDTO lp = new LobbyJoinPutDTO();
         lp.setLobbyPassword("password123");
         lp.setUsername("user1");

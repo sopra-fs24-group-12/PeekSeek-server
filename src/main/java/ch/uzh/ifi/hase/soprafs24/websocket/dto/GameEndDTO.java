@@ -4,7 +4,6 @@ public class GameEndDTO {
     private String status = "game_over";
     private Long summaryId;
 
-
     public GameEndDTO(Long summaryId) {
         this.summaryId = summaryId;
     }

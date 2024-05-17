@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-// TODO: remove id, set fields for previous score etc.
 public class LeaderboardGetDTO {
     private String username;
     private int score;
@@ -41,9 +40,10 @@ public class LeaderboardGetDTO {
         this.streak = streak;
     }
 
-   public int getPosition() {
-       return position;
+    public int getPosition() {
+        return position;
     }
+
     public void setPosition(int position) {
         this.position = position;
     }

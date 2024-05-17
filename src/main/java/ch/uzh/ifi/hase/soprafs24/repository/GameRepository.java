@@ -8,7 +8,7 @@ import java.util.Map;
 public class GameRepository {
     private final Map<Long, Game> gameRepositoryById;
 
-    private static GameRepository INSTANCE = new GameRepository();
+    private static final GameRepository INSTANCE = new GameRepository();
 
     private GameRepository() {
         gameRepositoryById = new HashMap<>();

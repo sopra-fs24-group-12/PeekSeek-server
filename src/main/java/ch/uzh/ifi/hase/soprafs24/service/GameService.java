@@ -10,7 +10,6 @@ import ch.uzh.ifi.hase.soprafs24.repository.SummaryRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SubmissionPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.VotingPostDTO;
 
-
 import ch.uzh.ifi.hase.soprafs24.websocket.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.*;
-import java.lang.Math;
 
 
 @Service
@@ -32,6 +29,8 @@ public class GameService {
 
     private final Map<Long, Timer> inactivityTimers = new HashMap<>();
     private final Map<Long, Timer> gameTimers = new HashMap<>();
+
+    private static final String websocketTopicAddress = "/topic/games/";
 
     @Autowired
     public GameService(WebsocketService websocketService,
@@ -83,7 +82,8 @@ public class GameService {
         List<Round> rounds = new ArrayList<>(quests.size());
         for (String quest : quests) {
             Round round = new Round();
-            round.setId(Game.rounds_count++);
+            round.setId(Game.getRoundsCount() + 1);
+            Game.setRoundsCount(Game.getRoundsCount() + 1);
             round.setQuest(quest);
             round.setRoundTime(lobby.getRoundDurationSeconds());
             round.setRemainingSeconds(lobby.getRoundDurationSeconds());
@@ -178,14 +178,14 @@ public class GameService {
 
         round.setRoundStatus(RoundStatus.PLAYING);
 
-        websocketService.sendMessage("/topic/games/" + gameId, new NextRoundDTO());
+        websocketService.sendMessage(websocketTopicAddress + gameId, new NextRoundDTO());
 
         startTimer(round, gameId);
     }
 
     private void endGame(Game game, Long gameId) {
         Long summaryId = generateSummary(game);
-        websocketService.sendMessage("/topic/games/" + gameId, new GameEndDTO(summaryId));
+        websocketService.sendMessage(websocketTopicAddress + gameId, new GameEndDTO(summaryId));
         game.setGameStatus(GameStatus.SUMMARY);
         Timer timer = gameTimers.get(gameId);
         if (timer != null) {
@@ -255,7 +255,7 @@ public class GameService {
         return base;
     }
 
-    public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) throws IOException {
+    public void postSubmission(Long gameId, String token, SubmissionPostDTO submissionPostDTO) {
         Game game = getSpecificGame(gameId);
 
         authorizeGameParticipant(game, token);
@@ -270,7 +270,7 @@ public class GameService {
         }
 
         Round currentRound = game.getRounds().get(game.getCurrentRound());
-        if (currentRound.getRoundStatus() != RoundStatus.PLAYING && !isWithinBufferPeriod(currentRound)) {
+        if (currentRound.getRoundStatus() != RoundStatus.PLAYING && isNotWithinBufferPeriod(currentRound)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The game is not in the submission phase");
         }
 
@@ -290,7 +290,8 @@ public class GameService {
         submissionData.setNoSubmission(submissionPostDTO.getNoSubmission());
 
 
-        submission.setId(Round.submissionCount++);
+        submission.setId(Round.getSubmissionCount() + 1);
+        Round.setSubmissionCount(Round.getSubmissionCount() + 1);
         submission.setSubmissionTimeSeconds(submissionTime);
         submission.setSubmittedLocation(submissionData);
         submission.setToken(participant.getToken());
@@ -329,7 +330,7 @@ public class GameService {
             endGame(game, gameId);
         }
 
-        websocketService.sendMessage("/topic/games/" + gameId, new ParticipantLeftDTO(participant.getUsername()));
+        websocketService.sendMessage(websocketTopicAddress + gameId, new ParticipantLeftDTO(participant.getUsername()));
     }
 
     public void postVoting(Long gameId, String token, VotingPostDTO votingPostDTO) {
@@ -338,7 +339,7 @@ public class GameService {
         authorizeGameParticipant(game, token);
 
         Round round = game.getRounds().get(game.getCurrentRound());
-        if (round.getRoundStatus() != RoundStatus.VOTING && !isWithinBufferPeriod(round)) {
+        if (round.getRoundStatus() != RoundStatus.VOTING && isNotWithinBufferPeriod(round)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The current round is not in the voting phase");
         }
 
@@ -463,7 +464,7 @@ public class GameService {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                websocketService.sendMessage("/topic/games/" + gameId + "/timer",
+                websocketService.sendMessage(websocketTopicAddress + gameId + "/timer",
                         new SecondsRemainingDTO(round.getRemainingSeconds()));
                 round.setRemainingSeconds(round.getRemainingSeconds() - 1);
             }
@@ -482,14 +483,14 @@ public class GameService {
         handleMissingSubmissions(round, gameId);
         shuffleSubmissions(round);
         round.setRoundStatus(RoundStatus.VOTING);
-        websocketService.sendMessage("/topic/games/" + gameId, new StartVotingDTO());
+        websocketService.sendMessage(websocketTopicAddress + gameId, new StartVotingDTO());
         startTimer(round, gameId);
     }
 
     private void startSummary(Round round, Long gameId) {
         awardPoints(round, gameId);
         round.setRoundStatus(RoundStatus.SUMMARY);
-        websocketService.sendMessage("/topic/games/" + gameId, new ShowSummaryDTO());
+        websocketService.sendMessage(websocketTopicAddress + gameId, new ShowSummaryDTO());
         startTimer(round, gameId);
     }
 
@@ -527,7 +528,8 @@ public class GameService {
 
                 Submission emptySubmission = new Submission();
 
-                emptySubmission.setId(Round.submissionCount++);
+                emptySubmission.setId(Round.getSubmissionCount() + 1);
+                Round.setSubmissionCount(Round.getSubmissionCount() + 1);
                 emptySubmission.setSubmissionTimeSeconds(round.getRoundTime());
                 emptySubmission.setToken(participant.getToken());
                 emptySubmission.setUsername(participant.getUsername());
@@ -579,8 +581,8 @@ public class GameService {
         return game;
     }
 
-    private boolean isWithinBufferPeriod(Round round) {
+    private boolean isNotWithinBufferPeriod(Round round) {
         long currentTime = System.currentTimeMillis();
-        return (currentTime - round.getLastPhaseChangeTime()) <= round.getBufferTime() * 1000L;
+        return (currentTime - round.getLastPhaseChangeTime()) > round.getBufferTime() * 1000L;
     }
 }

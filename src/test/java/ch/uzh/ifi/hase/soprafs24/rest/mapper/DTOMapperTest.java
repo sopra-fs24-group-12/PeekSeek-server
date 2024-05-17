@@ -22,10 +22,10 @@ import java.util.Arrays;
  * Tests if the mapping between the internal and the external/API representation
  * works.
  */
-public class DTOMapperTest {
+class DTOMapperTest {
 
     @Test
-    public void test_convert_Lobby_To_LobbyGetDTO() {
+    void test_convert_Lobby_To_LobbyGetDTO() {
         Lobby lobby = new Lobby();
         lobby.setId(3L);
         lobby.setMaxParticipants(5);
@@ -42,7 +42,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void test_convert_Lobby_To_LobbyGetInformationDTO() {
+    void test_convert_Lobby_To_LobbyGetInformationDTO() {
         Lobby lobby = new Lobby();
         GeoCodingData geoCodingData = new GeoCodingData();
         geoCodingData.setLocation("Munich");
@@ -62,7 +62,7 @@ public class DTOMapperTest {
         assertEquals(lobby.getQuests(), lobbyGetInformationDTO.getQuests());}
 
     @Test
-    public void test_convert_Participant_To_ParticipantGetDTO() {
+    void test_convert_Participant_To_ParticipantGetDTO() {
         Participant participant = new Participant();
         participant.setId(3L);
         participant.setAdmin(Boolean.TRUE);
@@ -82,7 +82,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void test_convert_Round_To_GameRoundGetDTO() {
+    void test_convert_Round_To_GameRoundGetDTO() {
         Game game = new Game();
         game.setId(3L);
         game.setRoundDurationSeconds(33);
@@ -111,7 +111,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void test_convert_Game_To_GameGetDTO() {
+    void test_convert_Game_To_GameGetDTO() {
         Game game = new Game();
         game.setId(3L);
         game.setRoundDurationSeconds(33);
@@ -131,7 +131,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void test_convert_Submission_To_SubmissionGetDTO() {
+    void test_convert_Submission_To_SubmissionGetDTO() {
         Submission submission = new Submission();
         SubmissionData submissionData = new SubmissionData();
         submissionData.setLat("47.00000");
@@ -156,7 +156,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void test_convert_Participant_To_LeaderboardGetDTO() {
+    void test_convert_Participant_To_LeaderboardGetDTO() {
         Participant participant = new Participant();
         participant.setId(3L);
         participant.setUsername("Beispiel");
@@ -173,7 +173,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void test_convert_Summary_To_SummaryGetDTO() {
+    void test_convert_Summary_To_SummaryGetDTO() {
         Summary summary = new Summary();
         summary.setId(3L);
         summary.setCityName("Munich");
