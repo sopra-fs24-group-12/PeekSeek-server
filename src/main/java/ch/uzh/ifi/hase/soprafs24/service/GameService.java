@@ -388,7 +388,11 @@ public class GameService {
 
     public void setWinningSubmission(Round round, List<Submission> submissions) {
         submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
-        round.setWinningSubmission(submissions.get(0));
+        Submission winningCandidate = submissions.get(0);
+        round.setWinningSubmission(winningCandidate);
+        if (winningCandidate.getNumberVotes() == 0 && winningCandidate.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2) {
+            winningCandidate.setNoSubmission(true);
+        }
     }
 
     public int calculatePoints(Long gameId, Round round, Submission submission, int placement) {

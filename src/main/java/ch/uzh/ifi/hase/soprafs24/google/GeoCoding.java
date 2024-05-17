@@ -25,7 +25,7 @@ public class GeoCoding {
     private static String apiKey;
 
     @Value("${api.key}")
-    public static void setApiKey(String apiKey) {
+    public void setApiKey(String apiKey) {
         GeoCoding.apiKey = apiKey;
     }
 
