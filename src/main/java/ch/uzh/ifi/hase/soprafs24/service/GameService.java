@@ -388,9 +388,16 @@ public class GameService {
 
     public void setWinningSubmission(Round round, List<Submission> submissions) {
         submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
-        Submission winningCandidate = submissions.get(0);
+        Submission winningCandidate = new Submission();
+        for (Submission submission : submissions) {
+            if (!submission.getNoSubmission()) {
+                winningCandidate = submission;
+                break;
+            }
+            winningCandidate = submission;
+        }
         round.setWinningSubmission(winningCandidate);
-        if (winningCandidate.getNumberVotes() == 0 && winningCandidate.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2) {
+        if (!winningCandidate.getNoSubmission() && winningCandidate.getNumberVotes() == 0 && winningCandidate.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2) {
             winningCandidate.setNoSubmission(true);
         }
     }
@@ -408,6 +415,7 @@ public class GameService {
         }
 
         if (submission.getNoSubmission()) {   // if the participant clicked "Can`t find that", they get 0 points
+            participant.setStreak(0);
             return 0;
         }
         if (submission.getNumberBanVotes() > (round.getSubmissions().size() - 1) / 2) {   // if the submission has more than half of the votes to be banned, they get 0 points
