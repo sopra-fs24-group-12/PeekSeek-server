@@ -279,6 +279,7 @@ class LobbyControllerTest {
         mockLobby.setName("testLobby");
 
         when(lobbyService.joinLobby(eq(mockLobby.getId()), anyString(), anyString())).thenReturn("Token");
+        when(lobbyService.getSpecificLobby(anyLong())).thenReturn(mockLobby);
 
         // When & Then
         mockMvc.perform(put("/lobbies/{id}/join", mockLobby.getId(), lp)

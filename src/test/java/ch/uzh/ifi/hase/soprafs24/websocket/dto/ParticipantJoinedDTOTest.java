@@ -4,14 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class ParticipantJoinedDTOTest {
 
     private ParticipantJoinedDTO participantJoined;
+    private final List<String> usernames = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
-        // Initialize the DTO with a sample username before each test
-        participantJoined = new ParticipantJoinedDTO("SampleUser");
+        usernames.add("SampleUser");
+        participantJoined = new ParticipantJoinedDTO(usernames);
     }
 
     @Test
@@ -23,7 +27,7 @@ class ParticipantJoinedDTOTest {
     @Test
     void whenInstantiated_thenUsernameIsSetCorrectly() {
         // Assert that the provided username is set correctly
-        assertEquals("SampleUser", participantJoined.getUsername());
+        assertEquals("SampleUser", participantJoined.getUsernames().get(0));
     }
 
     @Test
@@ -36,9 +40,7 @@ class ParticipantJoinedDTOTest {
 
     @Test
     void whenSettingUsername_thenUsernameShouldBeUpdated() {
-        // Set a new username
-        participantJoined.setUsername("NewUser");
-        // Assert that the username is updated correctly
-        assertEquals("NewUser", participantJoined.getUsername());
+        usernames.add("NewUser");
+        assertEquals("NewUser", participantJoined.getUsernames().get(1));
     }
 }

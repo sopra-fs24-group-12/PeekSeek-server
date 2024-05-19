@@ -1,11 +1,22 @@
 package ch.uzh.ifi.hase.soprafs24.websocket.dto;
 
+import java.util.List;
+
 public class ParticipantJoinedDTO {
     private String status = "joined";
-    private String username;
 
-    public ParticipantJoinedDTO(String username) {
-        this.username = username;
+    public List<String> getUsernames() {
+        return usernames;
+    }
+
+    public void setUsernames(List<String> usernames) {
+        this.usernames = usernames;
+    }
+
+    private List<String> usernames;
+
+    public ParticipantJoinedDTO(List<String> usernames) {
+        this.usernames = usernames;
     }
 
     public String getStatus() {
@@ -16,11 +27,4 @@ public class ParticipantJoinedDTO {
         this.status = status;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }
