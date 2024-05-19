@@ -15,7 +15,7 @@ class ParticipantJoinedDTOTest {
     @BeforeEach
     public void setUp() {
         usernames.add("SampleUser");
-        participantJoined = new ParticipantJoinedDTO(usernames, "test");
+        participantJoined = new ParticipantJoinedDTO(usernames, "SampleUser");
     }
 
     @Test
@@ -28,6 +28,7 @@ class ParticipantJoinedDTOTest {
     void whenInstantiated_thenUsernameIsSetCorrectly() {
         // Assert that the provided username is set correctly
         assertEquals("SampleUser", participantJoined.getUsernames().get(0));
+        assertEquals("SampleUser", participantJoined.getUsername());
     }
 
     @Test
@@ -41,6 +42,8 @@ class ParticipantJoinedDTOTest {
     @Test
     void whenSettingUsername_thenUsernameShouldBeUpdated() {
         usernames.add("NewUser");
+        participantJoined.setUsername("NewUser");
         assertEquals("NewUser", participantJoined.getUsernames().get(1));
+        assertEquals("NewUser", participantJoined.getUsername());
     }
 }
