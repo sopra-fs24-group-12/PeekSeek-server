@@ -82,7 +82,7 @@ public class LobbyController {
                                       HttpServletResponse response) {
         String token = lobbyService.joinLobby(id, joinPutDTO.getUsername(), joinPutDTO.getLobbyPassword());
         websocketService.sendMessage(websocketTopicAddress + id,
-                new ParticipantJoinedDTO(lobbyService.getSpecificLobby(id).getUsernames()));
+                new ParticipantJoinedDTO(lobbyService.getSpecificLobby(id).getUsernames(), joinPutDTO.getUsername()));
         response.setHeader("Access-Control-Expose-Headers", authorizationField);
         response.setHeader(authorizationField, token);
     }

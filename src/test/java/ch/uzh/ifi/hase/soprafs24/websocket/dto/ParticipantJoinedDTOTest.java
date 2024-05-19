@@ -15,7 +15,7 @@ class ParticipantJoinedDTOTest {
     @BeforeEach
     public void setUp() {
         usernames.add("SampleUser");
-        participantJoined = new ParticipantJoinedDTO(usernames);
+        participantJoined = new ParticipantJoinedDTO(usernames, "test");
     }
 
     @Test
