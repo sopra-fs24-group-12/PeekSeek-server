@@ -367,3 +367,9 @@ We worked together on these Issues on one device most of the time.
 - [x] [Tests for LobbyService and GameService, mainly GameService](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113)
 - [x] [Tests for LobbyController](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/178)
 - [x] [Tests for SummaryController (WebsocketController too, but it has been removed)](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/200)
+
+## Week 8: [15.05. - 21.05]
+
+### Nils
+- [x] [Fixed open bugs on interactive on summary page](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/126)
+- [x] [Added two new buttons that lead to a new tab with all markers (winning submissions). One button shows them in order of rounds, the other in shortest distance (from first to last submission) using Directions API](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/195)
