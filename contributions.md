@@ -364,9 +364,9 @@ We worked together on these Issues on one device most of the time.
 - [x] Add real GoogleMaps map to summary instead of static image (still minor bug open regarding data fetching) [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/126)
 
 ### Youssef
-- [x] [Tests for LobbyService and GameService, mainly GameService](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113)
-- [x] [Tests for LobbyController](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/178)
-- [x] [Tests for SummaryController (WebsocketController too, but it has been removed)](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/200)
+- [x] [Tests for LobbyService and GameService, mainly GameService](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/113)
+- [x] [Tests for LobbyController](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/178)
+- [x] [Tests for SummaryController (WebsocketController too, but it has been removed)](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/200)
 
 ## Week 8: [15.05. - 21.05]
 
@@ -379,3 +379,9 @@ We worked together on these Issues on one device most of the time.
 - [x] Fix bug where where in JoinLobby Table spinner spins forever when there are no Lobbies yet [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/198)
 - [x] Remodeled GameSummary Buttons for External Links (bisher) and added new variation of button for Directions [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/205)
 - [x] Limit Quest char length to 20 with error notification and left aligned text in External Links Buttons [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/210)
+
+### Youssef
+- [x] [Adding tests to reach more than 80% and adding at least two more assertions in old tests, some cleaning up](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/113)
+Bug fixes:
+- [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/193)
+- [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/192)
