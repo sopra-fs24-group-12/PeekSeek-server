@@ -373,3 +373,9 @@ We worked together on these Issues on one device most of the time.
 ### Nils
 - [x] [Fixed open bugs on interactive on summary page](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/126)
 - [x] [Added two new buttons that lead to a new tab with all markers (winning submissions). One button shows them in order of rounds, the other in shortest distance (from first to last submission) using Directions API](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/195)
+
+### Silvan
+- [x] Added Privacy Policy and About Page [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/204)
+- [x] Fix bug where where in JoinLobby Table spinner spins forever when there are no Lobbies yet [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/198)
+- [x] Remodeled GameSummary Buttons for External Links (bisher) and added new variation of button for Directions [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/205)
+- [x] Limit Quest char length to 20 with error notification and left aligned text in External Links Buttons [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/210)
