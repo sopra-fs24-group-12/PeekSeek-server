@@ -382,6 +382,7 @@ We worked together on these Issues on one device most of the time.
 
 ### Youssef
 - [x] [Adding tests to reach more than 80% and adding at least two more assertions in old tests, some cleaning up](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/113)
+
 Bug fixes:
-- [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/193)
-- [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/192)
+    - [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/193)
+    - [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/192)
