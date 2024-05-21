@@ -385,3 +385,21 @@ We worked together on these Issues on one device most of the time.
 Bug fixes:
 - [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/193)
 - [x] [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/192)
+
+### Georg
+- implement custom error message on lobby creation
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/102](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/201)
+- implement custom error messages during the game (instead of the default browser ones)
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/158](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/202)
+- implement custom error messages when being kicked
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/166](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/203)
+- Make input fields clearable (lobby creation and lobby joining)
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/178](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/207)
+- Streak is not reset if an empty submission (Can’t find it) is done by the person having the streak
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/179](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/202)
+- Fix websocket message to include all participants to ensure correct displaying in frontend
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/184](https://github.com/sopra-fs24-group-12/PeekSeek-server/issues/203)
+- Add chips for lobby list to display the city name and the round duration
+    - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113  ](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/209)
+- Handle lobby password field when lobby is accessed via direct link
+    - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/206
