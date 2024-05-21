@@ -405,7 +405,7 @@ Bug fixes:
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/206
 
  ### Ece
-- Modify UI layout and responsiveness across all pages
+- Modify UI layout to fit responsiveness across all pages
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/187)
 - Rework slider component and replace with time per round buttons
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/162)
