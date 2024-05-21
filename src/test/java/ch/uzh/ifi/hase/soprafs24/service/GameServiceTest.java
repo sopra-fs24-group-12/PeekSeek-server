@@ -215,8 +215,6 @@ class GameServiceTest {
         List<Submission> r1 = new ArrayList<>(round111.getSubmissions().values());
         List<Submission> r2 = new ArrayList<>(round211.getSubmissions().values());
 
-
-
         assert(r1.get(0).getToken().equals(r2.get(0).getToken()));
 
 
@@ -303,6 +301,12 @@ class GameServiceTest {
 
 
         assert(cRound.getSubmissions().values().equals(currentRound.getSubmissions().values()));
+        assertEquals(Round.getSubmissionCount(), submission.getId() + 1L);
+        assertEquals(submissionTime, submission.getSubmissionTimeSeconds());
+        assertEquals(submissionData, submission.getSubmittedLocation());
+        assertEquals(participant.getToken(), submission.getToken());
+        assertEquals(participant.getUsername(), submission.getUsername());
+        assertFalse(submission.getNoSubmission());
 
 
     }
@@ -355,8 +359,6 @@ class GameServiceTest {
         round1.setGeoCodingData(gcd);
 
         Long gameId = 1L;
-
-
 
         List<Round> r = new ArrayList<>();
         r.add(round1);
@@ -423,13 +425,17 @@ class GameServiceTest {
 
 
         assert(summary1.getId().equals(l));
+        assertEquals("Zurich", game.getGameLocation());
+        assertEquals(1, game.getRounds().size());
+        assertEquals(1L, round1.getId());
+        assertEquals(RoundStatus.FINISHED, round1.getRoundStatus());
+        assertEquals(submission, round1.getWinningSubmission());
 
 
     }
 
     @Test
     void testStartNextRound_Success() {
-        // Given
         Long gameId = 1L;
         Game game = new Game();
         game.setId(gameId);
@@ -469,7 +475,6 @@ class GameServiceTest {
 
 
         assertEquals(1, game.getCurrentRound());
-        //assertEquals(RoundStatus.VOTING, game.getRounds().get(1).getRoundStatus());
         assertTrue(game.getParticipants().values().stream().allMatch(participant ->
                 !participant.getHasSubmitted() && !participant.getHasVoted() && participant.getPointsThisRound() == 0));
 
@@ -591,6 +596,11 @@ class GameServiceTest {
         Long lon = gameService.startGame(l);
 
         assertEquals(lon, createdGame1.getId()+1L);
+        assertEquals(32, createdGame1.getRoundDurationSeconds());
+        assertEquals(7L, createdGame1.getAdminId());
+        assertEquals(l.getGameLocation(), createdGame1.getGameLocation());
+        assertEquals(3, createdGame1.getNumberRounds());
+        assertEquals(l.getPassword(), createdGame1.getLobbyPassword());
     }
 
     @Test
