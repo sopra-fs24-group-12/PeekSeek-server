@@ -355,7 +355,7 @@ We worked together on these Issues on one device most of the time.
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/112)
 - Added animation on landing page
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/161)
-- Added slider component to time per round
+- Created slider component for lobby
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/162)
  
 ### Nils
@@ -403,3 +403,13 @@ Bug fixes:
     - [https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/113  ](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/209)
 - Handle lobby password field when lobby is accessed via direct link
     - https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/206
+
+ ### Ece
+- Modify UI layout and responsiveness across all pages
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/187)
+- Rework slider component and replace with time per round buttons
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/162)
+- Disable start < 3 players joined to lobby
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/211)
+- Disable start if changes are unsaved
+    - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/200)
