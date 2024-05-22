@@ -59,13 +59,13 @@ public class LobbyService {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                List<String> inactiveTokens = lobby.removeInactiveParticipants(5000);
-                for (String token : inactiveTokens) {
-                    leaveLobby(lobby.getId(), token);
-                }
-
                 if (lobby.getJoinedParticipants() == 0) {
                     stopInactivityTimer(lobby.getId());
+                } else {
+                    List<String> inactiveTokens = lobby.removeInactiveParticipants(5000);
+                    for (String token : inactiveTokens) {
+                        leaveLobby(lobby.getId(), token);
+                    }
                 }
             }
         };

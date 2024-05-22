@@ -54,4 +54,11 @@ class LeaderboardGetDTOTest {
         leaderboardGetDTO.setPointsThisRound(pointsThisRound);
         assertEquals(pointsThisRound, leaderboardGetDTO.getPointsThisRound(), "getPointsThisRound should return the correct points for this round.");
     }
+
+    @Test
+    void getLeftGameShouldReturnCorrectStatus() {
+        boolean leftGame = true;
+        leaderboardGetDTO.setLeftGame(leftGame);
+        assertEquals(leftGame, leaderboardGetDTO.getLeftGame(), "getLeftGame should return the correct status for this player.");
+    }
 }

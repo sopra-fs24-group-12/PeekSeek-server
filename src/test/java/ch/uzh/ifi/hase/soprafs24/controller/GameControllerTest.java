@@ -352,12 +352,14 @@ class GameControllerTest {
         participant1.setUsername("playerOne");
         participant1.setScore(100);
         participant1.setStreak(5);
+        participant1.setLeftGame(false);
 
         Participant participant2 = new Participant();
         participant2.setId(2L);
         participant2.setUsername("playerTwo");
         participant2.setScore(150);
         participant2.setStreak(3);
+        participant2.setLeftGame(false);
 
         // Mocking the service layer to return participants
         given(gameService.getLeaderboard(token, gameId)).willReturn(Arrays.asList(participant1, participant2));
@@ -368,12 +370,14 @@ class GameControllerTest {
         dto1.setUsername(participant1.getUsername());
         dto1.setScore(participant1.getScore());
         dto1.setStreak(participant1.getStreak());
+        dto1.setLeftGame(false);
 
         LeaderboardGetDTO dto2 = new LeaderboardGetDTO();
         dto2.setId(participant2.getId());
         dto2.setUsername(participant2.getUsername());
         dto2.setScore(participant2.getScore());
         dto2.setStreak(participant2.getStreak());
+        dto2.setLeftGame(false);
 
         given(dtoMapper.convertParticipantToLeaderboardGetDTO(participant1)).willReturn(dto1);
         given(dtoMapper.convertParticipantToLeaderboardGetDTO(participant2)).willReturn(dto2);
@@ -387,9 +391,11 @@ class GameControllerTest {
                 .andExpect(jsonPath("$[0].username", is(dto1.getUsername())))
                 .andExpect(jsonPath("$[0].score", is(dto1.getScore())))
                 .andExpect(jsonPath("$[0].streak", is(dto1.getStreak())))
+                .andExpect(jsonPath("$[0].leftGame", is(dto1.getLeftGame())))
                 .andExpect(jsonPath("$[1].username", is(dto2.getUsername())))
                 .andExpect(jsonPath("$[1].score", is(dto2.getScore())))
-                .andExpect(jsonPath("$[1].streak", is(dto2.getStreak())));
+                .andExpect(jsonPath("$[1].streak", is(dto2.getStreak())))
+                .andExpect(jsonPath("$[1].leftGame", is(dto2.getLeftGame())));
 
         // Verify interactions
         verify(gameService).getLeaderboard(token, gameId);

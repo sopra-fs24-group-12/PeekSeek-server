@@ -90,6 +90,7 @@ public interface DTOMapper {
     //@Mapping(source = "position", target = "position")
     @Mapping(source = "id", target = "id")
     @Mapping(source = "pointsThisRound", target = "pointsThisRound")
+    @Mapping(source = "leftGame", target = "leftGame")
     LeaderboardGetDTO convertParticipantToLeaderboardGetDTO(Participant participant);
 
     @Mapping(source = "id", target = "id")

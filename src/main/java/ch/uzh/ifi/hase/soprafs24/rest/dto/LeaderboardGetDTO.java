@@ -5,6 +5,7 @@ public class LeaderboardGetDTO {
     private int score;
     private int streak;
     private int position;
+    private Boolean leftGame;
     private Long id;
     private int pointsThisRound;
 
@@ -54,5 +55,13 @@ public class LeaderboardGetDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getLeftGame() {
+        return leftGame;
+    }
+
+    public void setLeftGame(Boolean leftGame) {
+        this.leftGame = leftGame;
     }
 }
