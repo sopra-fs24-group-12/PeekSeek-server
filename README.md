@@ -95,6 +95,9 @@ and in the other one:
 If you want to avoid running all tests with every change, use the following command instead:
 
 `./gradlew build --continuous -xtest`
+
+### API Key
+The Google Geocoding API is used which requires a valid API key. When the application is being deployed, the correct API key is set automatically based on a secret set in Github. To set the API key for local development, insert it into the [application.properties](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/resources/application.properties) file, specifically in line 15 such that the line looks like the following: `api.key=YOUR_KEY` where YOUR_KEY is to be replaced by the actual API key.
 ___
 ## Roadmap
 - Implement a chat to communicate during the game
