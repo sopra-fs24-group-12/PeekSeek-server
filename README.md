@@ -44,6 +44,8 @@ Moreover, it integrates with GeoCodingDataRepository to fetch or save geographic
 One important aspect is that it ensures that only authorized participants or admins can perform certain actions, maintaining security and integrity within the lobbies.
 By combining these functionalities, LobbyService ensures smooth management and operation of game lobbies, maintaining participant engagement and proper configuration of game settings.
 
+### Websockets
+We use websockets to ensure synchronization between all participants. They are used to broadcast events happening in the lobby and during the game. This includes participants joining or leaving a lobby/game, lobby settings being updated, game starting or transferring to the next phase within a game. Additionally, every second a message with the remaining time for each phase of the game is being sent to the participants. This avoids inconsistencies and further contributes to a synchronized experience.
 
 ___
 ## Launch & Deployment
