@@ -49,6 +49,11 @@ We use websockets to ensure synchronization between all participants. They are u
 
 ___
 ## Launch & Deployment
+This project uses the Google Geocoding API which requires a valid API key. When the application is being deployed, the correct API key is set automatically based on a secret set in Github. To set the API key for local development, insert it into the [application.properties](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/resources/application.properties) file, specifically in line 15 such that the line looks like the following: `api.key=YOUR_KEY` where YOUR_KEY is to be replaced by the actual API key. 
+<br />
+<br />
+Since participants are kicked from both the game and the lobby based on inactivity (meaning not sending a "ping" to the server every few seconds), testing the API endpoints using a program like [Postman](https://www.postman.com/) requires commenting out the lines in both [LobbyService.java](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/service/LobbyService.java) and [GameService.java](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/service/GameService.java) that start or stop the inactivity timer. This includes any lines in the format of `stopInactivityTimer(...)` or `startInactivityTimer(...)`.
+
 ### Building with Gradle
 
 You can use the local Gradle Wrapper to build the application.
@@ -96,8 +101,6 @@ If you want to avoid running all tests with every change, use the following comm
 
 `./gradlew build --continuous -xtest`
 
-### API Key
-The Google Geocoding API is used which requires a valid API key. When the application is being deployed, the correct API key is set automatically based on a secret set in Github. To set the API key for local development, insert it into the [application.properties](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/resources/application.properties) file, specifically in line 15 such that the line looks like the following: `api.key=YOUR_KEY` where YOUR_KEY is to be replaced by the actual API key.
 ___
 ## Roadmap
 - Implement a chat to communicate during the game
