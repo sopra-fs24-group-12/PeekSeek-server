@@ -27,16 +27,16 @@ ___
 ## High-level components
 For our project PeekSeek we have created nine different entities, most importantly Game, Lobby and Participant. Each entity has its own Data stored in a repository. GeocodingDataRepository for example stores all locations of the different cities. The Controller classes call the Service classes, which manage all the functionalities related to the entity classes. Below we provide a more clear understanding of some important classes: 
 
-### LobbyController
+### LobbyController ([LobbyController.java](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/controller/LobbyController.java))
 The LobbyController class is a REST controller for managing lobbies in our game application. It utilizes services like LobbyService, WebsocketService, and GameService to handle operations such as creating lobbies, retrieving lobbies and participants, joining and leaving lobbies, updating settings, and starting games. The controller handles HTTP requests as well as the websocket communication between backend anad frontend, and it returns or updates data using DTO (Data Transfer Object) classes for consistent API responses. 
 
-### Lobby
+### Lobby ([Lobby.java](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/entity/Lobby.java))
 The Lobby class encapsulates various properties and methods to manage its state and participants. Key attributes include the lobby's ID, name, password, duration of rounds, game location, maximum participants, and a list of quests. It maintains participants with a map and tracks their usernames and activity times. The class provides methods to add and remove participants, reset the lobby, update activity times, and remove inactive participants. It also includes fields and methods for managing the lobby's admin and ensuring password protection when necessary.
 
-### Game
+### Game ([Game.java](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/entity/Game.java))
 The Game class thus encapsulates all necessary data and behaviors for managing a game session, ensuring smooth handling of rounds (an entity), participants (also an entity), and game state transitions.  The state of the game, participants in a game, and rounds of a game are stored in this entity. It also includes attributes such as an ID, round duration, game location, current round, number of rounds, admin ID, and game status. 
 
-### LobbyService
+### LobbyService ([LobbyService.java](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/service/LobbyService.java))
 The LobbyService 'serves' the lifecycle and operations of game lobbies. It can
 create new lobbies, setting initial parameters like name, password, and initializing inactivity timers.
 Furthermore, it manages participants within lobbies, including joining, leaving, and updating their activity status. It ensures participants have the necessary permissions and updates their status to keep the lobby active, while monitoring participant's activity and removes inactive participants to keep the lobby functional.
