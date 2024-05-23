@@ -21,12 +21,14 @@ ___
 ### Testing
 - JUnit
 - Mockito
+### External APIs
+- Google Geocoding API
 ___
 ## High-level components
-For our project PeekSeek we have created nine different entities, most importantly Game, Lobby and Participant. Each entity has its own Data stored in a repository. GeocodingDataRepository for example stores all locations of the different cities. The Controller classes call the Service classes, which manage all the functionalities related to the entity classes. Below we provide a more clear understanding of some important classes:
+For our project PeekSeek we have created nine different entities, most importantly Game, Lobby and Participant. Each entity has its own Data stored in a repository. GeocodingDataRepository for example stores all locations of the different cities. The Controller classes call the Service classes, which manage all the functionalities related to the entity classes. Below we provide a more clear understanding of some important classes: 
 
 ### LobbyController
-The LobbyController class is a REST controller for managing lobbies in our game application. It utilizes services like LobbyService, WebsocketService, and GameService to handle operations such as creating lobbies, retrieving lobbies and participants, joining and leaving lobbies, updating settings, and starting games. The controller handles HTTP requests as well as the websocket communication between backend anad frontend, and it returns or updates data using DTO (Data Transfer Object) classes for consistent API responses.
+The LobbyController class is a REST controller for managing lobbies in our game application. It utilizes services like LobbyService, WebsocketService, and GameService to handle operations such as creating lobbies, retrieving lobbies and participants, joining and leaving lobbies, updating settings, and starting games. The controller handles HTTP requests as well as the websocket communication between backend anad frontend, and it returns or updates data using DTO (Data Transfer Object) classes for consistent API responses. 
 
 ### Lobby
 The Lobby class encapsulates various properties and methods to manage its state and participants. Key attributes include the lobby's ID, name, password, duration of rounds, game location, maximum participants, and a list of quests. It maintains participants with a map and tracks their usernames and activity times. The class provides methods to add and remove participants, reset the lobby, update activity times, and remove inactive participants. It also includes fields and methods for managing the lobby's admin and ensuring password protection when necessary.
