@@ -3,11 +3,6 @@
 ___
 ## Project Goal & Motivation
 PeekSeek transforms travel planning into a fun, gamified exploration! This interactive game allows players to virtually explore various destinations on Google Maps while competing with friends. Players choose a city they might want to visit and complete multiple quests by finding specific locations in that city, such as landmarks or brunch spots. At the end of the game, all locations are marked on the city map, giving a sense of an itinerary. This makes travel planning more enjoyable and less stressful, ensuring your trip actually happens!
-
-(TBD- OR A MORE ENGAGING INTRO:)
-Can you think of a time when you and your friends were planning to travel together but couldn't agree on a destination? Was everyone excited and motivated, yet planning the itinerary seemed like too much hustle? PeekSeek transforms this challenge into a fun, gamified exploration!
-
-PeekSeek is an interactive game where player virtually explore various destinations on Google Maps in an engaging way while competing with friends. Players choose a city they might want to visit and complete multiple quests by finding specific locations in that city, like landmarks or a brunch spot. At the end of the game, all locations are marked on the city map, giving a sense of an itinerary. This makes travel planning more enjoyable and less stressful, ensuring your trip does actually happen!
 ___
 ## Technologies
 ### Development
@@ -105,7 +100,7 @@ ___
 ## Roadmap
 - Implement a chat to communicate during the game
 - Add a fun play mode
-- Add user registration and a user profile page
+- Add trivia/fun facts about the city in the waiting page between the rounds
 ___
 ## Authors and acknowledgment
 - [Nils Reusch](https://github.com/Arche1ion)
