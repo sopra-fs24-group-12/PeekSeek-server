@@ -1,9 +1,9 @@
 # PeekSeek
 #### SoPra FS24
-___
+
 ## Project Goal & Motivation
 PeekSeek transforms travel planning into a fun, gamified exploration! This interactive game allows players to virtually explore various destinations on Google Maps while competing with friends. Players choose a city they might want to visit and complete multiple quests by finding specific locations in that city, such as landmarks or brunch spots. At the end of the game, all locations are marked on the city map, giving a sense of an itinerary. This makes travel planning more enjoyable and less stressful, ensuring your trip actually happens!
-___
+
 ## Technologies
 ### Development
 - Java
@@ -18,7 +18,7 @@ ___
 - Mockito
 ### External APIs
 - Google Geocoding API
-___
+
 ## High-level components
 For our project PeekSeek we have created nine different entities, most importantly Game, Lobby and Participant. Each entity has its own Data stored in a repository. GeocodingDataRepository for example stores all locations of the different cities. The Controller classes call the Service classes, which manage all the functionalities related to the entity classes. Below we provide a more clear understanding of some important classes: 
 
@@ -42,7 +42,7 @@ By combining these functionalities, LobbyService ensures smooth management and o
 ### Websockets
 We use websockets to ensure synchronization between all participants. They are used to broadcast events happening in the lobby and during the game. This includes participants joining or leaving a lobby/game, lobby settings being updated, game starting or transferring to the next phase within a game. Additionally, every second a message with the remaining time for each phase of the game is being sent to the participants. This avoids inconsistencies and further contributes to a synchronized experience.
 
-___
+
 ## Launch & Deployment
 This project uses the Google Geocoding API which requires a valid API key. When the application is being deployed, the correct API key is set automatically based on a secret set in Github. To set the API key for local development, insert it into the [application.properties](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/src/main/resources/application.properties) file, specifically in line 15 such that the line looks like the following: `api.key=YOUR_KEY` where YOUR_KEY is to be replaced by the actual API key. 
 <br />
@@ -96,12 +96,12 @@ If you want to avoid running all tests with every change, use the following comm
 
 `./gradlew build --continuous -xtest`
 
-___
+
 ## Roadmap
 - Implement a chat to communicate during the game
-- Add a fun play mode
+- Add a fun play mode where it's not about discovering a city but just having fun finding funny things
 - Add trivia/fun facts about the city in the waiting page between the rounds
-___
+
 ## Authors and acknowledgment
 - [Nils Reusch](https://github.com/Arche1ion)
 - [Ece Asirim](https://github.com/asirimece)  
@@ -110,7 +110,7 @@ ___
 - [Silvan Schlegel](https://github.com/silvanschlegel)
 
 We thank Marion Andermatt for her guidance as well as all teaching assistants of the module Software Engineering Praktikum at the University of Zurich for their feedback and considerations on our project.
-___
+
 ## License
 This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
 
