@@ -390,7 +390,7 @@ public class GameService {
         submissions.sort(Comparator.comparing(Submission::getNumberVotes).reversed().thenComparing(Submission::getSubmissionTimeSeconds));
         Submission winningCandidate = new Submission();
         for (Submission submission : submissions) {
-            if (!submission.getNoSubmission()) {
+            if (!submission.getNoSubmission() && (submission.getNumberBanVotes() <= (round.getSubmissions().size() - 1) / 2)) {
                 winningCandidate = submission;
                 break;
             }
