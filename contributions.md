@@ -413,3 +413,9 @@ Bug fixes:
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/211)
 - Disable start if changes are unsaved
     - [Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/200)
+
+
+## Week 9: [22.05. - 24.05]
+All team members worked on final Improvements and bug fixes:
+[Issue](https://github.com/sopra-fs24-group-12/PeekSeek-client/issues/212)
+
