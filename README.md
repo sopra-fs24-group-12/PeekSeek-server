@@ -112,6 +112,6 @@ If you want to avoid running all tests with every change, use the following comm
 We thank Marion Andermatt for her guidance as well as all teaching assistants of the module Software Engineering Praktikum at the University of Zurich for their feedback and considerations on our project.
 
 ## License
-This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/sopra-fs24-group-12/PeekSeek-server/blob/main/LICENSE) file for details.
 
 
